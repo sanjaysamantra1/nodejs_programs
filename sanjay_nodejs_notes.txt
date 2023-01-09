@@ -1,0 +1,836 @@
+Syllabus
+========
+-Node.JS - Introduction, Advantages
+-Node.js Process Model, Traditional Web Server Model
+-Local Environment SetUp
+-Node.js Console - REPL
+-NPM , NPX
+-Modules: Core, Local , 3rd party
+-Global Objects
+-CallBacks, Generators
+-File System
+-Debugging Node JS Application
+-Buffer & Streams
+-Events (Event Loop,Event Emitter)
+-Creating web server & Handling http requests
+-Express Framework
+-Database connectivity
+-Template Engines (Jade, vash)
+
+
+
+What NodeJs is?
+===============
+-Opensource and cross-platform JavaScript runtime environment.
+-Allows to run JavaScript on the server(outside the browser).
+-Built on Google Chrome's JavaScript V8 Engine. 
+-Event driven, non-blocking (asynchronous) I/O 
+-It is used to develop I/O intensive web applications. 
+-ex:video streaming sites, real-time chat application, Game servers and other web applications.
+-It's not the best choice for CPU intensive work.(Complex calculations)
+
+
+	Browser					Node.js
+======================================================
+-DOM (document)				-No DOM
+-Window						-No Window
+-Cookies					-No Cookies
+-Interactive Apps			-Server side Apps
+-No FileSystem				-FileSystem
+-No Version					-versions
+-ES Module Sytem			-CommonJS & ES Module System
+
+
+
+Key Features of Node.js
+=======================
+Asynchronous and Event Driven:
+	All APIs of Node Js are asynchronous. 
+	This feature means that if  Node receives a request for some Input/Output operation, it will execute that operation in the background and continue with the processing of other requests. 
+	Thus it will not wait for the response from the previous requests.
+It's very fast:
+	Node Js uses the V8 JavaScript Runtime engine, the one which is used by Google Chrome. 
+	Node has a wrapper over the JavaScript engine which makes the runtime engine much faster and hence processing of requests in NodeJS is faster.
+Single Threaded but Highly Scalable:
+	Node Js uses a single thread model for event looping. 
+	The response from these events may or may not reach the server immediately. 
+	However, this does not block other operations. 
+	Thus making Node.js highly scalable. 
+	Traditional servers create limited threads to handle requests while Node.js creates	a single thread that provides service to much larger numbers of such requests.
+Node js library uses JavaScript:
+	The majority of developers are already well-versed in JavaScript. 
+	Hence, development in Node.js becomes easier for a developer who knows JavaScript.
+Community –
+	There is an Active and vibrant community for the Node Js framework - The active community always keeps the framework updated with the latest trends in the web development.
+No Buffering –
+	Node js applications never buffer any data. 
+	They simply output the data in chunks.
+NPM (Node Package Manager) –
+	it comes with node js & allows us to install various Packages for Node js Application.
+
+
+
+V8 JavaScript Engine
+====================
+-V8 is the name of the JavaScript engine that powers Google Chrome.
+-V8 takes our JavaScript and executes it while browsing with Chrome.
+-V8 is written in C++, and it's continuously improved.
+-JavaScript is generally considered an interpreted language, but modern JavaScript engines no longer just interpret JavaScript, they compile it.
+-JavaScript is internally compiled by V8 with just-in-time (JIT) compilation to speed up the execution.
+
+
+
+
+
+What Can Node.js Do?
+====================
+-Node.js can generate dynamic page content
+-Node.js can create, open, read, write, delete, and close files on the server.
+-Node.js can collect form data.
+-Node.js can add, delete, modify data in the database.
+
+
+
+
+How NodeJs works/NodeJs Process Model
+=====================================
+-In the traditional web server model, each request is handled by a dedicated thread from the thread pool.
+If no thread is available in the thread pool at any point of time then the request waits till the next available thread. 
+-Dedicated thread executes a particular request and does not return to thread pool until it completes the execution and returns a response.
+
+-All the user requests will be handled by a single thread and all the I/O work or long running job is performed asynchronously for a particular request. 
+this single thread doesn't have to wait for the request to complete and is free to handle the next request. 
+-When asynchronous I/O work completes then it processes the request further and sends the response.
+-An event loop is constantly watching for the events to be raised for an asynchronous job and executing callback function when the job completes. 
+-Internally, Node.js uses libev for the event loop which in turn uses internal C++ thread pool to provide asynchronous I/O.
+
+
+
+1. Clients send HTTP requests to NodeJS server.
+2. Event-Loop(Single Thread) delegates long-running operations to non-blocking workers and becomes available to handle the next request.
+3. When asynchronous I/O work completes, EventLoop processes the request further and sends the response to the client.
+
+
+
+NodeJs vs Others
+================
+-A common task for a web server can be to open a file on the server and return the content to the client.
+
+Here is how PHP or ASP handles a file request:
+	1. Sends the task to the computer's file system.
+	2. Waits while the file system opens and reads the file.
+	3. Returns the content to the client.
+	4. Ready to handle the next request.
+Here is how Node.js handles a file request:
+	1. Sends the task to the computer's file system.
+	2. Ready to handle the next request.
+	3. When the file system has opened and read the file, the server returns the content to the client.
+-Node.js eliminates the waiting, and simply continues with the next request.
+-Node.js runs single-threaded, non-blocking, asynchronously programming, which is very memory efficient.
+
+
+
+Blocking vs Non-Blocking I/O
+============================
+-waiter takes the order and gives it to chef.
+ while the chef is preparing that order, 
+ waiter will take new orders and will give it back to the chef.
+ waiter doesn't wait for the chef to prepare the food.
+-Blocking is when the execution of additional JavaScript in the Node.js process must wait until a non-JavaScript operation completes. 
+-This happens because the event loop is unable to continue running JavaScript while a blocking operation is occurring.
+-Blocking call waits for the I/O operation to complete before returning. 
+ Its results are returned synchronously. 
+ Nothing else in that process takes place during the waiting. 
+-non-blocking call returns immediately without results and uses alternate means to check for completion. 
+ Other processing can be done while waiting and the results are returned asynchronously. 
+-Node.js libraries and core api provide non-blocking calls that can be used to build performant applications. Such applications make use of I/O waiting time to serve other requests
+
+
+
+How to install Node.js
+======================
+-Official packages for all the major platforms are available in the below URL
+ https://nodejs.dev/download/
+-nvm is a popular way to run Node.js. It allows to easily switch the Node.js version.
+  NVM for Mac - https://tecadmin.net/install-nvm-macos-with-homebrew/
+  NVM for windows - https://github.com/coreybutler/nvm-windows
+
+NVM useful commands
+-------------------
+`nvm  --version` to check version 
+`nvm list` to list all the available nvm versions
+`nvm use 15.0` to use a specific version of nodejs
+`nvm install 15.0` to install a specific version of nodejs
+
+
+
+
+REPL
+====
+-REPL stands for Read-Eval-Print-Loop.
+-Node.js comes with virtual environment called REPL.
+-it is similar to Shell in Linux or command prompt in windows where 
+ a command is entered and the system responds with an output in an interactive mode
+-It is a quick and easy way to test simple Node.js/JavaScript code.
+-To launch the REPL (Node shell), open command prompt and type 'node'.
+-If you need to write multi line JavaScript expression or function then just press Enter.
+ (The REPL terminal will display three dots (...), it means you can continue on next line)
+-We can execute an external JavaScript file by writing 'Node Filename'.
+-assign the result of the most recently evaluated expression to the special variable _ (underscore)
+	 a = 10; b = 20; a+b;
+	 sum = _; console.log(sum);
+-To Open REPL in eitor mode , use .editor
+-To Exit REPL type .exit
+-if you press the tab key the REPL will try to autocomplete what you wrote to match a variable you already defined or a predefined one.
+-Exploring JavaScript objects ( Number.(tab) , fs , http)
+
+
+
+REPL Command		Description
+--------------------------------
+.help				Display help on all the commands
+.editor			    enables editor mode, to write multiline JavaScript code with ease. Once you are in this mode, enter ctrl-D to run the code you wrote
+tab Keys			Display the list of all commands.
+Up/Down Keys		See previous commands applied in REPL.
+.save filename		Save current Node REPL session to a file.
+.load filename		Load the specified file in the current Node REPL session.
+.exit				exits the repl (same as pressing ctrl-C two times)
+ctrl + c			Terminate the current command.
+ctrl + c (twice)	Exit from the REPL.
+ctrl + d			Exit from the REPL.
+.break				Exit from multiline expression.
+.clear				Exit from multiline expression.(Alias for .break)
+
+
+
+accept arguments from the command line
+======================================
+-You can pass any number of arguments while invoking a Node.js application.
+-Arguments can be standalone or have a key and a value.
+ ex: node app.js sanjay
+     node app.js name=sanjay
+-arguments can be collected by using 'process' module's argv property which is an array.
+-The first element is the full path of the node command.
+-The second element is the full path of the file being executed.
+-All the additional arguments are present from the third position going forward.
+-You can iterate over all the arguments (including the node path and the file path) using a loop:
+	process.argv.forEach((val, index) => {
+	  console.log(`${index}: ${val}`)
+	})
+-You can get only the additional arguments by creating a new array that excludes the first 2 params
+ const args = process.argv.slice(2)
+-The best way to deal with key:value arguements is by using the minimist library.
+ const args = require('minimist')(process.argv.slice(2))
+ console.log(args['name'])
+-use double dashes before each argument name
+ node app.js --name=sanjay
+
+
+
+How to exit from a Node.js program
+==================================
+-There are various ways to terminate a Node.js application.
+-console can be closed  with ctrl+C
+-process.exit()
+-process.exitCode = 1;
+Note: process does not require a "require", it's automatically available.
+
+
+
+NPM (Node Package Manager)
+==========================
+-npm is the standard package manager for Node.js.
+-Node Package Manager (NPM) provides two main functionalities:
+	1.Online repositories for node.js packages/
+	which are searchable on search.nodejs.org
+	2.Command line utility to install Node.js packages, do version management and dependency management of Node.js packages.
+	
+-NPM comes bundled with Node.js installables.
+-To verify npm version, Run the below command  
+ npm --version/-v
+ 
+-initialize a nodejs project
+ npm init
+ npm init -y (everything default)
+ 
+-npm install 
+ install all the modules as specified in package.json
+
+-Install a Module using npm
+ npm install <Module Name>
+ 
+-Install the package globally
+ npm install <package_name> -g
+ 
+-Save the package as dependency
+ npm install <package_name> --save
+ 
+-Save the package as dev-dependency
+ npm install <package_name> --save-dev
+ 
+-Install the latest version of a package
+ npm install <package_name>@latest
+ 
+-Install any particluar version of a package
+ npm install <package_name>@<version_number>
+ npm install bootstrap@4.0.1
+ 
+-Uninstalling Packages/Modules via NPM
+ npm uninstall <package_name>
+ 
+-Update Packages/Modules via NPM
+ npm update <package_name>
+ 
+-Searching a particular package
+ npm search <package_name>
+ 
+-List all Installed Packages Locally
+ npm list/ls
+
+-List all Installed Packages Globally
+ npm ls -g
+ 
+-Run a Task
+ npm run <task-name>
+
+
+npm i nodemon 			 	--> helps during development and production dependencies
+npm i nodemon --save  		--> helps during development and production dependencies
+npm i nodemon --save-dev  	--> helps during development not in production
+npm i nodemon --no-save 	--> installs but does not add the entry to the package.json file dependencies
+npm i nodemon --save-optional --> installs and adds the entry to the package.json file optionalDependencies
+npm i --no-optional  --> will prevent optional dependencies from being installed
+
+
+
+
+
+NPM Global vs Local Installation
+--------------------------------
+-By default, NPM installs any dependency in the local mode. 
+-Local mode refers to the package installation in node_modules directory lying in the folder where Node application is present. 
+-Locally deployed packages are accessible via require() method. 
+ ex: npm i express
+-Run the below command command to list down all the locally installed modules. 
+ npm ls
+-Globally installed packages/dependencies are stored in system directory. 
+-Such dependencies can be used in CLI (Command Line Interface) function of any node.js 
+ but cannot be imported using require() in Node application directly. 
+ ex:- npm i express -g
+ 
+ 
+Package.json
+============
+-package.json file is used to hold the metadata about a particular project. 
+-Helps NPM to understand how the project should be handled along with its dependencies.
+-package.json files contain the below information.
+	  project name,
+	  version,
+	  homepage,
+	  description,
+	  author,
+	  keywords etc.
+-package.json file is normally located at the root directory of a Node.js project.
+
+
+package.json  VS  package-lock.json
+==================================
+-Both Package.json and package-lock.json are not mandatory.
+-Package.json is mandatory and package-lock.json is optional.
+-package.json is a file that contains information about your project (name, version, etc)
+and it lists the packages that your project is dependent on.
+Ex: - "sweetalert2": "^9.14.4" (major.minor.patch)
+   ^ install the latest minor version
+
+package-lock.json avoids installing updated minor version and when someone clones your repo and run npm install in their machine.
+
+-The goal of package-lock.json file is to keep track of the exact version of every package that is installed so that a product is 100% reproducible in the same way even if packages are updated by their maintainers.
+
+
+
+NPX
+===
+NPX : Node Package Executer (used to execute Node.js packages)
+-executes Node.js commands without installing them.
+-When you install NPM version 5.2.0 or higher, get NPX installed
+-we can install npx using the below comand
+ npm i -g npx
+-npx helps us avoid versioning, dependency issues and installing unnecessary packages that we just want to try out.
+-provides a clear and easy way of executing packages, commands, modules and even GitHub gists and repositories.
+-ex:npx create-react-app my-sample-app
+
+
+
+Nodemon
+=======
+-Nodemon is a utility that will monitor for any changes in your source and automatically restart your server.
+-Nodemon can be installed using NPM.
+ ex:- npm i -g nodemon
+-Just use nodemon instead of node to run your code, your process will automatically restart when your code changes
+ ex:- nodemon server.js
+-the 'node_modules' folder is ignored by default.
+-You can restart the process at any time by typing rs and hitting enter.
+
+
+Features:
+--------
+-Automatic restarting of application.
+-Detects default file extension to monitor.
+-Default support for node & coffeescript, but easy to run any executable (such as python, make, etc).
+-Ignoring specific files or directories.
+-Watch specific directories.
+-Works with server applications or one time run utilities and REPLs.
+-Requirable in node apps.
+-Open source and available on github.
+ 
+
+Node.js Global Objects
+======================
+-Node.js global objects are global in nature and available in all modules.
+-You don't need to include these objects in your application; rather they can be used directly.
+-A list of Node.js global objects are given below:
+	_ _dirname
+	_ _filename
+	console - console.log(), console.error(), console.warn(), console.table(), console.trace()
+	process - exit(),beforeExit(), uncaughtException()
+	buffer
+	setImmediate(callback[, arg][, ...])
+	setInterval(callback, delay[, arg][, ...])
+	setTimeout(callback, delay[, arg][, ...])
+	clearImmediate(immediateObject)
+	clearInterval(intervalObject)
+	clearTimeout(timeoutObject)
+	export
+	require
+
+
+-setImmediate callbacks are called after I/O Queue callbacks are finished or timed out. setImmediate callbacks are placed in Check Queue, which are processed after I/O Queue.
+-setTimeout(fn, 0) callbacks are placed in Timer Queue and will be called after I/O callbacks as well as Check Queue callbacks. As event loop, process the timer queue first in each iteration, so which one will be executed first depends on which phase event loop is.
+
+
+
+NodeJs Modules
+==============
+-A way of encapsulating code in to separate logical units.
+-Module:A set of functions you want to include in your application.
+-In the Node.js module system, each file is treated as a separate module.
+-Node.js includes three types of modules:
+	1. Core(Built-in) Modules     	(http,fs,url,util,)
+	2. Local(Custom) Modules    	(created locally in our application)
+	3. Third Party(External) Modules  (can be downloaded using NPM. ex:-express,mongoose,lodash)
+
+Core Modules:
+-------------
+http-launch a server,send requests
+https-launch a SSL server
+fs-work with the file system
+path-handles path elegantly
+url-url module includes methods for URL resolution and parsing.
+querystring-querystring module includes methods to deal with query string.
+os-Get OS information
+events-working with events
+util-util module includes utility functions useful for programmers.
+
+
+
+Local(Custom) Modules 
+=====================
+-Node.js has two types of modules: 
+	1. ES modules 
+	2. CommonJS modules
+-By default, Node.js treats JavaScript as CommonJS modules. But we can tell Node.js to treat JavaScript code as ES modules.
+-Node.js will treat the following files as ES modules:
+	a.Files ending in .mjs
+	b.Files ending in .js when the nearest parent package.json file contains a top-level field "type" with a value of "module".
+
+
+
+
+Node.js fs module
+=================
+-The fs module provides a lot of very useful functionality to access and interact with the file system.
+-There is no need to install it. Being part of the Node.js core, it can be used by simply requiring it. and have access to all its methods.
+
+ex: const fs = require('fs');
+fs.access(): check if the file exists and Node.js can access it with its permissions
+fs.appendFile(): append data to a file. If the file does not exist, it's created
+fs.chmod(): change the permissions of a file specified by the filename passed. Related: fs.lchmod(), fs.fchmod()
+fs.chown(): change the owner and group of a file specified by the filename passed. Related: fs.fchown(), fs.lchown()
+fs.close(): close a file descriptor
+fs.copyFile(): copies a file
+fs.createReadStream(): create a readable file stream
+fs.createWriteStream(): create a writable file stream
+fs.link(): create a new hard link to a file
+fs.mkdir(): create a new folder
+fs.mkdtemp(): create a temporary directory
+fs.open(): opens the file and returns a file descriptor to allow file manipulation
+fs.readdir(): read the contents of a directory
+fs.readFile(): read the content of a file. Related: fs.read()
+fs.readlink(): read the value of a symbolic link
+fs.realpath(): resolve relative file path pointers (., ..) to the full path
+fs.rename(): rename a file or folder
+fs.rmdir(): remove a folder
+fs.stat(): returns the status of the file identified by the filename passed. Related: fs.fstat(), fs.lstat()
+fs.symlink(): create a new symbolic link to a file
+fs.truncate(): truncate to the specified length the file identified by the filename passed. Related: fs.ftruncate()
+fs.unlink(): remove a file or a symbolic link
+fs.unwatchFile(): stop watching for changes on a file
+fs.utimes(): change the timestamp of the file identified by the filename passed. Related: fs.futimes()
+fs.watchFile(): start watching for changes on a file. Related: fs.watch()
+fs.writeFile(): write data to a file. Related: fs.write()
+
+
+file encoding
+=============
+-Both fs.readFileSync() and fs.readFile() take an optional encoding argument. 
+-If you specify a character encoding you'll get a string in return. If you do not specify a character encoding both functions will return a Buffer.
+ex: bufferData = fs.readFileSync("./customer.json");
+	stringData = fs.readFileSync("./customer.json", "utf8");
+
+
+Error Handling
+==============
+-No Err tracking : appendFile(), writeFile()
+-default err tracking : readFile()
+-manual err tracking : unlink(),rename()
+
+
+
+Node.js OS Module
+=================
+-The OS module provides information about the computer's operating system.
+-while downloading gitbash,mongoDB,postman(OS is auto-populated)
+
+arch()	      Returns the operating system CPU architecture-32/64
+constants	 Returns an object containing the operating system's constants for process signals, error cotes etc.
+cpus()	Returns an array containing information about the computer's CPUs
+endianness()	Returns the endianness of the CPU
+EOL	Returns the end-of-line marker for the current operating system
+freemem()	Returns the number of free memory of the system
+hostname()	Returns the hostname of the operating system
+loadavg()	Returns an array containing the load averages, (1, 5, and 15 minutes)
+networkInterfaces()	Returns the network interfaces that has a network address
+platform()	Returns information about the operating system's platform
+release()	Returns information about the operating system's release
+tmpdir()	Returns the operating system's default directory for temporary files
+totalmem()	Returns the number of total memory of the system
+type()	Returns the name of the operating system
+uptime()	Returns the uptime of the operating system, in seconds
+userInfo()	Returns information about the current user
+
+
+Node.js Path Module
+===================
+-The Path module provides a way of working with directories and file paths.
+basename()	Returns the last part of a path
+delimiter	Returns the delimiter specified for the platform
+dirname()	Returns the directories of a path
+extname()	Returns the file extension of a path
+format()	Formats a path object into a path string
+isAbsolute()	Returns true if a path is an absolute path, otherwise false
+join()	Joins the specified paths into one
+normalize()	Normalizes the specified path
+parse()	Formats a path string into a path object
+posix	Returns an object containing POSIX specific properties and methods
+relative()	Returns the relative path from one specified path to another specified path
+resolve()	Resolves the specified paths into an absolute path
+sep	Returns the segment separator specified for the platform
+win32	Returns an object containing Windows specific properties and methods
+
+
+
+JSON
+====
+-Node has some built in utilities that make it easy to read and write JSON files.
+-The simplest way to read a JSON file is to require it. Passing require() with the path to a JSON file will synchronously read and parse the data into a JavaScript object.
+ ex: const config = require("./config.json");
+-But reading JSON files with require has its downsides. 
+-The file will only be read once; requiring it again returns the cached data from the first time require was run. 
+-This is fine for loading static data on startup (like config data). But for reading a file that changes on disk, we need to manually read the file using fs.readFile()
+  const jsonString = fs.readFileSync("./customer.json");
+  const customer = JSON.parse(jsonString);
+
+
+
+HTTP Module
+===========
+-
+
+
+Process Module
+==============
+-The process core module of Node.js provides the env property which hosts all the environment variables that were set at the moment the process was started.
+-Note: process does not require a "require", it's automatically available.
+-If you have multiple environment variables in your node project, you can also create an .env file in the root directory of your project, and then use the dotenv package to load them during runtime.
+.env file
+	USER_ID="239482"
+	USER_KEY="abcd"
+	NODE_ENV="development"
+-require('dotenv').config();
+	process.env.USER_ID; // "239482"
+	process.env.USER_KEY; // "abcd"
+	process.env.NODE_ENV; // "development"
+-How to find which version of V8 ships with a particular version of Node.js?
+	node -p process.versions.v8
+-process.nextTick() : invoke this function at the end of the current operation, before the  next event loop tick starts
+-Every time the event loop takes a full trip, we call it a tick.
+-setTimeout(() => {}, 0) will execute the function at the end of next tick, much later than when using nextTick() which prioritizes the call and executes it just before the beginning of the next tick
+ 
+
+
+Express.JS
+==========
+-Express.js is a web application framework for Node.js.
+-a framework is a set of helper functions,tools and rules that help us to build our application.
+-It provides various features that make web application development fast and easy which otherwise takes more time using only Node.js.
+-Alternatives to Express.js are 'Vanilla Node.js','koa','sails.js'
+
+Advantages of Express.js
+========================
+-Makes Node.js web application development fast and easy.
+-Easy to configure and customize.
+-Allows you to define routes of your application based on HTTP methods and URLs.
+-Includes various middleware modules which you can use to perform additional tasks on request and response.
+-Easy to integrate with different template engines like Jade, Vash, EJS etc.
+-Allows you to define an error handling middleware.
+-Easy to serve static files and resources of your application.
+-Allows you to create REST API server.
+-Easy to connect with databases such as MongoDB, Redis, MySQL
+
+
+
+Debug NodeJs Code
+=================	
+1. Debugging natively
+  a. node debug/inspect your-script.js
+  b. use debugger;  in a code line you want
+  
+2. visual Studio Code
+   In the Debug panel, click the settings icon to open .vscode/launch.json.
+   Select "Node.js" for initial setup.
+  
+3. use the node-inspector
+   npm install -g node-inspector
+   node-debug app.js
+  
+  
+CallBacks
+=========
+-Callback is an asynchronous equivalent for a function. 
+-A callback function is called at the completion of a given task. 
+-All the APIs of Node are written in such a way that they support callbacks.
+
+
+
+Events
+======
+-Node.js allows us to create and handle custom events easily by using events module.
+-Event module includes EventEmitter class which can be used to raise and handle custom events.
+-The emit() function raises the specified event. First parameter is name of the event as a string and then arguments.
+-An event can be emitted with zero or more arguments. 
+-We can specify any name for a custom event in the emit() function.
+-We can also use addListener() methods to subscribe for an event.
+-All objects that emit events are instances of the EventEmitter class. 
+-These objects expose an eventEmitter.on() function that allows one or more functions 
+ to be attached to named events emitted by the object. 
+-Event names are camel-cased strings but any valid JavaScript property key can be used.
+-When the EventEmitter object emits an event, all of the functions attached to that specific event 
+ are called synchronously. 
+-Any values returned by the called listeners are ignored and will be discarded.
+-The eventEmitter.on() method is used to register listeners, 
+-eventEmitter.emit() method is used to trigger the event.
+-The EventEmitter calls all listeners synchronously in the order in which they were registered.
+-This ensures the proper sequencing of events and helps avoid race conditions and logic errors. 
+When appropriate, listener functions can switch to an asynchronous mode of operation using the setImmediate() or process.nextTick() methods:
+-Using the eventEmitter.once() method, it is possible to register a listener that is called at most once for a particular event. 
+-Once the event is emitted, the listener is unregistered and then called.
+
+ 
+EventEmitter Properties and Methods
+------------------------------------
+addListener()-			Adds the specified listener
+defaultMaxListeners-	Sets the maximum number of listeners allowed for one event. Default is 10
+emit()					Call all the listeners registered with the specified name
+eventNames()			Returns an array containing all registered events
+getMaxListeners()		Returns the maximum number of listeners allowed for one event
+listenerCount()			Returns the number of listeners with the specified name
+listeners()				Returns an array of listeners with the specified name
+on()					Adds the specified listener
+once()					Adds the specified listener once. When the specified listener has been executed, the listener is removed
+prependListener()		Adds the specified listener as the first event with the specified name
+prependOnceListener()	Adds the specified listener as the first event with the specified name, once. When the specified listener has been executed, the listener is removed
+removeAllListeners()	Removes all listeners with the specified name, or ALL listeners if no name is specified
+removeListener()		Removes the specified listener with the specified name
+setMaxListeners()		Sets the maximum number of listeners allowed for one event. Default is 10
+
+
+Routing in Node.js
+==================
+-Routing refers to determining how an application responds to a client request to a particular endpoint, 
+which is a URI (or path) and a specific HTTP request method (GET, POST, and so on).
+-Each route can have one or more handler functions, which are executed when the route is matched.
+-routing in node.js can be implemented by using framework(express) or Without using Framework
+-Route definition takes the following structure:
+	app.METHOD(PATH, HANDLER)
+-app is an instance of express.
+	METHOD is an HTTP request method, in lowercase.
+	PATH is a path on the server.
+	HANDLER is the function executed when the route is matched.
+
+
+
+Query String
+============
+-Node.js Query String provides methods to deal with query string. 
+-It can be used to convert query string into JSON object and vice-versa.
+querystring.parse(str[, sep][, eq][, options])	queryString To object.
+querystring.stringify(obj[, sep][, eq][, options]) object to string.
+
+
+
+
+Nodemailer
+==========
+1. npm install nodemailer
+2. 
+
+
+
+Template Engines for Node.js
+============================
+-Template engine helps us to create an HTML template with minimal code. 
+-It can inject data into HTML template at client side and produce the final HTML.
+
+
+
+
+Data Access in Node.js
+======================
+-Node.js supports all kinds of databases(RDBMS/NO-SQl).However, NoSQL databases like MongoDb are the best fit with Node.js
+-To access the database from Node.js, you first need to install drivers for the database you want to use.
+ex:npm install mysql (for MySQL)
+   npm install oracledb (for Oracle)
+   npm install mongodb (MongoDB)
+
+
+MongoDB
+=======
+-it stores data in the collections as JSON based documents and does not enforce schemas. 
+-It does not have tables, rows, and columns as other SQL (RDBMS) databases.
+-RDBMS  (database,Table,Row,Column)
+ MongoDB(Database,Collection,Document,Field)
+-indexing , shemaless , Replication, Scalability, Performance, High Availability
+
+Sql         NoSql
+===================
+Database    Database
+Table       Collection
+Row         Document
+Select      find
+Insert      Insert
+Update      Update
+Delete      Remove
+
+
+MongoDB Local
+=============
+1. https://www.mongodb.com/try/download/community
+2. download and install (MongoDB Community Server)
+3. Go to the path where MongoDB was installed. By default it is "C:\Program Files\MongoDB\Server\5.0\bin", run mongo.exe (MongoDB Shell)
+4. error : "{"error":"NonExistentPath: Data directory C:\\data\\db\\ not found"
+5. create folder 'c:\data\db'
+6. run mongo.exe
+7. open mongoDB Compass
+8. mongodb://localhost:27017 (port)
+9. databases - few default databases should be there
+10 create a DB (mydataBase1--->MyCollection1)
+
+
+MongoDB Shell
+=============
+-download mongoDB shell (https://www.mongodb.com/try/download/shell)
+-extract and run mongosh.exe
+-set path for mongo-server  & mongo-shell
+	 C:\Program Files\MongoDB\Server\6.0\bin
+	 C:\mongo-shell\bin	    
+-verify the path setup is done correctly by running below 2 commands
+ mongod --version
+ start mongosh.exe (to start mongo shell)
+ 
+-To See All databases
+ show dbs
+-To Use one database
+ use sanjaydb1
+-To see the Current Database
+ db 
+-To see all the collections under a database
+ show collections
+-To Create a Collection
+ db.createCollection('employees')
+-To add a Document/Row in a collection
+ db.employees.insertOne({eid:1,name:'sanjay',sal:5000})
+ db.employees.insertMany([{eid:1,name:'sanjay',sal:5000},{eid:2,name:'ranjan',sal:6000}])
+-To  see data inside collections
+ db.employees.find() / db.employees.findOne()
+ db.employees.find().pretty()
+ db.employees.find( {sal: 6000} )
+ db.employees.find( {} , {sal:0} ) // all columns except sal
+ db.employees.find( {} , {sal:1,name:1} ) // name,sal column in result
+ db.employees.find().sort({sal:1}).preety()   //asc
+ db.employees.find().sort({sal:-11}).preety() //desc
+ db.employees.find().count()
+ db.employees.find().limit(2)
+-To Update the existing Data
+ db.employees.updateOne( { id: 101 }, { $set: { sal: 2000 } } ) 
+ db.employees.updateOne( { id: 101 }, {eid:1,name:'sanjay',sal:5000},{ upsert: true } )
+ // Update the document, but if not found insert it
+-To Delete 
+ db.employees.deleteOne({ id:101 })
+ db.employees.deleteMany({ name: "sanjay" })
+ db.employees.remove({ id:101 })
+ 
+
+ db.employees.drop()
+ db.dropDatabase()
+ 
+
+
+MongoDB Atlas
+=============
+Register for an Atlas account
+Create and deploy an M0 cluster
+Add your connection IP address to your IP access list
+Create a database user for your cluster
+Connect to your cluster
+Load sample data or your own data!
+
+
+1. https://www.mongodb.com/home
+2. try free
+3. Register / Login
+4. create a shared cluster
+5. mongodb+srv://sanjaysamantra:<password>@cluster0.geshq.mongodb.net/?retryWrites=true&w=majority
+
+
+MongoDB + NodeJs
+=================
+1. npm i express mongoose
+2. 
+
+
+
+
+---------------------------
+Body-parser
+cors
+express.json
+
+References:
+===========
+1. https://riptutorial.com/Download/node-js.pdf
+2. https://nodejs.dev/en/learn/
+3. https://www.tutorialsteacher.com/nodejs
+4. https://www.javatpoint.com/nodejs-tutorial
+5. https://www.guru99.com/node-js-tutorial.html
+6. https://codeforgeek.com/nodejs/
+7. https://www.geeksforgeeks.org/nodejs/
