@@ -5,6 +5,8 @@ function reqListener(req, res) {
   console.log(req.url, req.method, req.headers);
 }
 server = http.createServer(reqListener);
-server.listen(5000);
 
+server.listen(5000,()=>{
+  console.log(`Server is listening on 5000`)
+});
 // localhost:5000

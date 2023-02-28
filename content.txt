@@ -1,0 +1,34 @@
+Recommended to learn before Node.js
+===================================
+Data Types
+Variables
+Scopes
+Functions
+Arrow Function
+this operator
+Loops
+Arrays
+fetch()
+ES-6 and beyond 
+(class,module,rest,spread,collections,promise,async await,Enhanced Object Literals)
+
+
+Node.js Syllabus
+================
+-Node.JS - Introduction, Advantages
+-Node.js Process Model, Traditional Web Server Model
+-Local Environment SetUp
+-Node.js Console - REPL
+-NPM , NPX
+-Modules: Core, Local , 3rd party
+-Global Objects
+-CallBacks, Generators
+-File System
+-Debugging Node JS Application
+-Buffer & Streams
+-Events (Event Loop,Event Emitter)
+-Creating web server & Handling http requests
+-Express Framework-routes
+-Database connectivity
+-Template Engines (Jade/Pug, vash, EJS)
+-Redis

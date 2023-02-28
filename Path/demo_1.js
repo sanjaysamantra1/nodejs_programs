@@ -10,3 +10,5 @@ const extensionName = path.extname(
 console.log(extensionName);
 const myPath = path.parse("E:/Training/UI/UI_progs/NodeJS/PATH/demo_1.js");
 console.log(myPath);
+
+console.log(myPath.name);

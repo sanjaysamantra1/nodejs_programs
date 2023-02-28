@@ -11,6 +11,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "cors": "^2.8.5",
     "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "minimist": "^1.2.8"
+  },
+  "optionalDependencies": {
+    "lodash": "^4.17.21"
   }
 }

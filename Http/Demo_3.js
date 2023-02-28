@@ -1,4 +1,4 @@
-//Send response
+//Sendresponse
 const http = require("http");
 
 function reqListener(req, res) {
@@ -14,4 +14,3 @@ server = http.createServer(reqListener);
 server.listen(5000, () => {
   console.log("server running on port 5000");
 });
-
