@@ -1,8 +1,8 @@
 import { unlink } from "node:fs/promises";
 
-// async await
+// await
 try {
-  await unlink("/tmp/hello");
+  await unlink("./tmp/hello");
   console.log("successfully deleted /tmp/hello");
 } catch (error) {
   console.error("there was an error:", error.message);

@@ -1,10 +1,14 @@
 var fs = require("fs");
 
-// Asynchronous read
+console.log("program started");
+
+// Asynchonously read the file
 fs.readFile("input.txt", function (err, data) {
   if (err) {
-    return console.error(err);
+    return console.log(err);
   }
-  console.log(data); // output is the raw buffer
-  console.log(data.toString()); // output is String
+  console.log(data);
+  console.log(data.toString());
 });
+
+console.log("program finished");

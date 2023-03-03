@@ -521,12 +521,12 @@ NodeJs Modules
 Core Modules:
 -------------
 os-Get OS information
-http-launch a server,send requests
-https-launch a SSL server
 fs-work with the file system
 path-handles path elegantly
 url-url module includes methods for URL resolution and parsing.
 querystring-querystring module includes methods to deal with query string.
+http-launch a server,send requests
+https-launch a SSL server
 events-working with events
 util-util module includes utility functions useful for programmers.
 
@@ -616,19 +616,24 @@ fs.writeFile(): write data to a file. Related: fs.write()
 
 file encoding
 =============
--Both fs.readFileSync() and fs.readFile() take an optional encoding argument. 
--If you specify a character encoding you'll get a string in return. If you do not specify a character encoding both functions will return a Buffer.
+-Both fs.readFileSync() and fs.readFile() take an optional argument encoding. 
+-while reading a file, a string will be returned if character encoding is specified.
+-while reading a file, a buffer will be returned if character encoding is not specified.
 ex: bufferData = fs.readFileSync("./customer.json");
 	stringData = fs.readFileSync("./customer.json", "utf8");
 
 
-Error Handling
-==============
--No Err tracking : appendFile(), writeFile()
--default err tracking : readFile()
--manual err tracking : unlink(),rename()
+FS Module Error Handling
+========================
+-No Error tracking : appendFile(), writeFile()
+-default error tracking : readFile()
+-manual error tracking : unlink(),rename()
 
 
+
+What is an error-first callback?
+---------------------------------
+in NodeJS The first argument is always an error object that the programmer has to check if something went wrong.
 
 
 
@@ -642,20 +647,38 @@ extname()	Returns the file extension of a path
 format()	Formats a path object into a path string
 isAbsolute()	Returns true if a path is an absolute path, otherwise false
 join()	Joins the specified paths into one
-normalize()	Normalizes the specified path
+normalize()	normalizes the given path, resolving '..' and '.' segments.
 parse()	Formats a path string into a path object
-posix	Returns an object containing POSIX specific properties and methods
 relative()	Returns the relative path from one specified path to another specified path
 resolve()	Resolves the specified paths into an absolute path
 sep	Returns the segment separator specified for the platform
 win32	Returns an object containing Windows specific properties and methods
+posix	Returns an object containing POSIX specific properties and methods
+
+
+Q. why you’d use the path.join() function instead of using string concatenation??
+ans: 1. Supports separators (\ or /) for different OS.
+	 2. handles leading and trailing slashes.
+	    path.join('data', 'test.txt'); // 'data/test.txt'
+		path.join('data', '/test.txt'); // 'data/test.txt'
+		path.join('data/', 'test.txt'); // 'data/test.txt'
+		path.join('data/', '/test.txt'); // 'data/test.txt'
+
+
+join() vs resolve()
+===================
+-join() concatenates(joins) the path segments.
+-resolve() creates an absolute path from the root. 
+-Both methods will normalize the paths i.e. they treat .. as we normally use them when navigating in the folder structure.
+-join() concatenates the the path fragments.
+-resolve() looks for the first segment with / from the right and append everything up to this point to the root.
 
 
 
 JSON
 ====
 -Node has some built in utilities that make it easy to read and write JSON files.
--The simplest way to read a JSON file is to require it. Passing require() with the path to a JSON file will synchronously read and parse the data into a JavaScript object.
+-The simplest way to read a JSON file is to require it. 
  ex: const config = require("./config.json");
 -But reading JSON files with require has its downsides. 
 -The file will only be read once; requiring it again returns the cached data from the first time require was run. 
@@ -1211,7 +1234,7 @@ xit() - disabled it()
 ---------------------------
 md5 generator
 express file uploader
-formidable
+formidable - https://www.w3schools.com/nodejs/nodejs_uploadfiles.asp
 
 
 References:
@@ -1223,3 +1246,10 @@ References:
 5. https://www.guru99.com/node-js-tutorial.html
 6. https://codeforgeek.com/nodejs/
 7. https://www.geeksforgeeks.org/nodejs/
+
+
+
+Interview Questions & Answers
+=============================
+1.https://gist.github.com/paulfranco/9f88a2879b7b7d88de5d1921aef2093b
+2.https://github.com/Devinterview-io/nodejs-interview-questions

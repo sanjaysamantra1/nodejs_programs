@@ -1,22 +1,28 @@
 const path = require("path");
 
-console.log(path.sep);
-console.log(path.delimiter);
+const isAbsoluteRes1 = path.isAbsolute("C:/program files");
+console.log(`is Absolute: ${isAbsoluteRes1}`); // true
+
+const isAbsoluteRes2 = path.isAbsolute("home/");
+console.log(`is Absolute: ${isAbsoluteRes2}`); // false
 
 const pathToFile = path.format({
-  dir: "public_html/home/js",
+  dir: "d:/nodejs/html/js",
   base: "app.js",
 });
-console.log(pathToFile);
+console.log(`Path String:: ${pathToFile}`);
 
-let pathObj = path.parse('d:/nodejs/html/js/app.js');
+let pathObj = path.parse("d:/nodejs/html/js/app.js");
 console.log(pathObj);
 
-const filePath = path.join("/content/", "subfolder", "test.txt");
-console.log(filePath);
+const pathToDir = path.join("/home", "js", "dist", "app.js");
+console.log(`pathToDir:: ${pathToDir}`);
 
-const base = path.basename(filePath);
-console.log(base);
+const pathToDir2 = path.resolve("/home", "js", "dist", "app.js");
+console.log(`pathToDir:: ${pathToDir2}`);
 
-const absolute = path.resolve(__dirname, "content", "subfolder", "test.txt");
-console.log(absolute);
+const normalizedPath = path.normalize("/foo/bar//baz/abc/xyz/..");
+console.log(normalizedPath);
+
+const normalizedPath2 = path.normalize("../process/process_demo_1.js");
+console.log(path.parse(normalizedPath2));

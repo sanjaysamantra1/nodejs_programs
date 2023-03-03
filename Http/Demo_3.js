@@ -2,7 +2,6 @@
 const http = require("http");
 
 function reqListener(req, res) {
-  console.log(req.url, req.method, req.headers);
   res.setHeader("Content-Type", "text/html");
   res.write("<html>");
   res.write("<head><title>My first page</title></head>");
