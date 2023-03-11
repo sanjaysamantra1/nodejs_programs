@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const port = 5000;
 
+app.use(express.json());
+
 // Data Source, could be replaced with a real database
 const todos = [
   {
@@ -59,7 +61,7 @@ app.post("/todos", (request, response) => {
 });
 
 app.put("/todos/:id", (request, response) => {
-  const todo = todos.find((todo) => todo.id === request.params.id);
+  const todo = todos.find((todo) => todo.id === +request.params.id);
   if (todo) {
     const { title, desc, completed } = request.body;
     todo.title = title;
@@ -72,7 +74,7 @@ app.put("/todos/:id", (request, response) => {
 });
 
 app.delete("/todos/:id", (request, response) => {
-  const todoIndex = todos.findIndex((todo) => (todo.id = request.params.id));
+  const todoIndex = todos.findIndex((todo) => (todo.id == +request.params.id));
   if (todoIndex) {
     todos.splice(todoIndex, 1);
     response.status(200).json({ msg: "Todo deleted successfully" });

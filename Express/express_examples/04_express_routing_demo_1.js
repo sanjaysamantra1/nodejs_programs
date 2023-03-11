@@ -2,14 +2,14 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to my home page");
+  res.status(200).send("This is home page");
 });
 
 app.get("/about", (req, res) => {
-  res.status(200).send("Welcome to my about page");
+  res.status(200).send("This is about page");
 });
 app.get("/contact", (req, res) => {
-  res.status(200).send("Welcome to my contact page");
+  res.status(200).send("This is contact-us page");
 });
 
 app.listen(5000, () => {

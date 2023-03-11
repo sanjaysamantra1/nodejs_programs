@@ -623,6 +623,23 @@ ex: bufferData = fs.readFileSync("./customer.json");
 	stringData = fs.readFileSync("./customer.json", "utf8");
 
 
+
+
+JSON
+====
+-Node has some built in utilities that make it easy to read and write JSON files.
+-The simplest way to read a JSON file is to require it. 
+ ex: const config = require("./config.json");
+-But reading JSON files with require has its downsides. 
+-The file will only be read once; requiring it again returns the cached data from the first time require was run. 
+-This is fine for loading static data on startup (like config data). But for reading a file that changes on disk, we need to manually read the file using fs.readFile()
+  const jsonString = fs.readFileSync("./customer.json");
+  const customer = JSON.parse(jsonString);
+  
+  
+  
+  
+
 FS Module Error Handling
 ========================
 -No Error tracking : appendFile(), writeFile()
@@ -675,18 +692,6 @@ join() vs resolve()
 
 
 
-JSON
-====
--Node has some built in utilities that make it easy to read and write JSON files.
--The simplest way to read a JSON file is to require it. 
- ex: const config = require("./config.json");
--But reading JSON files with require has its downsides. 
--The file will only be read once; requiring it again returns the cached data from the first time require was run. 
--This is fine for loading static data on startup (like config data). But for reading a file that changes on disk, we need to manually read the file using fs.readFile()
-  const jsonString = fs.readFileSync("./customer.json");
-  const customer = JSON.parse(jsonString);
-
-
 
 
 Process Module
@@ -710,6 +715,37 @@ Process Module
 -Every time the event loop takes a full trip, we call it a tick.
 -setTimeout(() => {}, 0) will execute the function at the end of next tick, much later than when using nextTick() which prioritizes the call and executes it just before the beginning of the next tick
  
+ 
+ 
+HTTP Module
+===========
+-The HTTP module can create an HTTP server.
+-receives the request from client & gives a response back to the client.
+-Get headers, URL, method and body data from request objects.
+-Make routing decisions based on URL and/or other data in request objects.
+-Send headers, HTTP status codes and body data via response objects.
+
+createServer()   		Returns a new instance of Server.
+listen(PORT,CallBack)   Binds the server to listen on a specific port
+close()					Stops the server from listening to more requests
+
+response.writeHead() should be called first when initiating a response, allows 	us to set up the HTTP response code and headers we are sending back.
+
+response.write(chunk[, encoding][, callback]) allows us to send a chunk of data as part of our response.
+
+response.end() signalizes the response as complete, MUST be called once per response.
+
+
+Route-Parameter
+---------------
+1. Path-Param
+	ex:- /productDetails/101
+2. Query-param
+	ex:- /search?searchWord=skybag&filter=something
+
+
+
+
 
 
 Node.js Streams
@@ -765,8 +801,8 @@ app.listen()
 
 app.use() vs app.get()
 ======================
--app.use() is generally used for introducing middlewares in your application and can handle all type of HTTP requests.
--app.get()  is only for handling GET HTTP requests.
+-app.use() is generally used for introducing middlewares and can handle all type of HTTP requests.
+-app.get() is only for handling GET HTTP requests.
 
 
 app.use() vs app.all()
@@ -808,14 +844,13 @@ Express.js Request Object Properties
 req.app
 req.body
 req.cookies
-req.host
 req.hostname
 req.ip
 req.method
 req.params
 req.path
 req.protocol
-
+req.query
 
 
 
@@ -824,14 +859,14 @@ Response methods
 The methods on the response object (res) in the following table can send a response to the client, and terminate the request-response cycle. If none of these methods are called from a route handler, the client request will be left hanging.
 
 Method	Description
-res.download()	Prompt a file to be downloaded.
+res.send()	Send a response of various types.
 res.end()	End the response process.
 res.json()	Send a JSON response.
 res.jsonp()	Send a JSON response with JSONP support.
 res.redirect()	Redirect a request.
 res.render()	Render a view template.
-res.send()	Send a response of various types.
 res.sendFile()	Send a file as an octet stream.
+res.download()	Prompt a file to be downloaded.
 res.sendStatus()	Set the response status code and send its string representation as the response body.
 
 
@@ -862,14 +897,26 @@ app.use((req, res, next) => {
 })
 
 
+Order of Middleware Calls
+=========================
+-The order in which they are written/included in your file; the order in which they are executed.
+ 
+
 
 Body-parser
 ===========
+-parse the body of requests which have payloads attached to them.
 -Parse incoming request bodies in a middleware before handlers are invoked.
 -extracts the body portion of an incoming request & exposes it on req.body.
 -parses the data submitted using HTTP POST request.
  npm install body-parser --save
 
+
+cookie-parser
+=============
+-It parses Cookie header and populate req.cookies with an object keyed by cookie names. 
+	var cookieParser = require('cookie-parser');
+	app.use(cookieParser())
 
 
 

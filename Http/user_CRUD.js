@@ -28,7 +28,7 @@ const server = http.createServer((req, res) => {
     res.write(`<h1>User Updated Successfully!!!</h1>`);
   }
   if (url === "/users/" && method === "DELETE") {
-    res.write(`<h1>User Deleted Successfully!!!</h1>`);
+    res.write(`<h1>User ${userId} Deleted Successfully!!!</h1>`);
   }
   res.end();
 });

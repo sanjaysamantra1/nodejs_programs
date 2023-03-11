@@ -13,8 +13,6 @@ app.get("/api/products", (req, res) => {
   res.json(newProducts);
 });
 app.get("/api/products/:productID", (req, res) => {
-  // console.log(req)
-  // console.log(req.params)
   const { productID } = req.params;
 
   const singleProduct = products.find(
@@ -23,13 +21,12 @@ app.get("/api/products/:productID", (req, res) => {
   if (!singleProduct) {
     return res.status(404).send("Product Does Not Exist");
   }
-
   return res.json(singleProduct);
 });
 
 app.get("/api/products/:productID/reviews/:reviewID", (req, res) => {
-  console.log(req.params);
-  res.send("hello world");
+  const { productID, reviewID } = req.params;
+  res.send(`This is the review for product-${productID} & Review-${reviewID}`);
 });
 
 app.get("/api/v1/query", (req, res) => {
