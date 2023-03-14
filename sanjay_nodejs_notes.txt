@@ -281,6 +281,29 @@ Browser extensions
 
 
 
+Debug NodeJs Code
+=================	
+1. Debugging natively
+  a. node debug/inspect your-script.js  (type next, help)
+     https://nodejs.dev/en/api/v19/debugger/
+  b. use debugger;  in a code line you want
+  
+cont, c               Resume execution
+next, n               Continue to next line in current file
+step, s               Step into, potentially entering a function
+out, o                Step out, leaving the current function
+backtrace, bt         Print the current backtrace
+  
+  
+2. visual Studio Code
+   In the Debug panel, click the settings icon to open .vscode/launch.json.
+   Select "Node.js" for initial setup.
+
+
+
+
+
+
 NPM (Node Package Manager)
 ==========================
 -npm is the standard package manager for Node.js.
@@ -580,6 +603,21 @@ userInfo()	Returns information about the current user
 
 
 
+CallBacks
+=========
+-Callback is an asynchronous equivalent for a function. 
+-A callback function is called at the completion of a given task. 
+-All the APIs of Node are written in such a way that they support callbacks.
+
+
+Node.js URL Module
+==================
+-The URL module splits up a web address into readable parts.
+-Parse an address with the url.parse() method, and it will return a URL object with each part of the address as properties.
+
+
+
+
 Node.js fs module
 =================
 -The fs module provides a lot of very useful functionality to access and interact with the file system.
@@ -736,14 +774,33 @@ response.write(chunk[, encoding][, callback]) allows us to send a chunk of data 
 response.end() signalizes the response as complete, MUST be called once per response.
 
 
+
 Route-Parameter
----------------
-1. Path-Param
-	ex:- /productDetails/101
-2. Query-param
-	ex:- /search?searchWord=skybag&filter=something
+================
+1. PathParam
+-passed after /
+ ex:- /productDetails/101
+-Need to define in the route
+ ex: app.get('users/:id')
+-If defined than need to pass in url
+-Used to pass 1 value
+
+2. QueryParam
+-passed after ?
+  ex: /search?searchWord=skybag&filter=something
+-No Need to define in the route
+  ex: app.get('users')
+-not complusory to pass
+-used to pass multiple values.
 
 
+
+Query String Module
+===================
+-Node.js Query String provides methods to deal with query string. 
+-It can be used to convert query string into JSON object and vice-versa.
+querystring.parse(str[, sep][, eq][, options])	queryString To object.
+querystring.stringify(obj[, sep][, eq][, options]) object to string.
 
 
 
@@ -793,9 +850,9 @@ app.post()
 app.put()
 app.patch()
 app.delete()
-app.all()
-app.use()
 app.listen()
+app.use()
+app.all()
 
 
 
@@ -833,9 +890,7 @@ app.all( "/book/*" , handler);
 
 Express Routers
 ===============
--Routers are very helpful in separating concerns and keep relevant portions of our code together.
 -Routing refers to how an application’s endpoints (URIs) respond to client requests.
-
 
 
 
@@ -926,30 +981,8 @@ CORS
 -CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.
 -How to Install
  npm install cors
+https://www.npmjs.com/package/cors
 
-
-
-Debug NodeJs Code
-=================	
-1. Debugging natively
-  a. node debug/inspect your-script.js  (type next, help)
-     https://nodejs.dev/en/api/v19/debugger/
-  b. use debugger;  in a code line you want
-  
-2. visual Studio Code
-   In the Debug panel, click the settings icon to open .vscode/launch.json.
-   Select "Node.js" for initial setup.
-  
-3. use the node-inspector
-   npm install -g node-inspector
-   node-debug app.js
-  
-  
-CallBacks
-=========
--Callback is an asynchronous equivalent for a function. 
--A callback function is called at the completion of a given task. 
--All the APIs of Node are written in such a way that they support callbacks.
 
 
 
@@ -995,36 +1028,6 @@ removeListener()		Removes the specified listener with the specified name
 setMaxListeners()		Sets the maximum number of listeners allowed for one event. Default is 10
 
 
-Routing in Node.js
-==================
--Routing refers to determining how an application responds to a client request to a particular endpoint, 
-which is a URI (or path) and a specific HTTP request method (GET, POST, and so on).
--Each route can have one or more handler functions, which are executed when the route is matched.
--routing in node.js can be implemented by using framework(express) or Without using Framework
--Route definition takes the following structure:
-	app.METHOD(PATH, HANDLER)
--app is an instance of express.
-	METHOD is an HTTP request method, in lowercase.
-	PATH is a path on the server.
-	HANDLER is the function executed when the route is matched.
-
-
-
-Query String
-============
--Node.js Query String provides methods to deal with query string. 
--It can be used to convert query string into JSON object and vice-versa.
-querystring.parse(str[, sep][, eq][, options])	queryString To object.
-querystring.stringify(obj[, sep][, eq][, options]) object to string.
-
-
-
-
-Nodemailer
-==========
-1. npm install nodemailer
-2. 
-
 
 
 Template Engines for Node.js
@@ -1032,7 +1035,7 @@ Template Engines for Node.js
 -Template engine helps us to create an HTML template with minimal code. 
 -It can inject data into HTML template at client side and produce the final HTML.
 -template engines for Node.js (Jade,Vash,EJS,Handlebars)
--
+
 
 
 
@@ -1214,6 +1217,13 @@ ESLint
    npx eslint --init
 3. eslint .
 
+
+
+
+Nodemailer
+==========
+1. npm install nodemailer
+2. 
 
 
 
