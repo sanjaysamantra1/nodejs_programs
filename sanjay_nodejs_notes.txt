@@ -1204,6 +1204,7 @@ Commands
 Fake APIs to fetch data
 =======================
 https://api.openweathermap.org/data/2.5/forecast/daily?q=bangalore&mode=json&units=metric&cnt=5&appid=fbf712a5a83d7305c3cda4ca8fe7ef29
+
 https://en.wikipedia.org/w/api.php?action=parse&format=json&section=0&page=india
 
 

@@ -5,7 +5,7 @@ const b = 5;
 function add(a, b) {
   console.log(a + b);
 }
-add();
+add(a,b);
 
 function f2() {
   console.log("f2 started");
