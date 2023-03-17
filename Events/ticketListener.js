@@ -5,7 +5,7 @@ const ticketManager = new TicketManager(2);
 const emailService = new EmailService();
 
 ticketManager.on("buy", (person, price, time) => {
-  console.log(`${person} bought a ticket for Rs.${price} at ${time} `);
+  console.log(`${person} bought a ticket for Rs.${price} at ${time}`);
   emailService.send(person);
 });
 

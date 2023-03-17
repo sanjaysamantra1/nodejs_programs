@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+</head>
+
+<body class="container-fluid">
+
+    <nav>
+        <%- include('../partials/navbar'); %>
+    </nav>
+
+    <main>
+        <h1 class="text-center">This is Product Listing Page</h1>
+        <div class="row">
+            <% products.forEach(function(prod) { %>
+                <div class="col-sm-3">
+                    <div class="card m-1">
+                        <img class="card-img-top" src="<%= prod.image%>" alt="Card image cap" style="height:200px">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= prod.title%>
+                            </h5>
+                            <p class="card-text">
+                                <%= prod.description%>
+                            </p>
+                            <a href="#" class="btn btn-primary">BUY NOW</a>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+
+</html>

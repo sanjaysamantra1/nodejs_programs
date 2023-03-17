@@ -1,5 +1,7 @@
-var express = require("express");
-var app = express();
+const products = require("./data/products.json");
+
+const express = require("express");
+const app = express();
 
 // set the view engine to ejs
 app.set("view engine", "ejs");
@@ -20,5 +22,9 @@ app.get("/careers", function (req, res) {
   res.render("pages/careers");
 });
 
-app.listen(8080);
-console.log("Server is listening on port 8080");
+app.get("/products", function (req, res) {
+  res.render("pages/products", { products });
+});
+
+app.listen(5000);
+console.log("Server is listening on port 5000");
