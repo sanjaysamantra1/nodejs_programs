@@ -977,10 +977,20 @@ cookie-parser
 
 CORS
 ====
--Cross-Origin Resource Sharing or CORS is a technique to tell the browser whether a web website/application can fetch resources from a different domain or not.
--CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.
+-Cross Origin Resource Sharing or CORS is a technique to tell the browser whether a application can fetch resources from a different domain or not.
+-By default, browsers will block certain requests if both the client and the server are not in the same origin.
+
+-CORS is a node.js package.
 -How to Install
  npm install cors
+
+Default Configuration 
+{
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  "preflightContinue": false,
+  "optionsSuccessStatus": 204
+}
 https://www.npmjs.com/package/cors
 
 
@@ -995,11 +1005,9 @@ Events
 -We can specify any name for a custom event in the emit() function.
 -We can also use addListener() methods to subscribe for an event.
 -All objects that emit events are instances of the EventEmitter class. 
--These objects expose an eventEmitter.on() function that allows one or more functions 
- to be attached to named events emitted by the object. 
+-These objects expose an eventEmitter.on() function that allows one or more functions  to be attached to named events emitted by the object. 
 -Event names are camel-cased strings but any valid JavaScript property key can be used.
--When the EventEmitter object emits an event, all of the functions attached to that specific event 
- are called synchronously. 
+-When the EventEmitter object emits an event, all of the functions attached to that specific event are called synchronously. 
 -Any values returned by the called listeners are ignored and will be discarded.
 -The eventEmitter.on() method is used to register listeners, 
 -eventEmitter.emit() method is used to trigger the event.
@@ -1034,15 +1042,15 @@ Template Engines for Node.js
 ============================
 -Template engine helps us to create an HTML template with minimal code. 
 -It can inject data into HTML template at client side and produce the final HTML.
--template engines for Node.js (Jade,Vash,EJS,Handlebars)
+-template engines for Node.js (Jade/pug,Vash,EJS,Handlebars)
 
 
 
 
 Data Access in Node.js
 ======================
--Node.js supports all kinds of databases(RDBMS/NO-SQl).However, NoSQL databases like MongoDb are the best fit with Node.js
--To access the database from Node.js, you first need to install drivers for the database you want to use.
+-Node.js supports all kinds of databases(RDBMS/NO-SQl).However, NoSQL databases like MongoDB are the best fit with Node.js
+-To access the database from Node.js, the driver needs to be installed for the database 
 ex:npm install mysql (for MySQL)
    npm install oracledb (for Oracle)
    npm install mongodb (MongoDB)
@@ -1053,7 +1061,7 @@ MongoDB
 -it stores data in the collections as JSON based documents and does not enforce schemas. 
 -UnStructured data.
 -It does not have tables, rows, and columns as other SQL (RDBMS) databases.
--RDBMS  (database,Table,Row,Column)
+-RDBMS  (Database,Table,Row,Column)
  MongoDB(Database,Collection,Document,Field)
 -indexing , shemaless , Replication, Scalability, Performance, High Availability
 
@@ -1062,6 +1070,7 @@ Sql         NoSql
 Database    Database
 Table       Collection
 Row         Document
+Column		Field
 Select      find
 Insert      Insert
 Update      Update
@@ -1070,33 +1079,58 @@ Delete      Remove
 
 MongoDB Local
 =============
-1. https://www.mongodb.com/try/download/community
-2. download and install (MongoDB Community Server)
-3. Go to the path where MongoDB was installed. By default it is "C:\Program Files\MongoDB\Server\5.0\bin", run mongo.exe (MongoDB Shell)
-4. error : "{"error":"NonExistentPath: Data directory C:\\data\\db\\ not found"
+1. download and install (MongoDB Community Server)
+   https://www.mongodb.com/try/download/community 
+2. Go to the path where MongoDB is installed,and run mongo.exe  
+   By default it is "C:\Program Files\MongoDB\Server\5.0\bin"
+4. Expect Error as the data directory is not set
+   "{"error":"NonExistentPath: Data directory C:\\data\\db\\ not found"
 5. create folder 'c:\data\db'
 6. run mongo.exe
-7. open mongoDB Compass
-8. mongodb://localhost:27017 (port)
-9. databases - few default databases should be there
-10 create a DB (mydataBase1--->MyCollection1)
 
 
-MongoDB Shell
+MongoDB Shell (CLI for mongoDB)
 =============
--download mongoDB shell (https://www.mongodb.com/try/download/shell)
+-download mongoDB shell 
+ https://www.mongodb.com/try/download/shell
 -extract and run mongosh.exe
 -set path for mongo-server  & mongo-shell
 	 C:\Program Files\MongoDB\Server\6.0\bin
 	 C:\mongo-shell\bin	    
 -verify the path setup is done correctly by running below 2 commands
  mongod --version
- start mongosh.exe (to start mongo shell)
+ mongosh -version 
+-Start Mongo Shell 
+ start mongosh.exe 
+-Enter mongoDB Connection String 
+ mongodb://localhost:27017
  
+ 
+MongoDB Compass
+===============
+-MongoDB Compass is a graphical interface to interact with the MongoDB 
+1. download and install mongoDB Compass
+  https://www.mongodb.com/products/compass
+2. open mongoDB Compass GUI
+3. Enter mongoDB Connection String 
+   mongodb://localhost:27017
+
+ 
+Note: If mongoDB and mongoShell are installed & path is set
+-open 2 command prompts
+-run 'mongod' in 1st cmd
+-run mongosh in 2nd cmd
+ 
+
+ 
+MongoDB Queries/Commands
+========================= 
+https://www.geeksforgeeks.org/mongodb-tutorial/
+
 -To See All databases
  show dbs
 -To Use one database
- use sanjaydb1
+ use sanjaydb1  (creates a new database if it doesn’t exist)
 -To see the Current Database
  db 
 -To see all the collections under a database
@@ -1110,9 +1144,13 @@ MongoDB Shell
  db.employees.insertMany([{eid:1,name:'sanjay',sal:5000},
             {eid:2,name:'ranjan',sal:6000}])
 -To  see data inside collections
- db.employees.find() / db.employees.findOne()
+ db.employees.find() // db.employees.findOne()
  db.employees.find().pretty()
  db.employees.find( {sal: 6000} )
+ db.employees.find({sal: {$lt:6000}}) 
+ db.employees.find({sal: {$lte:6000}}) 
+ db.employees.find({sal: {$ne:6000}})
+ db.employees.find({"name":{$in:["Raj", "Ram", "Raghu"]}})
  db.employees.find( {} , {sal:0} ) // all columns except sal
  db.employees.find( {} , {sal:1,name:1} ) // name,sal column in result
  db.employees.find().sort({sal:1}).pretty()   //asc
@@ -1127,11 +1165,16 @@ MongoDB Shell
  db.employees.deleteOne({ id:101 })
  db.employees.deleteMany({ name: "sanjay" })
  db.employees.remove({ id:101 })
+ db.employees.remove({ id:101 }, 1)
+ db.employees.remove({})   // Remove All Documents(equivalent of SQL's truncate)
  
 
  db.employees.drop()
  db.dropDatabase()
  
+ 
+ 
+
 
 
 MongoDB Atlas

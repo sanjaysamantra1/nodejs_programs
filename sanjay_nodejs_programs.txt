@@ -121,8 +121,17 @@ Template Engine - PUG
 		res.render('index');
 	});
 	app.listen(5000, () => {
-		console.log(`Server started at port 5000`);
+		console.log('Server started at port 5000');
 	});
+
+
+
+MongoDB + NodeJs
+=================
+1. npm i express mongoose
+2. 
+
+
 
 
 Send Email
