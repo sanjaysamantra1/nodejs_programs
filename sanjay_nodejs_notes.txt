@@ -1135,12 +1135,12 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  db 
 -To see all the collections under a database
  show collections
--To Create a Collection
+-To Create a Collection/Table
  db.createCollection('employees')
 -To add a Document/Row in a collection
  db.employees.insertOne({eid:1,name:'sanjay',sal:5000})
- db.employees.insert({_id:1,name:'sanjay',sal:5000})
- db.employees.insert({_id:1,name:'sanjay 2',sal:5000})
+ db.employees.insertOne({_id:1,name:'sanjay',sal:5000})
+ db.employees.insertOne({_id:2,name:'sanjay 2',sal:5000})
  db.employees.insertMany([{eid:1,name:'sanjay',sal:5000},
             {eid:2,name:'ranjan',sal:6000}])
 -To  see data inside collections
@@ -1151,10 +1151,11 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  db.employees.find({sal: {$lte:6000}}) 
  db.employees.find({sal: {$ne:6000}})
  db.employees.find({"name":{$in:["Raj", "Ram", "Raghu"]}})
+ db.employees.find({"name":/sanjay/i})   // (Like in SQL)
  db.employees.find( {} , {sal:0} ) // all columns except sal
  db.employees.find( {} , {sal:1,name:1} ) // name,sal column in result
  db.employees.find().sort({sal:1}).pretty()   //asc
- db.employees.find().sort({sal:-11}).pretty() //desc
+ db.employees.find().sort({sal:-1}).pretty() //desc
  db.employees.find().count()
  db.employees.find().limit(2)
 -To Update the existing Data
@@ -1174,30 +1175,46 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  
  
  
+ 
+Managing Indexes
+================
+-Without indexes, MongoDB must scan every document of a collection to select those documents that match the query statement. 
+-This scan is highly inefficient and require MongoDB to process a large volume of data.
+-Indexes are special data structures, that store a small portion of the data set in an easy-to-traverse form. 
+-The index stores the value of a specific field or set of fields, ordered by the value of the field as specified in the index.
+
+
+-Create an index (db.COLLECTION_NAME.createIndex({KEY:1}))
+ db.user.createIndex({"name.family": 1})
+ db.user.createIndex({email: 1}, {unique: true})  
+ //at most one record in the collection with a given value for that field
+-See indexes on a collection
+ db.user.getIndexes()
+-Drop an index
+ db.user.dropIndex("name.given_1")
+ db.user.dropIndexes()
+ 
 
 
 
 MongoDB Atlas
 =============
-Register for an Atlas account
-Create and deploy an M0 cluster
-Add your connection IP address to your IP access list
-Create a database user for your cluster
-Connect to your cluster
-Load sample data or your own data!
+-MongoDB Atlas is a fully-managed cloud database.
+
+-Register for an Atlas account
+ https://www.mongodb.com/atlas/database (click on try Free)
+-Create and deploy an M0 cluster
+-Add your connection IP address to your IP access list
+-Create a database user for your cluster
+-Connect to your cluster
+-Load sample data or your own data!
+https://www.javatpoint.com/mongodb-atlas
 
 
-1. https://www.mongodb.com/home
-2. try free
-3. Register / Login
-4. create a shared cluster
-5. mongodb+srv://sanjaysamantra:<password>@cluster0.geshq.mongodb.net/?retryWrites=true&w=majority
+
+mongodb+srv://sanjaysamantra:<password>@cluster0.geshq.mongodb.net/?retryWrites=true&w=majority
 
 
-MongoDB + NodeJs
-=================
-1. npm i express mongoose
-2. 
 
 
 
