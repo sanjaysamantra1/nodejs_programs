@@ -125,11 +125,29 @@ Template Engine - PUG
 	});
 
 
+Weather Application using EJS
+=============================
+1. npm init -y
+2. npm install express ejs axios
+
+
+
 
 MongoDB + NodeJs
 =================
-1. npm i express mongoose
-2. 
+1. npm i express mongodb
+2. Add the below code for DB connection
+	const express = require("express");
+	const app = express();
+	const MongoClient = require("mongodb").MongoClient;
+	app.get("/users", async function (req, res) {
+	  const client = await MongoClient.connect("mongodb://localhost:27017/");
+	  const users = client.db("march2023").collection("users").find({});
+	  const result = await users.toArray();
+	  res.json(result);
+	  await client.close();
+	});
+
 
 
 

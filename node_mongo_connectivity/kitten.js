@@ -16,7 +16,7 @@ const Kitten = mongoose.model("Kitten", kittySchema); //model
 
 const sanjay = new Kitten({ name: "Sanjay Samantra" });
 console.log(sanjay.name); // 'Silence'
-sanjay.save((err, res) => {
+sanjay.create((err, res) => {
   if (err) console.log(err);
   console.log("added successfully");
 });
