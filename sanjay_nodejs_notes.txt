@@ -1150,6 +1150,7 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  db.employees.find({sal: {$lt:6000}}) 
  db.employees.find({sal: {$lte:6000}}) 
  db.employees.find({sal: {$ne:6000}})
+ db.employees.find({sal: {$gt:5000, $lt:9000}})
  db.employees.find({"name":{$in:["Raj", "Ram", "Raghu"]}})
  db.employees.find({"name":/sanjay/i})   // (Like in SQL)
  db.employees.find( {} , {sal:0} ) // all columns except sal
@@ -1165,15 +1166,12 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
 -To Delete 
  db.employees.deleteOne({ id:101 })
  db.employees.deleteMany({ name: "sanjay" })
- db.employees.remove({ id:101 })
+ db.employees.remove({ id:101 }) 	// Deprecated
  db.employees.remove({ id:101 }, 1)
  db.employees.remove({})   // Remove All Documents(equivalent of SQL's truncate)
  
-
  db.employees.drop()
- db.dropDatabase()
- 
- 
+ db.dropDatabase() 
  
  
 Managing Indexes
@@ -1191,9 +1189,18 @@ Managing Indexes
 -See indexes on a collection
  db.user.getIndexes()
 -Drop an index
- db.user.dropIndex("name.given_1")
+ db.user.dropIndex("email")
  db.user.dropIndexes()
  
+
+
+Assignment
+==========
+1. Find distinct salaries in asccending order and store in a variable.
+2. Find the 3rd highest salary in the table.
+3. Find the employees whose DOB is today's date.
+4. increse the salary of every employee by 500.
+
 
 
 
@@ -1210,11 +1217,18 @@ MongoDB Atlas
 -Load sample data or your own data!
 https://www.javatpoint.com/mongodb-atlas
 
-
-
 mongodb+srv://sanjaysamantra:<password>@cluster0.geshq.mongodb.net/?retryWrites=true&w=majority
 
 
+
+ORM - Object Relational Model
+=============================
+-The benefit of using an ORM is that programmers can continue to think in terms of JavaScript objects rather than database semantics.
+-There are many ODM/ORM solutions available-Mongoose, Sequelize, GraphQL
+
+Mongoose
+========
+-Mongoose is a MongoDB object modeling tool.
 
 
 
@@ -1286,6 +1300,18 @@ Nodemailer
 1. npm install nodemailer
 2. 
 
+password
+========
+Go to your Google Account.
+Select Security.
+Under "Signing in to Google," select App Passwords. You may need to sign in. If you don’t have this option, it might be because:
+2-Step Verification is not set up for your account.
+2-Step Verification is only set up for security keys.
+Your account is through work, school, or other organization.
+You turned on Advanced Protection.
+At the bottom, choose Select app and choose the app you using and then Select device and choose the device you’re using and then Generate.
+Follow the instructions to enter the App Password. The App Password is the 16-character code in the yellow bar on your device.
+Tap Done.
 
 
 Unit Testing with Jasmine
