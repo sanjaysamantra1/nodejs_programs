@@ -4,11 +4,10 @@ const port = 5000;
 const mongoose = require("mongoose");
 const employeeModel = require("./employeeModel");
 
-var uri = "mongodb://localhost:27017/march2023";
-mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true });
-const connection = mongoose.connection;
+const url = "mongodb://localhost:27017/march2023";
+mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
 
-connection.once("open", function () {
+mongoose.connection.once("open", function () {
   console.log("MongoDB database connection established successfully");
 });
 

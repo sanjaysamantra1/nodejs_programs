@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 
-let employeeSchema = new Schema(
+let employeeSchema = new mongoose.Schema(
   {
     eId: {
       type: String,
+      required: true,
     },
     name: {
       type: String,
@@ -19,4 +19,5 @@ let employeeSchema = new Schema(
   { collection: "employees" }
 );
 
-module.exports = mongoose.model("employees", employeeSchema);
+const employeeModel = mongoose.model("employees", employeeSchema);
+module.exports = employeeModel;

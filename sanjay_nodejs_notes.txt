@@ -1229,6 +1229,7 @@ ORM - Object Relational Model
 Mongoose
 ========
 -Mongoose is a MongoDB object modeling tool.
+https://mongoosejs.com/docs/guide.html
 
 
 
@@ -1302,7 +1303,7 @@ Nodemailer
 
 password
 ========
-Go to your Google Account.
+Go to your Google Account.(https://myaccount.google.com/)
 Select Security.
 Under "Signing in to Google," select App Passwords. You may need to sign in. If you don’t have this option, it might be because:
 2-Step Verification is not set up for your account.

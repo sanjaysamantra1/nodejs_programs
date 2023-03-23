@@ -1,18 +1,19 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const app = express();
+
+const mongoose = require("mongoose");
 const url = "mongodb://localhost:27017/local";
 
 connectToDB().catch((err) => console.log(err));
 
 async function connectToDB() {
-  await mongoose.connect("mongodb://localhost:27017/local");
+  await mongoose.connect(url);
 }
 const kittySchema = new mongoose.Schema({
   // structure
   name: String,
 });
-const Kitten = mongoose.model("Kitten", kittySchema); //model
+const Kitten = mongoose.model("Kitten", kittySchema); //model class
 
 const sanjay = new Kitten({ name: "Sanjay Samantra" });
 console.log(sanjay.name); // 'Silence'
