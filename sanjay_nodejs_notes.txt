@@ -83,8 +83,7 @@ No Buffering –
 	They simply output the data in chunks.
 NPM (Node Package Manager) –
 	it comes with node js & allows us to install various Packages for Node js Application. (lodash,cors,axios,express)
-2,308,544
-2,321,931
+
 
 
 V8 JavaScript Engine
@@ -162,6 +161,11 @@ Blocking vs Non-Blocking I/O
 -Node.js libraries and core api provide non-blocking calls that can be used to build performant applications. Such applications make use of I/O waiting time to serve other requests
 -concurrency refers to the event loop's capacity to execute JavaScript callback functions after completing other work
 -let's consider a case where each request to a web server takes 50ms to complete and 45ms of that 50ms is database I/O that can be done asynchronously. Choosing non-blocking asynchronous operations frees up that 45ms per request to handle other requests. This is a significant difference in capacity just by choosing to use non-blocking methods instead of blocking methods
+
+
+Q. What is Reactor Pattern in Node.js?
+
+
 
 
 How to install Node.js
@@ -753,6 +757,23 @@ Process Module
 -Every time the event loop takes a full trip, we call it a tick.
 -setTimeout(() => {}, 0) will execute the function at the end of next tick, much later than when using nextTick() which prioritizes the call and executes it just before the beginning of the next tick
  
+
+
+Child Processes Module
+======================
+-Node.js allows single-threaded, non-blocking but running a single thread in a CPU cannot handle increasing workload.
+-The child_process module can be used to spawn child processes, and those child processes can easily communicate with each other with a messaging system.
+-There are four different ways to create a child process in Node:
+	1. exec()
+	2. execFile()
+	3. spawn()
+	4. fork()
+exec() : creates a new shell process and executes a command in that shell.
+         The output of the command can be collected via a callback function passed to exec()
+execFile(): execute a file (bat/sh)
+spawn(): when the command we want to run can output a large amount of data
+ 
+ 
  
  
 HTTP Module
@@ -772,6 +793,28 @@ response.writeHead() should be called first when initiating a response, allows 	
 response.write(chunk[, encoding][, callback]) allows us to send a chunk of data as part of our response.
 
 response.end() signalizes the response as complete, MUST be called once per response.
+
+
+HTTP Methods
+============
+https://testfully.io/blog/http-methods/
+
+GET - Retrieve a resource/Retrieve data from DB
+	  search	  
+POST - to send data to server  ( sign up ) 
+       (create a resource/create a new record in DB)
+	   to fetch data securly    (send params in body not in URL)
+PUT - update data/create or replace a resource  
+	  update user's profile information 	  
+PATCH - update/modify a particular resource(partial update)
+        update user password
+DELETE - Remove a resource/delete a record from DB 
+		 Delete naukri account
+OPTIONS - information about the Permitted HTTP methods (methods/content type)
+       Identifying which HTTP methods a resource supports, e.g. can we DELETE it or update it via a PUT?
+HEAD - method returns info about resource (version/length/type)
+	  similar to the GET method. But it doesn’t have any response body.
+
 
 
 
@@ -1200,6 +1243,7 @@ Assignment
 2. Find the 3rd highest salary in the table.
 3. Find the employees whose DOB is today's date.
 4. increse the salary of every employee by 500.
+5. change the 'gender' of every employee (male-->female,female-->male)
 
 
 
@@ -1379,6 +1423,7 @@ xit() - disabled it()
 ---------------------------
 md5 generator
 express file uploader
+express-validator
 formidable - https://www.w3schools.com/nodejs/nodejs_uploadfiles.asp
 
 
@@ -1391,6 +1436,7 @@ References:
 5. https://www.guru99.com/node-js-tutorial.html
 6. https://codeforgeek.com/nodejs/
 7. https://www.geeksforgeeks.org/nodejs/
+8. https://training-course-material.com/training/Nodejs
 
 
 
