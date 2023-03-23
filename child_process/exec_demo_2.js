@@ -1,11 +1,12 @@
-const { execFile } = require("child_process");
+const { exec } = require("child_process");
 
-execFile(__dirname + "/demo.bat", (error, stdout, stderr) => {
+exec("dir", (error, stdout, stderr) => {
+  // if command not found
   if (error) {
     console.error(`error: ${error.message}`);
     return;
   }
-
+  // if error while executing the command
   if (stderr) {
     console.error(`stderr: ${stderr}`);
     return;

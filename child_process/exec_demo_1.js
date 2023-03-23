@@ -1,15 +1,4 @@
-const { exec } = require("child_process");
+const cp = require('child_process');
+cp.exec('start chrome https://www.youtube.com/');
 
-exec("dir", (error, stdout, stderr) => {
-  if (error) {
-    console.error(`error: ${error.message}`);
-    return;
-  }
-
-  if (stderr) {
-    console.error(`stderr: ${stderr}`);
-    return;
-  }
-
-  console.log(`stdout:\n${stdout}`);
-});
+// start Chrome & open youtube 
