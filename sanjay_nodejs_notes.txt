@@ -762,17 +762,17 @@ Process Module
 Child Processes Module
 ======================
 -Node.js allows single-threaded, non-blocking but running a single thread in a CPU cannot handle increasing workload.
--The child_process module can be used to spawn child processes, and those child processes can easily communicate with each other with a messaging system.
+-The child_process module can be used to start child processes, and those child processes can easily communicate with each other with a messaging system.
 -There are four different ways to create a child process in Node:
-	1. exec()
+	1. exec() 
 	2. execFile()
 	3. spawn()
 	4. fork()
 exec() : creates a new shell process and executes a command in that shell.
          The output of the command can be collected via a callback function passed to exec()
-execFile(): execute a file (bat/sh)
+execFile() : execute a file (bat/sh)
 spawn(): when the command we want to run can output a large amount of data
- 
+fork() : 
  
  
  
@@ -1156,7 +1156,8 @@ MongoDB Compass
   https://www.mongodb.com/products/compass
 2. open mongoDB Compass GUI
 3. Enter mongoDB Connection String 
-   mongodb://localhost:27017
+   mongodb://localhost:27017  (OR)
+   mongodb://127.0.0.1:27017
 
  
 Note: If mongoDB and mongoShell are installed & path is set
@@ -1425,6 +1426,7 @@ md5 generator
 express file uploader
 express-validator
 formidable - https://www.w3schools.com/nodejs/nodejs_uploadfiles.asp
+loadtest npm package
 
 
 References:

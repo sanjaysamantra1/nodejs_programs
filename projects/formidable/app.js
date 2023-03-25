@@ -15,12 +15,17 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.render("index");
 });
-
+const options = {
+  filter: function ({ name, originalFilename, mimetype }) {
+    console.log("mimetype: " + mimetype);
+    // allow only images
+    return mimetype && mimetype.includes("image");
+  },
+};
 app.post("/profile", (req, res) => {
-  let form = new formidable.IncomingForm();
+  let form = new formidable.IncomingForm(options);
   form.parse(req, (err, fields, files) => {
     let oldPath = files.fileName.filepath;
-    console.dir(files);
     let newPath = `${__dirname}/public/images/${files.fileName.originalFilename}`;
     console.log(">>>old path>>", oldPath);
     console.log(">>>new path>>", newPath);

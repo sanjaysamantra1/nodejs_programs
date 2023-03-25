@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 
 app.get("/one", (req, res) => {
+  console.log('Request Received...on /one')
   const sum = longComputation();
   res.send({ sum: sum });
 });
@@ -20,7 +21,7 @@ app.get("/three", (req, res) => {
 function longComputation() {
   let sum = 0;
   // 10 to the power 9
-  for (let i = 0; i < ie9; i++) {
+  for (let i = 0; i < 1000000000; i++) {
     sum = sum + i;
   }
   return sum;
@@ -28,7 +29,7 @@ function longComputation() {
 function longComputationPromise() {
   return new Promise((resolve, reject) => {
     let sum = 0;
-    for (let i = 0; i < ie9; i++) {
+    for (let i = 0; i < 1000000000; i++) {
       sum = sum + i;
     }
     resolve(sum);

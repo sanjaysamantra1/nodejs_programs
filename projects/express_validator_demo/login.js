@@ -22,10 +22,9 @@ app.get("/", function (req, res) {
 // check() is a middleware used to validate
 // the incoming data as per the fields
 app.post(
-  "/login",body('email').isEmail().normalizeEmail(),
-  body('password').isLength({
-      min: 6
-  }),
+  "/login",
+  body("email").isEmail().normalizeEmail(),
+  body("password").isLength({ min: 6 }),
   (req, res) => {
     // validationResult function checks whether
     // any occurs or not and return an object
