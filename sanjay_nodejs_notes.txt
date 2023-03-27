@@ -1106,7 +1106,8 @@ MongoDB
 -It does not have tables, rows, and columns as other SQL (RDBMS) databases.
 -RDBMS  (Database,Table,Row,Column)
  MongoDB(Database,Collection,Document,Field)
--indexing , shemaless , Replication, Scalability, Performance, High Availability
+-indexing , shemaless , Replication, Scalability, Performance, High Availability.
+-No SQL databases - cassandra, Amazon Dynamo DB, couchbase, redis.
 
 Sql         NoSql
 ===================
@@ -1118,6 +1119,10 @@ Select      find
 Insert      Insert
 Update      Update
 Delete      Remove
+
+schema- predefined  schema-run time
+join                no join
+
 
 
 MongoDB Local
@@ -1224,6 +1229,7 @@ Managing Indexes
 -This scan is highly inefficient and require MongoDB to process a large volume of data.
 -Indexes are special data structures, that store a small portion of the data set in an easy-to-traverse form. 
 -The index stores the value of a specific field or set of fields, ordered by the value of the field as specified in the index.
+-Avoids Collection Scan, Effective Indexing Strategy, Search Efficiency.
 
 
 -Create an index (db.COLLECTION_NAME.createIndex({KEY:1}))
@@ -1279,6 +1285,9 @@ https://mongoosejs.com/docs/guide.html
 
 
 
+
+
+
 Redis
 =====
 -Redis Stands for Remote Dictionary Server.
@@ -1294,7 +1303,7 @@ How To Install Redis
 1. https://github.com/microsoftarchive/redis/releases
 2. download Redis-x64-3.0.504.msi
 3. install
-4. open CMD-->redic-cli
+4. open CMD-->redis-cli
 
 
 Commands

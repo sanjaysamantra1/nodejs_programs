@@ -1,4 +1,4 @@
-const { body, validationResult } = require("express-validator");
+const { check, validationResult } = require("express-validator");
 
 const bodyparser = require("body-parser");
 const express = require("express");
@@ -23,21 +23,23 @@ app.get("/", function (req, res) {
 // the incoming data as per the fields
 app.post(
   "/login",
-  body("email").isEmail().normalizeEmail(),
-  body("password").isLength({ min: 6 }),
+  [
+    check("email", "Please Enter Valid Email").isEmail(),    
+    check("password", "Password length should be minimum 8 characters").isLength({
+      min: 8,
+    }),
+  ],
   (req, res) => {
-    // validationResult function checks whether
-    // any occurs or not and return an object
+    // checks if errors are there?
     const errors = validationResult(req);
 
-    // If some error occurs, then this
-    // block of code will run
+    // If errors
     if (!errors.isEmpty()) {
-      res.status(400).json(errors);
+      // res.status(400).json(errors);
+      const alerts = errors.array();
+      res.render("login", {alerts});
     }
-
-    // If no error occurs, then this
-    // block of code will run
+    // if no errors
     else {
       res.send("Successfully validated");
     }
