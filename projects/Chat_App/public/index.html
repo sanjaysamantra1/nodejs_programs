@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <title>Chat Example</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script>
+        var socket = io.connect();
+
+        socket.on('chat', function (data) {
+            var msg = data.nick + ': ' + data.message + '(' + data.time + ')';
+            $('textarea').val($('textarea').val() + msg + '\n');
+        });
+
+        // Handle UI
+        $(function () {
+            // Set nickname
+            $('#nick').on('click', function () {
+                const userName = $('#nickText').val();
+                socket.emit('nick', userName);
+                $('#nick').val('');
+                $('#usernameText').html(`Hello <b>${userName}</b> You can now start Chat`);
+            });
+
+            // Send chat message
+            $('#chat').on('click', function () {
+                socket.emit('chat', {
+                    message: $('#chatText').val()
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Simple Chat with Node</h1>
+    <p>
+        <input id="nickText" type="text" placeholder="Enter Your Name..." />
+        <button id="nick">Set Name</button>
+        <span id="usernameText"></span>
+    </p>
+    <textarea style="height:300px;width:500px;"></textarea>
+    <p>
+        <input id="chatText" type="text" />
+        <button id="chat">Send</button>
+    </p>
+</body>
+
+</html>
