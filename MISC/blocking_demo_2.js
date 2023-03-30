@@ -11,13 +11,13 @@ const server = http.createServer((req, res) => {
         console.log(`${i} ${j}`);
       }
     }
-
+    
     res.end("You are in AboutUs Route");
   } else if (url == "/contactus") {
     res.end("You are in Contact Us Route");
   } else {
-    res.writeHead(404, { "content-type": "text/html" });
     res.end("<h1>Route Doesn't Exist</h1>");
+    res.writeHead(404, { "content-type": "text/html" });
   }
 });
 server.listen(5000, () => {

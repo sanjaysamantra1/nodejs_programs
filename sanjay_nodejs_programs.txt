@@ -151,11 +151,12 @@ MongoDB + NodeJs
 
 
 
+express validator
+=================
+npm init -y
+npm install express ejs body-parser express-validator
 
-Send Email
-==========
-1. npm i express,nodemailer
 
-2. Go to the below url and create account
-   https://ethereal.email/
-3. 
+Redis
+=====
+npm i express axios redis@3.1.2

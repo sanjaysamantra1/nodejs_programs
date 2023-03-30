@@ -15,7 +15,7 @@ ES-6 and beyond
 Node.js Syllabus
 ================
 -Node.JS - Introduction, Advantages
--Node.js Process Model, Traditional Web Server Model
+-Traditional Web Server Model, Node.js Process Model
 -Local Environment SetUp
 -Node.js Console - REPL
 -NPM , NPX
@@ -1290,10 +1290,10 @@ https://mongoosejs.com/docs/guide.html
 
 Redis
 =====
--Redis Stands for Remote Dictionary Server.
+-Redis Stands for 'Remote Dictionary Server'.
 -fast, open source, in-memory, key-value data store.
 -used as a database, cache, message broker.
--Redis' speed makes it ideal for caching database queries, complex computations, API calls, and session state.
+-Redis speed makes it ideal for caching database queries, complex computations, API calls, and session state.
 -The stream data type enables high-rate data ingestion, messaging, event sourcing, and notifications.
 -Redis Cann't replace DB,it can only (set,get,delete)
 
@@ -1301,9 +1301,13 @@ Redis
 How To Install Redis
 ====================
 1. https://github.com/microsoftarchive/redis/releases
-2. download Redis-x64-3.0.504.msi
-3. install
-4. open CMD-->redis-cli
+2. download Redis-x64-3.0.504.msi  and install
+3. add redis as path variable
+   C:\Program Files\Redis
+4. open CMD-->redis-cli 
+   127.0.0.1:6379  
+5. check redis version
+   redis-server -v
 
 
 Commands
@@ -1311,22 +1315,25 @@ Commands
 -To check the existing Data
  KEYS *
 -Set Data (Syntax: set key value expiryTime)
- set name sanjay
- set add bangalore ex 2000 
+ SET name sanjay
+ SET add bangalore ex 2000 
+ SETEX age 3600 45
 -Get Data (get keyName)
- get name
+ get name 
  get add
+ get Add  (nil) (Keys are case sensitive)
 -Delete Data (delete keyName)
  del name
 -Delete all 
  FLUSHALL
--Check if a key exists
+-Check if a key exists (1-Yes,0-No)
  EXISTS keyName
 -Rename key
  RENAME name fName
 -Check Data type of the value
  TYPE keyName
 -INFO (to check redis server details)
+
 
 
 
@@ -1352,8 +1359,7 @@ ESLint
 
 Nodemailer
 ==========
-1. npm install nodemailer
-2. 
+1. npm install nodemailer 
 
 password
 ========
@@ -1367,6 +1373,17 @@ You turned on Advanced Protection.
 At the bottom, choose Select app and choose the app you using and then Select device and choose the device you’re using and then Generate.
 Follow the instructions to enter the App Password. The App Password is the 16-character code in the yellow bar on your device.
 Tap Done.
+
+
+
+
+Swagger
+=======
+-Swagger is a software tool used for designing, building, documenting, and using RESTful APIs.
+-Simplify API development for Developers.
+-
+
+
 
 
 Unit Testing with Jasmine
