@@ -18,12 +18,12 @@
             $('#nick').on('click', function () {
                 const userName = $('#nickText').val();
                 socket.emit('nick', userName);
-                $('#nick').val('');
+                $('#nickText').val('');
                 $('#usernameText').html(`Hello <b>${userName}</b> You can now start Chat`);
             });
 
             // Send chat message
-            $('#chat').on('click', function () {
+            $('#sendMsg').on('click', function () {
                 socket.emit('chat', {
                     message: $('#chatText').val()
                 });
@@ -42,7 +42,7 @@
     <textarea style="height:300px;width:500px;"></textarea>
     <p>
         <input id="chatText" type="text" />
-        <button id="chat">Send</button>
+        <button id="sendMsg">Send</button>
     </p>
 </body>
 

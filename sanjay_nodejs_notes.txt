@@ -969,6 +969,15 @@ res.sendStatus()	Set the response status code and send its string representation
 
 
 
+Express generator
+=================
+1. npm install -g express-generator
+2. express --view=ejs project1
+
+
+
+
+
 
 Serving static files in Express
 ===============================
@@ -1377,11 +1386,33 @@ Tap Done.
 
 
 
+Socket IO / Chat Application
+=============================
+-"socket.io": "^2.2.0"
+
+
+
+
+
 Swagger
 =======
+-It’s very important to write documentation for APIs so that whoever consumes those APIs understand them, implement them, and play around with them.
 -Swagger is a software tool used for designing, building, documenting, and using RESTful APIs.
--Simplify API development for Developers.
--
+-Swagger simplifies API development for users, teams, and enterprises with the Swagger open source and professional toolset.
+-We can define all the operations in the file swagger.json
+-We can have your custom CSS for your swagger page.
+
+Steps
+=====
+1. npm init -y
+2. npm install swagger-jsdoc swagger-ui-express --save
+3. add server.js
+4. add the file swagger.json to define the operations.
+5. add the file swagger.css to define custom css
+6. Node server.js and try 'http://localhost:5000/api-docs/'
+
+
+
 
 
 
