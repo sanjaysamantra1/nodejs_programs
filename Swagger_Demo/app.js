@@ -49,6 +49,12 @@ app.get("/api/todos", (req, res) => {
   res.json(tasks);
 });
 
+app.get("/api/todos/:id", (req, res) => {
+  console.log("api/todos/:id called!!!!!");
+  const filteredTodo = tasks.filter((todo) => todo.id === +req.params.id);
+  res.json(filteredTodo);
+});
+
 app.post("/api/todo", (req, res) => {
   const task = req.body.task;
   task.id = randomId(10);

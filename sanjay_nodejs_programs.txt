@@ -150,6 +150,29 @@ MongoDB + NodeJs
 
 
 
+GraphQL
+========
+1. npm init -y
+2. npm install graphql express express-graphql
+3. add server.js
+
+
+query getSingleCourse($courseID: Int!) {
+    course(id: $courseID) {
+        title
+        author
+        description
+        topic
+        url
+    }
+}
+-----------
+{ 
+    "courseID":1
+}
+
+
+
 
 express validator
 =================
@@ -160,3 +183,14 @@ npm install express ejs body-parser express-validator
 Redis
 =====
 npm i express axios redis@3.1.2
+
+
+
+Swagger
+=====
+1. npm init -y
+2. npm install swagger-jsdoc swagger-ui-express --save
+3. add server.js
+4. add the file swagger.json to define the operations.
+5. add the file swagger.css to define custom css
+6. Node server.js and try 'http://localhost:5000/api-docs/'

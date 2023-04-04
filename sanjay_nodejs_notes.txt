@@ -12,6 +12,7 @@ ES-6 and beyond
 (class,module,rest,spread,collections,promise,async await,Enhanced Object Literals)
 
 
+
 Node.js Syllabus
 ================
 -Node.JS - Introduction, Advantages
@@ -26,11 +27,26 @@ Node.js Syllabus
 -Debugging Node JS Application
 -Buffer & Streams
 -Events (Event Loop,Event Emitter)
--Creating web server & Handling http requests
+-Creating web server & Handling http requests (HTTP)
 -Express Framework-routes
--Database connectivity
--Template Engines (Jade/Pug, vash, EJS)
--Redis
+-MongoDB
+-Database connectivity 
+-Mongoose,graphQL
+-Template Engines (Jade/Pug, vash, EJS, handlebars)
+-Redis (Caching)
+-Swagger  (API Documentation)
+-Unit testing
+
+
+Projects
+========
+-NodeEmailer (Send Email)
+-Chat Application (Socket.io)
+-Express Validator 
+-Image Upload (express-file-uploader)
+-Image Upload (Formidable)
+-JWT Token
+-End To End Application
 
 
 
@@ -1352,6 +1368,8 @@ https://api.openweathermap.org/data/2.5/forecast/daily?q=bangalore&mode=json&uni
 
 https://en.wikipedia.org/w/api.php?action=parse&format=json&section=0&page=india
 
+https://dummyjson.com/docs/products
+
 
 
 
@@ -1402,6 +1420,7 @@ Swagger
 -We can define all the operations in the file swagger.json
 -We can have your custom CSS for your swagger page.
 
+
 Steps
 =====
 1. npm init -y
@@ -1412,6 +1431,19 @@ Steps
 6. Node server.js and try 'http://localhost:5000/api-docs/'
 
 
+
+
+JSON Web Token
+==============
+-JSON Web Token (JWT) is a standard that defines a compact and self-contained way for securely transmitting information between parties as a JSON object.
+-used for authentication. After a user signs in to an application, the application then assigns JWT to that user. Subsequent requests by the user will include the assigned JWT. This token tells the server what routes, services, and resources the user is allowed to access.
+-A JSON Web Token consists of: 1.Header  2.Payload  3.signature
+
+https://www.section.io/engineering-education/how-to-build-authentication-api-with-jwt-token-in-nodejs/
+
+1. npm init -y
+2. npm install mongoose express jsonwebtoken dotenv bcryptjs
+3. 
 
 
 
