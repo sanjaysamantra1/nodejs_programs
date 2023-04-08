@@ -383,7 +383,7 @@ NPM (Node Package Manager)
 
 npm i nodemon 			 	--> helps during development and production dependencies
 npm i nodemon --save  		--> helps during development and production dependencies
-npm i nodemon --save-dev  	--> helps during development not in production
+npm i nodemon --save-dev  	--> helps during development not in production(-D)
 npm i nodemon --no-save 	--> installs but does not add the entry to the package.json file dependencies
 npm i nodemon --save-optional --> installs and adds the entry to the package.json file optionalDependencies
 npm i --no-optional  --> will prevent optional dependencies from being installed
@@ -1221,6 +1221,7 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  db.employees.find() // db.employees.findOne()
  db.employees.find().pretty()
  db.employees.find( {sal: 6000} )
+ db.employees.find( {name:'abc',sal: 6000} )
  db.employees.find({sal: {$lt:6000}}) 
  db.employees.find({sal: {$lte:6000}}) 
  db.employees.find({sal: {$ne:6000}})
@@ -1274,7 +1275,7 @@ Assignment
 1. Find distinct salaries in asccending order and store in a variable.
 2. Find the 3rd highest salary in the table.
 3. Find the employees whose DOB is today's date.
-4. increse the salary of every employee by 500.
+4. increase the salary of every employee by 500.
 5. change the 'gender' of every employee (male-->female,female-->male)
 
 
@@ -1308,7 +1309,12 @@ Mongoose
 https://mongoosejs.com/docs/guide.html
 
 
-
+GraphQL
+=======
+-GraphQL is a query language for APIs.
+-GraphQL provides a complete and understandable description of the data in API.
+-It gives clients the power to ask for exactly what they need and nothing more.
+-Advantages of GraphQL:- declarative, compositional, strongly-typed
 
 
 
@@ -1421,14 +1427,7 @@ Swagger
 -We can have your custom CSS for your swagger page.
 
 
-Steps
-=====
-1. npm init -y
-2. npm install swagger-jsdoc swagger-ui-express --save
-3. add server.js
-4. add the file swagger.json to define the operations.
-5. add the file swagger.css to define custom css
-6. Node server.js and try 'http://localhost:5000/api-docs/'
+
 
 
 
@@ -1463,7 +1462,7 @@ Unit Testing with Jasmine
    npm install jasmine-node
 3.Initialize the Jasmine Environment
   jasmine init
-4.verify your configuration file.
+4.verify your configuration file. (spec/support/jasmine.json)
   jasmine.json
 5.run the below command to run tests
   jasmine
@@ -1506,16 +1505,28 @@ xit() - disabled it()
 
 
 
+Unit testing with Mocha & Chai
+==============================
+-Mocha is a testing framework for NodeJS.
+-Chai is an assertion library
+
+global install
+	npm install mocha -g
+project install
+	npm i -D mocha chai chai-http
+	
+
+Chai Assertion Style
+--------------------
+1. should 
+	ex: abc.should.have.lengthOf(3)
+2. expect
+   ex: expect(foo).to.have.lengthOf(3)
+3. assert
+   ex: assert.lengthOf(foo,3)
 
 
 
-
----------------------------
-md5 generator
-express file uploader
-express-validator
-formidable - https://www.w3schools.com/nodejs/nodejs_uploadfiles.asp
-loadtest npm package
 
 
 References:
@@ -1535,3 +1546,28 @@ Interview Questions & Answers
 =============================
 1.https://gist.github.com/paulfranco/9f88a2879b7b7d88de5d1921aef2093b
 2.https://github.com/Devinterview-io/nodejs-interview-questions
+
+
+---------------------------
+md5 generator
+express file uploader
+express-validator
+formidable - https://www.w3schools.com/nodejs/nodejs_uploadfiles.asp
+loadtest npm package
+---------------------------------------
+Asked Questions
+
+1- update() findOneAndUpdate()
+2- drop & remove()
+3- createIndex() & reIndex()
+   builds an index on a collection
+   rebuild all existing indexs on a collection
+4- How to get system info on which mongoDB is running
+	db.hostInfo()
+5- How to remove the current database ?
+	db.dropDatabse
+6- How to rename a collection?
+	db.collection.renameCollection()
+7 - findModify() findOneAndUpdate()
+	findModify - atomically modifies and return a single document
+	findOneAndUpdate - Find a single document and upd

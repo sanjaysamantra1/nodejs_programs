@@ -1,5 +1,12 @@
 {
   "dependencies": {
     "jasmine-node": "^3.0.0"
+  },
+  "scripts": {
+    "test": "jasmine",
+    "testWithCoverage": "istanbul cover --include-all-sources spec/tests/index.spec.js && istanbul check-coverage"
+  },
+  "devDependencies": {
+    "istanbul": "^0.4.5"
   }
 }
