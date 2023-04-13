@@ -68,8 +68,9 @@ What NodeJs is?
 -DOM (document)				-No DOM
 -Window						-No Window (global)
 -Cookies					-No Cookies
--Offline Storage            -Offline Storage
+-Offline Storage            -No Offline Storage
 -No FileSystem				-FileSystem
+-Database Interaction(No)	-Database Interaction(yes)
 -Client Apps				-Server side Apps
 
 
@@ -97,7 +98,7 @@ Community –
 No Buffering –
 	Node js applications never buffer any data. 
 	They simply output the data in chunks.
-NPM (Node Package Manager) –
+NPM (Node Package Manager)–
 	it comes with node js & allows us to install various Packages for Node js Application. (lodash,cors,axios,express)
 
 
@@ -108,8 +109,9 @@ V8 JavaScript Engine
 -V8 takes our JavaScript and executes it while browsing with Chrome.
 -V8 is written in C++, and it's continuously improved.
 -JavaScript is generally considered an interpreted language, but modern JavaScript engines no longer just interpret JavaScript, they compile it.
--JavaScript is internally compiled by V8 with just-in-time (JIT) compilation to speed up the execution.
+-JavaScript is internally compiled by V8 with 
 
+JS Code -->
 
 
 
@@ -141,6 +143,8 @@ this single thread doesn't have to wait for the request to complete and is free 
 2. Event-Loop(Single Thread) delegates long-running operations to non-blocking workers and becomes available to handle the next request.
 3. When asynchronous I/O work completes, EventLoop processes the request further and sends the response to the client.
 https://www.dotnettricks.com/learn/nodejs/exploring-nodejs-code-execution-process
+
+UV_THREADPOOL_SIZE=size
 
 
 NodeJs vs Others
@@ -989,6 +993,7 @@ Express generator
 =================
 1. npm install -g express-generator
 2. express --view=ejs project1
+   express project2 --no-view
 
 
 
@@ -1441,7 +1446,7 @@ JSON Web Token
 https://www.section.io/engineering-education/how-to-build-authentication-api-with-jwt-token-in-nodejs/
 
 1. npm init -y
-2. npm install mongoose express jsonwebtoken dotenv bcryptjs
+2. npm install mongoose express dotenv cors body-parser jsonwebtoken bcryptjs
 3. 
 
 
