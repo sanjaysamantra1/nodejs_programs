@@ -1,10 +1,6 @@
-// Dangers of Mixing Blocking and Non-Blocking Code
-// File gets deleted before read
-
 const fs = require("fs");
-
-fs.readFile("/file.md", (err, data) => {
+fs.readFile("file1.txt", (err, data) => {
   if (err) throw err;
-  console.log(data);
+  console.log(data.toString());
 });
-fs.unlinkSync("/file.md");
+fs.unlinkSync("file1.txt");

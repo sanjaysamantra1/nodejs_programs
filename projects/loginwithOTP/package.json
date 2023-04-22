@@ -1,8 +1,8 @@
 {
-  "name": "npm",
+  "name": "loginwithotp",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,12 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.21"
-  },
-  "devDependencies": {  
-    "eslint": "^8.38.0"
-  },
-  "optionalDependencies": {
-    "chalk": "^5.2.0"
+    "otp-generator": "^4.0.1",
+    "sendotp": "^1.2.9"
   }
 }

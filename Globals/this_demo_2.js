@@ -1,12 +1,11 @@
-console.log(this); // {}
+let obj = {
+  f1: function () {
+    console.log(this);
+  },
+  f2: () => {
+    console.log(this);
+  },
+};
 
-function f1() {
-  "use strict";
-  console.log("f1...", this); //undefined
-}
-f1();
-
-function f2() {
-  console.log("f2.....", this); //Object [global]
-}
-f2();
+obj.f1(); // obj is left of the dot, so this is obj
+obj.f2(); // this is module.exports,

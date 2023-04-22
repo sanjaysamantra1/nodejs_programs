@@ -6,7 +6,7 @@ console.log(user);
 
 // method returns the system uptime in seconds
 console.log(`The System Uptime is ${os.uptime()} seconds`);
-console.log(`The System Uptime is ${os.uptime()/60/60} minutes`);
+console.log(`The System Uptime is ${os.uptime()/60/60} hours`);
 
 const currentOS = {
   name: os.type(),

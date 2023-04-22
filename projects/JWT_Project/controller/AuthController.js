@@ -47,8 +47,8 @@ router.post("/login", (req, res) => {
       if (!passIsValid) res.send({ auth: false, token: "Invalid Password" });
       // in case bot are correct generate token
       let token = jwt.sign({ id: user._id }, config.secret, {
-        expiresIn: 86400,
-      }); //24hr
+        expiresIn: "2m",
+      });
       res.send({ auth: true, token: token });
     }
   });
@@ -61,6 +61,7 @@ router.get("/userInfo", (req, res) => {
   //jwt verify
   jwt.verify(token, config.secret, (err, user) => {
     if (err) res.send({ auth: false, token: "Invalid Token" });
+    console.log(user)
     User.findById(user.id, (err, result) => {
       res.send(result);
     });

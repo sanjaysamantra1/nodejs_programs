@@ -143,8 +143,11 @@ this single thread doesn't have to wait for the request to complete and is free 
 2. Event-Loop(Single Thread) delegates long-running operations to non-blocking workers and becomes available to handle the next request.
 3. When asynchronous I/O work completes, EventLoop processes the request further and sends the response to the client.
 https://www.dotnettricks.com/learn/nodejs/exploring-nodejs-code-execution-process
+ 
+UV_THREADPOOL_SIZE=6  (4 default, max 128)
 
-UV_THREADPOOL_SIZE=size
+Worker Threads- File System API, Cryptography, Compression, DNS Lookup
+
 
 
 NodeJs vs Others
@@ -200,8 +203,9 @@ NVM useful commands
 -------------------
 `nvm  --version` to check version 
 `nvm list` to list all the available nvm versions
-`nvm use 15.0` to use a specific version of nodejs
 `nvm install 15.0` to install a specific version of nodejs
+`nvm use 15.0` to use a specific version of nodejs
+
 
 
 
@@ -227,7 +231,8 @@ REPL
 -To Open REPL in editor mode , use .editor
 -To Exit REPL type .exit
 -if you press the tab key the REPL will try to autocomplete what you wrote to match a variable you already defined or a predefined one.
--Exploring JavaScript objects ( os, fs , http)
+-Used For Exploring node objects ( os, fs , http)
+ fs (enter)
 
 
 
@@ -239,7 +244,7 @@ tab Keys			Display the list of all commands.
 Up/Down Keys		See previous commands applied in REPL.
 .save filename		Save current Node REPL session to a file.
 .load filename		Load the specified file in the current Node REPL session.
-.exit				exits the repl (same as pressing ctrl-C two times)
+.exit				exits the repl (same as pressing ctrl+C two times)
 ctrl + c			Terminate the current command.
 ctrl + c (twice)	Exit from the REPL.
 ctrl + d			Exit from the REPL.
@@ -248,10 +253,23 @@ ctrl + d			Exit from the REPL.
 
 
 
+How to exit from a Node.js shell
+================================
+There are various ways to terminate a Node.js application.
+-Press Ctrl + C twice.
+-Press Ctrl + D once.
+-type .exit and press Enter
+-process.exit()
+-process.kill(process.pid)
+
+
+
+
+
 accept arguments from the command line
 ======================================
 -we can pass any number of arguments while invoking a Node.js application.
--Arguments can be standalone or have a key and a value.
+-Arguments can be standalone or have a key-value.
  ex: node app.js sanjay
      node app.js name=sanjay
 -arguments can be collected by using 'process' module's argv property which is an array.
@@ -269,22 +287,9 @@ accept arguments from the command line
  console.log(args['name'])
 -use double dashes before each argument name
  node app.js --name=sanjay
-
-Assignment: Create 1 Arithmetic example using command Line Arg
-
-
-How to exit from a Node.js shell
-================================
-There are various ways to terminate a Node.js application.
--Press Ctrl + C twice.
--Press Ctrl + D once.
--type .exit and press Enter
--process.exit()
--process.kill(process.pid)
-
 Note: process module does not need a "require", it's automatically available.
 
-
+Assignment: Create 1 Arithmetic example using command Line Arg
 
 
 
@@ -308,7 +313,8 @@ Browser extensions
 Debug NodeJs Code
 =================	
 1. Debugging natively
-  a. node debug/inspect your-script.js  (type next, help)
+  a. node inspect your-script.js  (type next, help)
+     go to browser --> chrome://inspect/
      https://nodejs.dev/en/api/v19/debugger/
   b. use debugger;  in a code line you want
   
@@ -332,7 +338,7 @@ NPM (Node Package Manager)
 ==========================
 -npm is the standard package manager for Node.js.
 -Node Package Manager (NPM) provides two main functionalities:
-	1.Online repositories for node.js packages/
+	1.Online repositories for node.js packages
 	which are searchable on https://www.npmjs.com/
 	2.Command line utility to install Node.js packages, do version management and dependency management of Node.js packages.
 	
@@ -458,6 +464,7 @@ NPX : Node Package Executer (used to execute Node.js packages)
 -npx helps us avoid versioning, dependency issues and installing unnecessary packages that we just want to try out.
 -provides a clear and easy way of executing packages, commands, modules and even GitHub gists and repositories.
 -ex:npx create-react-app my-sample-react-app
+    npx nodemon file1.js
 
 
 
@@ -469,8 +476,10 @@ Nodemon
 -Check if Nodemon is installed?
  nodemon -v
 -Just use nodemon instead of node to run your code, your process will automatically restart when your code changes
- ex:- nodemon file1.js
--the 'node_modules' folder is ignored by default.
+ ex:- node file1.js      (server won't be re-started when code is changed)
+      nodemon file1.js   (server gets re-started when there is a code change)
+	  npx nodemon file1.js   (server gets re-started when there is a code change)
+-The 'node_modules' folder is ignored by default by nodemon.
 -You can restart the process at any time by typing rs and hitting enter.
 
 
@@ -486,13 +495,14 @@ Nodemon Features:
 -Open source and available on github.
  
 
+
 Node.js Global Objects
 ======================
 -Node.js global objects are global in nature and available in all modules.
 -we dont have to include these objects in our application; they can be directly used.
 -A list of Node.js global objects are given below:
-	_ _dirname
-	_ _filename
+	__dirname
+	__filename
 	console - log(),error(),warn(),time(),timeEnd(),trace(),dir()
 	process - exit(),beforeExit(), uncaughtException()
 	buffer
@@ -546,8 +556,10 @@ This
 -this is determined when a function is called. Not when a function is created.
 -In the top-level code in a Node module, this is equivalent to module.exports. That's the empty object.
 ex: console.log(this, this === module.exports); //true
--When a function is called as a property of an object the value of this will be the object it is called with.
-ex: obj.f1(); // this = obj
+	module.exports.name = "sanjay";
+	console.log(this); // { name:sanjay }
+-The object left of the dot is the value of this. If there is no object left of the dot the value of this is the module.exports object.
+-This rule does not apply for arrow function which don't have their own binding of this.
 -in strictmode this value inside a function is undefined.
 
 
@@ -1533,6 +1545,36 @@ Chai Assertion Style
 
 
 
+NodeJS Security Risks
+=====================
+1.Cross-Site Scripting(XSS) 
+If a web application fails to adequately validate user input, malicious actors can inject modified JavaScript code into the web pages users are viewing. Because the browser can’t determine the trustworthiness of the code, it executes the script by default, potentially giving the attacker access to cookies, tokens, user information, and more
+
+2.Cross-site request forgery (CSRF)
+ A cross-site request forgery attack hijacks user sessions by hiding malicious code under seemingly trustworthy HTML elements. Because the user is already logged in and authenticated, clicking one of these masked links gives the hacker the ability to execute changes in the underlying systems.
+
+3.Code injection 
+Attackers can use an input validation flaw to inject malicious code into your codebase, changing the way your application executes. Code injection can give them access to sensitive data, provide information about your environment, or infect your system with malware.
+
+4.Distributed denial of service (DDoS) attacks 
+In a DDoS attack, an attacker floods production servers with internet traffic to disrupt their normal function. This traffic can overwhelm the system and cause significant damage and outages. Versions 4-4.1.1 of Node.js that contained a bug with the HTTP handling are one example of this.
+
+5.Regular expression denial of service attacks (ReDos)
+This type of denial-of-service (DoS) attack can take a system down by providing an input that makes it time-consuming for the program to evaluate a regular expression. This slows or even halts the program and produces a DoS to legitimate users.
+
+
+Best Practices to keep NodeJS Secure
+====================================
+1. Setup logging and monitoring
+2. Ensure you have strong authentication policies in place
+3. Avoid blocking the event loop
+4. Safe error handling
+5. Don’t send unnecessary information
+6. Limit request sizes
+7. Validate user input
+
+
+
 
 References:
 ===========
@@ -1556,7 +1598,7 @@ Interview Questions & Answers
 ---------------------------
 md5 generator
 express file uploader
-express-validator
+express-validator, joi validator
 formidable - https://www.w3schools.com/nodejs/nodejs_uploadfiles.asp
 loadtest npm package
 ---------------------------------------
