@@ -720,6 +720,11 @@ Node.js URL Module
 ==================
 -The URL module splits up a web address into readable parts.
 -Parse an address with the url.parse() method, and it will return a URL object with each part of the address as properties.
+ex:-
+var url = require('url');
+var urlStr = 'http://localhost:8080/default.htm?year=2023&month=february';
+var urlObj = url.parse(urlStr, true);
+
 
 
 
@@ -1234,11 +1239,13 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  db.employees.find().pretty()
  db.employees.find( {sal: 6000} )
  db.employees.find( {name:'abc',sal: 6000} )
+ db.employees.find({"address.city":"bangalore"}) //Nested
  db.employees.find({sal: {$lt:6000}}) 
  db.employees.find({sal: {$lte:6000}}) 
  db.employees.find({sal: {$ne:6000}})
  db.employees.find({sal: {$gt:5000, $lt:9000}})
  db.employees.find({"name":{$in:["Raj", "Ram", "Raghu"]}})
+ db.employees.find({$or:[{name:"ram"},{sal:5000}]})
  db.employees.find({"name":/sanjay/i})   // (Like in SQL)
  db.employees.find( {} , {sal:0} ) // all columns except sal
  db.employees.find( {} , {sal:1,name:1} ) // name,sal column in result
@@ -1259,6 +1266,15 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  
  db.employees.drop()
  db.dropDatabase() 
+ 
+ 
+implicit and vs explicit $and
+==============================
+-don't use implecit AND if the field name is same;
+-it ignores the first condition, only executes second condition.
+
+
+
  
  
 Managing Indexes

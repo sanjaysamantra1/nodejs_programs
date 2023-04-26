@@ -1,9 +1,8 @@
 const fs = require("fs");
-const server = require("http").createServer();
+console.time("readFile");
+const readStream = fs.createReadStream("file1.txt", { highWaterMark: 200 });
 
-server.on("request", (req, res) => {
-  const src = fs.createReadStream("./big.file");
-  src.pipe(res);
+readStream.on("data", (chunk) => {
+  console.log(`Read ${chunk.length} bytes\n"${chunk.toString()}"\n`);
 });
-
-server.listen(8000);
+console.timeEnd("readFile");

@@ -4,6 +4,7 @@ function reqListener(req, res) {
   console.log("Request Received");
   console.log(req.url, req.method, req.headers);
   res.write("Response From Server....");
+  res.end();
 }
 server = http.createServer(reqListener);
 
