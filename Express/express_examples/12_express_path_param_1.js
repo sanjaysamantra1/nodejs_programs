@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 
+app.get("/", function (req, res) {
+  res.send(`Server running...`);
+});
 app.get("/:id", function (req, res) {
   res.send(`id is ${req.params.id}`);
 });

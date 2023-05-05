@@ -3,17 +3,20 @@ const app = express();
 
 //  req => middleware => res
 
-const logger = (req, res, next) => {
+const loggerMiddleWare = (req, res, next) => {
   const time = new Date().toLocaleTimeString();
   console.log(`Method: ${req.method}  URL: ${req.url}  Time: ${time}`);
   next();
 };
 
-app.get("/", logger, (req, res) => {
-  res.send("Home");
+app.get("/", loggerMiddleWare, (req, res) => {
+  res.send("Home Route");
 });
-app.get("/about", logger, (req, res) => {
-  res.send("About");
+app.get("/about", loggerMiddleWare, (req, res) => {
+  res.send("About-Us route");
+});
+app.get("/contact", (req, res) => {
+  res.send("Contact Us Route");
 });
 
 app.listen(5000, () => {

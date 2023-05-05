@@ -8,7 +8,10 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Hello Middleware example!");
+  res.send("This is Home Route");
+});
+app.get("/about", (req, res) => {
+  res.send("This is AboutUs Route");
 });
 
 app.listen(5000, () => {

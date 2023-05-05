@@ -17,6 +17,7 @@ const middleware3 = (req, res, next) => {
 };
 
 app.get("/", middleware1, middleware2, middleware3, (req, res) => {
+  console.log("This is Home Page");
   res.send("This is Home Page");
 });
 

@@ -13,6 +13,7 @@ ticketManager.on("error", (error) => {
   console.error(error);
 });
 
-ticketManager.buy("test-111@email.com", 200);
-ticketManager.buy("test-222@email.com", 300);
-ticketManager.buy("test-333@email.com", 100);
+ticketManager.buy("person-1@gmail.com", 200);
+ticketManager.buy("person-2@gmail.com", 300);
+ticketManager.buy("person-3@gmail.com", 100);
+

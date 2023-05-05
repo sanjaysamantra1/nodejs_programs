@@ -811,7 +811,7 @@ fork() :
 HTTP Module
 ===========
 -The HTTP module can create an HTTP server.
--receives the request from client & gives a response back to the client.
+-Receives the request from client & gives a response back to the client.
 -Get headers, URL, method and body data from request objects.
 -Make routing decisions based on URL and/or other data in request objects.
 -Send headers, HTTP status codes and body data via response objects.
@@ -899,13 +899,14 @@ Advantages of Express.js
 ========================
 -Makes Node.js web application development fast and easy.
 -Easy to configure and customize.
--Allows you to define routes of your application based on HTTP methods and URLs.
+-Allows to define routes of your application based on HTTP methods and URLs.
 -Includes various middleware modules which you can use to perform additional tasks on request and response.
 -Easy to integrate with different template engines like Jade, Vash, EJS etc.
--Allows you to define an error handling middleware.
+-Allows to define an error handling middleware.
 -Easy to serve static files and resources of your application.
--Allows you to create REST API server.
--Easy to connect with databases such as MongoDB, Redis, MySQL
+-Allows to create REST API server.
+-Easy to connect with databases such as MongoDB, Redis, MySQL.
+
 
 
 How to use Express
@@ -916,6 +917,7 @@ How to use Express
    const app = express()
 3. use methods
    app.get(route, callback)
+   app.post(route, callback)
 
 
 Express Methods
@@ -939,9 +941,6 @@ app.use() vs app.get()
 
 app.use() vs app.all()
 ======================
-app.use() → It takes only one callback.
-app.all() → It can take multiple callbacks.
-
 app.use() will only see whether url starts with specified path.
 app.all() will match the complete path.
 
@@ -1001,17 +1000,6 @@ res.sendStatus()	Set the response status code and send its string representation
 
 
 
-Express generator
-=================
-1. npm install -g express-generator
-2. express --view=ejs project1
-   express project2 --no-view
-
-
-
-
-
-
 Serving static files in Express
 ===============================
 -To serve static files such as images, CSS files, and JavaScript files, use the express.static built-in middleware function in Express. 
@@ -1023,6 +1011,7 @@ express.static(root, [options])
 	app.use(express.static('files'))
 	
 	
+
 Middlewares
 ===========
 -Middlewares are like a middleman between a request and the response in a REQUEST → RESPONSE cycle.
@@ -1040,7 +1029,8 @@ app.use((req, res, next) => {
 Order of Middleware Calls
 =========================
 -The order in which they are written/included in your file; the order in which they are executed.
- 
+
+
 
 
 Body-parser
@@ -1060,12 +1050,25 @@ cookie-parser
 
 
 
-CORS
+
+
+Express generator
+=================
+1. npm install -g express-generator
+2. express --view=ejs project1
+   express project2 --no-view
+
+
+
+
+
+
+CORS(Cross-Origin-Resource-Sharing)
 ====
 -Cross Origin Resource Sharing or CORS is a technique to tell the browser whether a application can fetch resources from a different domain or not.
 -By default, browsers will block certain requests if both the client and the server are not in the same origin.
 
--CORS is a node.js package.
+-CORS is a npm package.
 -How to Install
  npm install cors
 
@@ -1081,16 +1084,17 @@ https://www.npmjs.com/package/cors
 
 
 
+
+
 Events
 ======
 -Node.js allows us to create and handle custom events easily by using events module.
 -Event module includes EventEmitter class which can be used to raise and handle custom events.
--The emit() function raises the specified event. First parameter is name of the event as a string and then arguments.
+-An event can be raised/triggered using emit(). in emit() First parameter is the name of the event as a string and then arguments.
+ ex: emit(eventName, arg1 , arg2)
 -An event can be emitted with zero or more arguments. 
 -We can specify any name for a custom event in the emit() function.
--We can also use addListener() methods to subscribe for an event.
--All objects that emit events are instances of the EventEmitter class. 
--These objects expose an eventEmitter.on() function that allows one or more functions  to be attached to named events emitted by the object. 
+-addListener() can be used to subscribe/listen an event. 
 -Event names are camel-cased strings but any valid JavaScript property key can be used.
 -When the EventEmitter object emits an event, all of the functions attached to that specific event are called synchronously. 
 -Any values returned by the called listeners are ignored and will be discarded.

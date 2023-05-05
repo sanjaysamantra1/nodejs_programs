@@ -9,3 +9,5 @@ app.get("/cars", (req, res) => {
 app.listen(port, () => {
   console.log("   >  backend started...");
 });
+
+//fetch("http://localhost:5000/cars").then(req => req.text()).then(console.log)
