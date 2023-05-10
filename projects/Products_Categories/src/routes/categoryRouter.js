@@ -11,7 +11,7 @@ function router(menu){
             if(err){
                 res.status(500).send('Error While connecting')
             }else{
-                let dbObj = dc.db('march2023');
+                let dbObj = dc.db('april2023');
                 dbObj.collection('categories').find().toArray(function(err,result){
                     if(err){
                         res.status(203).send('Error While Fetching')

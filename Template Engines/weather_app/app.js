@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/weather", async (req, res) => {
-  let city = req.query.city;
+  let city = req.query.city || 'bangalore';
   let url = `http://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&mode=json&units=metric&cnt=5&appid=fbf712a5a83d7305c3cda4ca8fe7ef29`;
   // calling API to get weather Data
   const response = await axios.get(url);

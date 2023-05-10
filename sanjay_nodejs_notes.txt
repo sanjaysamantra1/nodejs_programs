@@ -1153,7 +1153,7 @@ MongoDB
 -RDBMS  (Database,Table,Row,Column)
  MongoDB(Database,Collection,Document,Field)
 -indexing , shemaless , Replication, Scalability, Performance, High Availability.
--No SQL databases - cassandra, Amazon Dynamo DB, couchbase, redis.
+-No SQL databases - MongoDB, cassandra, Amazon Dynamo DB, couchbase, redis.
 
 Sql         NoSql
 ===================
@@ -1175,12 +1175,14 @@ MongoDB Local
 =============
 1. download and install (MongoDB Community Server)
    https://www.mongodb.com/try/download/community 
-2. Go to the path where MongoDB is installed,and run mongo.exe  
-   By default it is "C:\Program Files\MongoDB\Server\5.0\bin"
+					(OR)
+   https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-6.0.5-signed.msi
+2. Go to the path where MongoDB is installed,and run 'mongod.exe'  
+   By default it is "C:\Program Files\MongoDB\Server\6.0\bin"
 4. Expect Error as the data directory is not set
    "{"error":"NonExistentPath: Data directory C:\\data\\db\\ not found"
 5. create folder 'c:\data\db'
-6. run mongo.exe
+6. run 'mongod.exe'
 
 
 MongoDB Shell (CLI for mongoDB)
@@ -1194,10 +1196,16 @@ MongoDB Shell (CLI for mongoDB)
 -verify the path setup is done correctly by running below 2 commands
  mongod --version
  mongosh -version 
--Start Mongo Shell 
+-Run the below command to Start Mongo Shell 
  start mongosh.exe 
 -Enter mongoDB Connection String 
  mongodb://localhost:27017
+ 
+ 
+Note: If mongoDB and mongoShell are installed & path is set
+-open 2 command prompts
+-run 'mongod' in 1st cmd
+-run 'mongosh' in 2nd cmd
  
  
 MongoDB Compass
@@ -1211,19 +1219,17 @@ MongoDB Compass
    mongodb://127.0.0.1:27017
 
  
-Note: If mongoDB and mongoShell are installed & path is set
--open 2 command prompts
--run 'mongod' in 1st cmd
--run mongosh in 2nd cmd
+
  
 
  
 MongoDB Queries/Commands
-========================= 
+========================
 https://www.geeksforgeeks.org/mongodb-tutorial/
 
 -To See All databases
- show dbs
+ show dbs;
+ show databases;
 -To Use one database
  use sanjaydb1  (creates a new database if it doesn’t exist)
 -To see the Current Database
@@ -1235,9 +1241,8 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
 -To add a Document/Row in a collection
  db.employees.insertOne({eid:1,name:'sanjay',sal:5000})
  db.employees.insertOne({_id:1,name:'sanjay',sal:5000})
- db.employees.insertOne({_id:2,name:'sanjay 2',sal:5000})
  db.employees.insertMany([{eid:1,name:'sanjay',sal:5000},
-            {eid:2,name:'ranjan',sal:6000}])
+            {eid:2,name:'sameer',sal:6000}])
 -To  see data inside collections
  db.employees.find() // db.employees.findOne()
  db.employees.find().pretty()
@@ -1250,19 +1255,21 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  db.employees.find({sal: {$gt:5000, $lt:9000}})
  db.employees.find({"name":{$in:["Raj", "Ram", "Raghu"]}})
  db.employees.find({$or:[{name:"ram"},{sal:5000}]})
- db.employees.find({"name":/sanjay/i})   // (Like in SQL)
+ db.employees.find({"name":/san/i})   // (Like in SQL)
  db.employees.find( {} , {sal:0} ) // all columns except sal
  db.employees.find( {} , {sal:1,name:1} ) // name,sal column in result
  db.employees.find().sort({sal:1}).pretty()   //asc
  db.employees.find().sort({sal:-1}).pretty() //desc
  db.employees.find().count()
+ db.employees.countDocuments({salary:13001});
  db.employees.find().limit(2)
 -To Update the existing Data
  db.employees.updateOne( { id: 101 }, { $set: { sal: 2000 } } ) 
+ db.employees.updatemany( { sal:6000 }, { $set: { sal: 6500 } } )
  db.employees.updateOne( { id: 101 }, {eid:1,name:'sanjay',sal:5000},{ upsert: true } )
  // Update the document, but if not found insert it
 -To Delete 
- db.employees.deleteOne({ id:101 })
+ db.employees.deleteOne({ sal:6000 })
  db.employees.deleteMany({ name: "sanjay" })
  db.employees.remove({ id:101 }) 	// Deprecated
  db.employees.remove({ id:101 }, 1)
@@ -1305,7 +1312,8 @@ Managing Indexes
 Assignment
 ==========
 1. Find distinct salaries in asccending order and store in a variable.
-2. Find the 3rd highest salary in the table.
+2. Find the 3rd highest salary in the employee table.
+   db.employees.countDocuments({salary:13001});
 3. Find the employees whose DOB is today's date.
 4. increase the salary of every employee by 500.
 5. change the 'gender' of every employee (male-->female,female-->male)
@@ -1327,6 +1335,7 @@ MongoDB Atlas
 https://www.javatpoint.com/mongodb-atlas
 
 mongodb+srv://sanjaysamantra:<password>@cluster0.geshq.mongodb.net/?retryWrites=true&w=majority
+
 
 
 

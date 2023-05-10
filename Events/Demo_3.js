@@ -5,7 +5,7 @@ const event = new EventEmitter();
 event.on("sayHi", () => {
   console.log("Hi Sanjay!!!");
 });
-event.on("sayHi", () => {
+event.addListener("sayHi", () => {
   console.log("Hi Samantra!!!");
 });
 event.emit("sayHi");
