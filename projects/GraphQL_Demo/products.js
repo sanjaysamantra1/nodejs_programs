@@ -2,16 +2,20 @@ const express = require("express");
 const port = 5000;
 const app = express();
 const { graphqlHTTP } = require("express-graphql");
-const schema = require("./schema");
+const productSchema = require("./product-schema");
 
 app.use(
-  "/graphql",
+  "/products",
   graphqlHTTP({
-    schema: schema,
+    schema: productSchema,
     graphiql: true,
   })
 );
 
 app.listen(port, () => {
-  console.log(`Listing to port ${port}`);
+  console.log(`Listing to port ${port} http://localhost:5000/products`);
 });
+
+/* {Products(id:1){
+  id,title,price
+}} */

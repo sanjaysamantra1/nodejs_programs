@@ -1,6 +1,8 @@
 var express = require("express");
-var express_graphql = require("express-graphql").graphqlHTTP;
+var cors = require("cors");
+var express_graphql = require("express-graphql");
 var { buildSchema } = require("graphql");
+
 // GraphQL schema
 var schema = buildSchema(`
     type Query {
@@ -65,14 +67,26 @@ var root = {
 };
 // Create an express server and a GraphQL endpoint
 var app = express();
+app.use(cors());
 app.use(
-  "/graphql",
-  express_graphql({
+  "/courses",
+  express_graphql.graphqlHTTP({
     schema: schema,
     rootValue: root,
     graphiql: true,
   })
 );
-app.listen(4000, () =>
-  console.log("Express GraphQL Server Now Running On localhost:4000/graphql")
+app.listen(5000, () =>
+  console.log("Express GraphQL Server Now Running On http://localhost:5000/courses")
 );
+
+/* {course(id:1) {
+  id,title,author,topic
+}} */
+
+/* {
+  courses(topic: "JavaScript") {
+    id
+    title
+  }
+} */
