@@ -1374,12 +1374,12 @@ How To Install Redis
 ====================
 1. https://github.com/microsoftarchive/redis/releases
 2. download Redis-x64-3.0.504.msi  and install
-3. add redis as path variable
-   C:\Program Files\Redis
-4. open CMD-->redis-cli 
-   127.0.0.1:6379  
-5. check redis version
+3. add redis as path variable (Environment Variable)
+   C:\Program Files\Redis 
+4. check redis version
    redis-server -v
+5. open CMD-->redis-cli 
+   127.0.0.1:6379 
 
 
 Commands

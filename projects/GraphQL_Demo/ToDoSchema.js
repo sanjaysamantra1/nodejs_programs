@@ -9,14 +9,19 @@ const {
 
 let allTodos = [
   {
-    id: 1446412739542,
+    id: 1,
     title: "Read emails",
     completed: false,
   },
   {
-    id: 1446412740883,
+    id: 2,
     title: "Buy orange",
     completed: true,
+  },
+  {
+    id: 3,
+    title: "Complete Assignment",
+    completed: false,
   },
 ];
 
