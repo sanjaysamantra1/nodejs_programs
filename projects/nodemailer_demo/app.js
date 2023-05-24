@@ -10,7 +10,7 @@ let transporter = nodemailer.createTransport({
 
 let mailOption = {
   from: "sanjaysamantra2@gmail.com",
-  to: ["nayakakashjit@gmail.com", "asutoshsahu24@gmail.com"],
+  to: ["nayakakashjit@gmail.com", "pratyayankit@gmail.com","arghyapal8@gmail.com"],
   subject: "Sending Email using NodeJs",
   // text:'This is a Test Email'
   html: `
@@ -28,7 +28,7 @@ let mailOption = {
   `,
   attachments: [
     { filename: "profile.png", path: "./profile.png" }
-  ],
+  ]
 };
 
 transporter.sendMail(mailOption, function (error, info) {

@@ -1376,7 +1376,7 @@ How To Install Redis
 2. download Redis-x64-3.0.504.msi  and install
 3. add redis as path variable (Environment Variable)
    C:\Program Files\Redis 
-4. check redis version
+4. check redis version (in command prompt)
    redis-server -v
 5. open CMD-->redis-cli 
    127.0.0.1:6379 
@@ -1391,10 +1391,10 @@ Commands
  SET add bangalore ex 2000 
  SETEX age 3600 45
 -Get Data (get keyName)
- get name 
+ GET name 
  get add
  get Add  (nil) (Keys are case sensitive)
--Delete Data (delete keyName)
+-Delete Data (del keyName)
  del name
 -Delete all 
  FLUSHALL
@@ -1419,14 +1419,6 @@ https://dummyjson.com/docs/products
 
 
 
-
-ESLint
-======
-1. npm i eslint -g
-2. npm init @eslint/config   
-         (OR) 
-   npx eslint --init
-3. eslint .
 
 
 
@@ -1484,6 +1476,19 @@ https://www.section.io/engineering-education/how-to-build-authentication-api-wit
 1. npm init -y
 2. npm install mongoose express dotenv cors body-parser jsonwebtoken bcryptjs
 3. 
+
+
+
+
+
+ESLint
+======
+1. npm i eslint -g
+2. npm init @eslint/config   
+         (OR) 
+   npx eslint --init
+3. eslint .
+
 
 
 
