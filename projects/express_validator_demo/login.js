@@ -35,7 +35,6 @@ app.post(
 
     // If errors
     if (!errors.isEmpty()) {
-      // res.status(400).json(errors);
       const alerts = errors.array();
       res.render("login", {alerts});
     }

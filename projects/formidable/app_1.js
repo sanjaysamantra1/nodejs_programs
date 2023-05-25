@@ -13,9 +13,10 @@ app.get("/", (req, res) => {
     </form>
   `);
 });
+let options = { multiples: true };
 
 app.post("/api/upload", (req, res, next) => {
-  const formidableObj = formidable({ multiples: true });
+  const formidableObj = formidable(options);
 
   formidableObj.parse(req, (err, fields, files) => {
     if (err) {

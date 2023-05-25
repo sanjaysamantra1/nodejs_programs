@@ -18,6 +18,7 @@ app.get("/", (req, res) => {
 
 const options = {
   multiples: true,
+  maxFileSize: 5 *1024*1024, // MAX 5 MB
   filter: function ({ name, originalFilename, mimetype }) {
     return mimetype && mimetype.includes("image");
   },

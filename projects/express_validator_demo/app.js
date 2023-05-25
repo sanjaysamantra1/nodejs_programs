@@ -1,22 +1,21 @@
 const { check, validationResult } = require("express-validator");
-
-const bodyparser = require("body-parser");
 const express = require("express");
-const path = require("path");
 const app = express();
-
-var PORT = process.env.port || 5000;
-
-// View Engine Setup
-app.set("views", path.join(__dirname));
-app.set("view engine", "ejs");
-
-// Body-parser middleware
+const bodyparser = require("body-parser");
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
 app.get("/", function (req, res) {
-  res.render("SampleForm");
+  res.send(`
+  <form action="saveData" method="POST">
+        <pre>
+	Enter your Email : <input type="text" name="email"> <br>
+	Enter your Name	 : <input type="text" name="name"> <br>
+	Enter Mobile Number : <input type="number" name="mobile"> <br>
+	Enter your Password : <input type="password" name="password"> <br>
+	<input type="submit" value="Submit Form">
+    </pre>
+    </form>`);
 });
 
 // check() is a middleware used to validate
@@ -41,25 +40,16 @@ app.post(
     }),
   ],
   (req, res) => {
-    // validationResult function checks whether
-    // any occurs or not and return an object
     const errors = validationResult(req);
-
-    // If some error occurs, then this
-    // block of code will run
+    console.dir(req.body);
     if (!errors.isEmpty()) {
       res.status(400).json(errors);
-    }
-
-    // If no error occurs, then this
-    // block of code will run
-    else {
-      res.send("Successfully validated");
+    } else {
+      res.send("Successfully validated, No errors found");
     }
   }
 );
 
-app.listen(PORT, function (error) {
-  if (error) throw error;
-  console.log("Server created Successfully on PORT ", PORT);
+app.listen(5000, () => {
+  console.log("Server is Running on port-5000 http://localhost:5000");
 });
