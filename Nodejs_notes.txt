@@ -1442,11 +1442,28 @@ Tap Done.
 
 
 
+Express File-upload
+===================
+
+
+
+
 
 Socket IO / Chat Application
 =============================
 -"socket.io": "^2.2.0"
 
+
+
+
+
+ESLint
+======
+1. npm i eslint -g
+2. npm init @eslint/config   
+         (OR) 
+   npx eslint --init
+3. eslint .
 
 
 
@@ -1478,16 +1495,6 @@ https://www.section.io/engineering-education/how-to-build-authentication-api-wit
 3. 
 
 
-
-
-
-ESLint
-======
-1. npm i eslint -g
-2. npm init @eslint/config   
-         (OR) 
-   npx eslint --init
-3. eslint .
 
 
 

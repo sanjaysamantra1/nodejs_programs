@@ -1,0 +1,145 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a simple example NodeJS API project to demonstrate Swagger Documentation",
+    "version": "1.0.0",
+    "title": "users API",
+    "contact": {
+      "email": "sanjaysamantra2@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "schemes": ["http"],
+  "host": "localhost:5000",
+  "basePath": "/api",
+  "paths": {
+    "/users": {
+      "get": {
+        "summary": "Get All users",
+        "description": "get all the users information",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "summary": "Get 1 user",
+        "description": "get 1  user's information",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "userId",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/myusers": {
+      "get": {
+        "summary": "Get 1 user using query param",
+        "description": "get 1  user's information",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "description": "user Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "sal": {
+          "type": "integer"
+        },
+        "gender": {
+          "type": "string"
+        }
+      }
+    },
+    "InvalidResponse": {
+      "type": "object",
+      "properties": {
+        "statusCode": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

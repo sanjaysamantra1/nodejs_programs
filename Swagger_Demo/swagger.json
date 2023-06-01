@@ -3,7 +3,7 @@
   "info": {
     "description": "This is a simple example NodeJS API project to demonstrate Swagger Documentation",
     "version": "1.0.0",
-    "title": "Tasks API",
+    "title": "Tasks API Titl",
     "contact": {
       "email": "sanjaysamantra2@gmail.com"
     },
