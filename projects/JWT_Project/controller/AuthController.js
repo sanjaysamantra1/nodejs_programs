@@ -9,7 +9,7 @@ const User = require("../model/userSchema");
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-//get all the users
+// Get all the users
 router.get("/users", (req, res) => {
   User.find({}, (err, data) => {
     if (err) throw err;
@@ -17,7 +17,7 @@ router.get("/users", (req, res) => {
   });
 });
 
-///regsiter User
+// Regsiter User
 router.post("/register", (req, res) => {
   //encrypt password
   let hashpassword = bcrypt.hashSync(req.body.password, 8);
@@ -45,23 +45,31 @@ router.post("/login", (req, res) => {
     else {
       const passIsValid = bcrypt.compareSync(req.body.password, user.password);
       if (!passIsValid) res.send({ auth: false, token: "Invalid Password" });
-      // in case bot are correct generate token
+      // in case both email & password are correct, generate token and send
       let token = jwt.sign({ id: user._id }, config.secret, {
-        expiresIn: "2m",
+        expiresIn: 60 * 60,
       });
-      res.send({ auth: true, token: token });
+      res.send({ auth: true, token: token, expiresIn: 60 * 60 });
     }
   });
 });
 
+// Logout
+router.get("/logout", (req, res) => {
+  let token = jwt.sign({ id: user._id }, config.secret, {
+    expiresIn: 60 * 60,
+  });
+  res.send("Logged out Successfully");
+});
+
 //userInfo
 router.get("/userInfo", (req, res) => {
-  let token = req.headers["x-access-token"];
+  let token = req.headers["my-token"];
   if (!token) res.send({ auth: false, token: "No Token Provided" });
   //jwt verify
   jwt.verify(token, config.secret, (err, user) => {
-    if (err) res.send({ auth: false, token: "Invalid Token" });
-    console.log(user)
+    if (err) res.send({ auth: false, tokFen: "Invalid Token" });
+    console.log(user);
     User.findById(user.id, (err, result) => {
       res.send(result);
     });

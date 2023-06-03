@@ -1474,10 +1474,10 @@ Swagger
 -Swagger is a software tool used for designing, building, documenting, and using RESTful APIs.
 -Swagger simplifies API development for users, teams, and enterprises with the Swagger open source and professional toolset.
 -We can define all the operations in the file swagger.json
--We can have your custom CSS for your swagger page.
+-We can have your custom CSS for our swagger page.
 
 
-
+https://stackoverflow.com/questions/45518568/can-i-write-same-path-names-for-different-methods-in-rest-api
 
 
 

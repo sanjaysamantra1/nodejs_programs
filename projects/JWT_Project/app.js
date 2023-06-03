@@ -1,13 +1,13 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const db = require('./db');
+const db = require("./db");
 const port = 5000;
-const cors = require('cors');
+const cors = require("cors");
 app.use(cors());
 
-const AuthController = require('./controller/AuthController');
-app.use('/api/auth',AuthController);
+const AuthController = require("./controller/AuthController");
+app.use("/api/auth", AuthController);
 
-app.listen(port,()=>{
-    console.log(`Listing to port ${port}`)
-})
+app.listen(port, () => {
+  console.log(`Listing to port ${port}`);
+});
