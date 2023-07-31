@@ -58,14 +58,14 @@ describe("Testing Todos application", () => {
         throw err;
       });
   });
-  it('should return 200 for Delete Todo',(done) => {
-      chai
+  it("should return 200 for Delete Todo", (done) => {
+    chai
       .request("http://localhost:5000")
       .delete(`/todo/1`)
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.have.lengthOf(4);
         done();
-      })
-  })
+      });
+  });
 });

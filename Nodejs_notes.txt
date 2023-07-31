@@ -9,7 +9,7 @@ Loops
 Arrays
 fetch()
 ES-6 and beyond 
-(class,module,rest,spread,collections,promise,async await,Enhanced Object Literals)
+(class,module,rest,spread,promise,async await)
 
 
 
@@ -19,34 +19,39 @@ Node.js Syllabus
 -Traditional Web Server Model, Node.js Process Model
 -Local Environment SetUp
 -Node.js Console - REPL
--NPM , NPX
+-NPM , NPX , NVM
 -Modules: Core, Local , 3rd party
 -Global Objects
--CallBacks, Generators
 -File System
 -Debugging Node JS Application
 -Buffer & Streams
 -Events (Event Loop,Event Emitter)
 -Creating web server & Handling http requests (HTTP)
 -Express Framework-routes
--MongoDB
--Database connectivity 
+-NodeJS & MongoDB Connection
 -Mongoose,graphQL
 -Template Engines (Jade/Pug, vash, EJS, handlebars)
 -Redis (Caching)
 -Swagger  (API Documentation)
--Unit testing
+-Unit testing (Mocha, Jasmine)
+
 
 
 Projects
 ========
+-CRUD HTTP Module
+-CRUD ExpressJS
+-GraphQL
+-Template Engine
+-Server Side Validation
+-Image Upload (express-file-uploader)
+-Image Upload (Formidable) 
 -NodeEmailer (Send Email)
 -Chat Application (Socket.io)
--Express Validator 
--Image Upload (express-file-uploader)
--Image Upload (Formidable)
 -JWT Token
--End To End Application
+-Swagger
+-Unit testing
+
 
 
 
@@ -1183,6 +1188,8 @@ MongoDB Local
    "{"error":"NonExistentPath: Data directory C:\\data\\db\\ not found"
 5. create folder 'c:\data\db'
 6. run 'mongod.exe'
+7. set path for mongo-server 
+	C:\Program Files\MongoDB\Server\6.0\bin
 
 
 MongoDB Shell (CLI for mongoDB)
@@ -1499,14 +1506,12 @@ https://www.section.io/engineering-education/how-to-build-authentication-api-wit
 
 
 
-
-
 Unit Testing with Jasmine
 =========================
 -Unit testing is important to verify the behavior of the smallest units of code in application. 
 -It helps improve the quality of  code and reduces the amount of time we spend on bug fixing. 
--unit testing helps to find bugs early on in the development life cycle.
--Jasmine is an open-source and  popular JavaScript library testing framework to test any kind of JavaScript application.
+-unit testing helps to find bugs early in the development life cycle.
+-Jasmine is an open-source and  popular JavaScript testing framework to test any kind of JavaScript application.
 
 
 1.install jasmine globally
@@ -1520,6 +1525,12 @@ Unit Testing with Jasmine
 5.run the below command to run tests
   jasmine
  
+ 
+Coverage Report
+===============
+1. npm i istanbul
+2. istanbul cover --include-all-sources spec/tests/index.spec.js && istanbul check-coverage
+
  
 Jasmine Terminologies
 =====================
@@ -1568,6 +1579,9 @@ global install
 project install
 	npm i -D mocha chai chai-http
 	
+	
+	
+	
 
 Chai Assertion Style
 --------------------
@@ -1577,6 +1591,15 @@ Chai Assertion Style
    ex: expect(foo).to.have.lengthOf(3)
 3. assert
    ex: assert.lengthOf(foo,3)
+
+
+
+Exclusive/Inclusive Test
+========================
+describe.only()
+it.only()
+describe.skip()
+it.skip()
 
 
 

@@ -2,6 +2,9 @@ let express = require("express");
 let app = express();
 let mongodb = require("mongodb").MongoClient;
 let url = "mongodb://localhost:27017";
+const cors = require("cors");
+app.use(cors());
+
 
 app.get("/", function (req, res) {
   res.send("<h1>Server is Running...</h1>");
@@ -19,10 +22,7 @@ app.get("/employees", function (req, res) {
           if (err) {
             res.status(203).send("error while fetching records");
           } else {
-            res.status(200).json({
-              staus: "success",
-              data: employees,
-            });
+            res.status(200).json(employees);
           }
         });
     }

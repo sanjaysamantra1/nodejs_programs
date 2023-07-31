@@ -41,10 +41,10 @@ router.post("/login", (req, res) => {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (err) res.send({ auth: false, token: "Error while login" });
     if (!user)
-      res.send({ auth: false, token: "No User Found,Please Register First" });
+      res.send({ auth: false, msg: "No User Found,Please Register First" });
     else {
       const passIsValid = bcrypt.compareSync(req.body.password, user.password);
-      if (!passIsValid) res.send({ auth: false, token: "Invalid Password" });
+      if (!passIsValid) res.send({ auth: false, msg: "Invalid Password" });
       // in case both email & password are correct, generate token and send
       let token = jwt.sign({ id: user._id }, config.secret, {
         expiresIn: 60 * 60,
