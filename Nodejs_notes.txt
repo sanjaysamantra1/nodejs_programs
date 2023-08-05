@@ -76,7 +76,7 @@ What NodeJs is?
 -Offline Storage            -No Offline Storage
 -No FileSystem				-FileSystem
 -Database Interaction(No)	-Database Interaction(yes)
--Client Apps				-Server side Apps
+-Client Apps/ UI			-Server side Apps / Back-End
 
 
 
@@ -147,10 +147,11 @@ this single thread doesn't have to wait for the request to complete and is free 
 1. Clients send HTTP requests to NodeJS server.
 2. Event-Loop(Single Thread) delegates long-running operations to non-blocking workers and becomes available to handle the next request.
 3. When asynchronous I/O work completes, EventLoop processes the request further and sends the response to the client.
-https://www.dotnettricks.com/learn/nodejs/exploring-nodejs-code-execution-process
- 
-UV_THREADPOOL_SIZE=6  (4 default, max 128)
 
+https://www.dotnettricks.com/learn/nodejs/exploring-nodejs-code-execution-process
+https://cdn.buttercms.com/0Nh1yR6SSPwqnsKYSfHa
+ 
+process.env.UV_THREADPOOL_SIZE=6  (4 default, max 128)
 Worker Threads- File System API, Cryptography, Compression, DNS Lookup
 
 
@@ -179,19 +180,14 @@ Blocking vs Non-Blocking I/O
  while the chef is preparing that order, 
  waiter will take new orders and will give it back to the chef.
  waiter doesn't wait for the chef to prepare the food.
--Blocking is when the execution of additional JavaScript in the Node.js process must wait until a non-JavaScript operation completes. 
--This happens because the event loop is unable to continue running JavaScript while a blocking operation is occurring.
--Blocking call waits for the I/O operation to complete before returning. 
- Its results are returned synchronously. 
- Nothing else in that process takes place during the waiting. 
--non-blocking call returns immediately without results and uses alternate means to check for completion. 
- Other processing can be done while waiting and the results are returned asynchronously. 
--Node.js libraries and core api provide non-blocking calls that can be used to build performant applications. Such applications make use of I/O waiting time to serve other requests
--concurrency refers to the event loop's capacity to execute JavaScript callback functions after completing other work
--let's consider a case where each request to a web server takes 50ms to complete and 45ms of that 50ms is database I/O that can be done asynchronously. Choosing non-blocking asynchronous operations frees up that 45ms per request to handle other requests. This is a significant difference in capacity just by choosing to use non-blocking methods instead of blocking methods
+-Non-blocking I/O operations allow a single process to serve multiple requests at the same time. -Instead of the process being blocked and waiting for I/O operations to complete, the I/O operations are delegated to the system, so that the process can execute the next piece of code. -Non-blocking I/O operations provide a callback function that is called when the operation is completed.
+-Blocking methods execute synchronously and non-blocking methods execute asynchronously.
+-let's consider a case where each request to a web server takes 50ms to complete and 45ms of that 50ms is database I/O that can be done asynchronously. Choosing non-blocking asynchronous operations frees up that 45ms per request to handle other requests. This is a significant difference in capacity just by choosing to use non-blocking methods instead of blocking methods.
 
 
 Q. What is Reactor Pattern in Node.js?
+-Assigning a callback function to each I/O operation is called the Reactor Pattern.
+-It’s the responsibilty of the system to run the handler function once the data from the event is available.
 
 
 
@@ -200,19 +196,38 @@ How to install Node.js
 ======================
 -Official packages for all the major platforms are available in the below URL
  https://nodejs.dev/en/download/
--nvm is a popular way to run Node.js. It allows to easily switch the Node.js version.
+ 
+ 
+How to Maintain multiple NodeJS versions
+========================================
+-NVM : Node version Manager
+-NVM is a version manager for node.js
+-multiple nodeJS versions can be maintained with the help of NVM.
+-It allows to easily switch the Node.js version.
   NVM for Mac - https://tecadmin.net/install-nvm-macos-with-homebrew/
   NVM for windows - https://github.com/coreybutler/nvm-windows
 
+
 NVM useful commands
 -------------------
-`nvm  --version` to check version 
-`nvm list` to list all the available nvm versions
-`nvm install 15.0` to install a specific version of nodejs
-`nvm use 15.0` to use a specific version of nodejs
-
-
-
+-Check NVM is installed
+ nvm --version
+-List all the available Node Versions
+ nvm list available
+-List all the installed Node Versions
+ nvm list installed / nvm ls
+-To install latest node version
+ nvm install node
+-To install a particular version of node
+ nvm install 16.0.0
+-To uninstall a particular version of node
+ nvm uninstall 16.0.0
+-To switch node version
+ nvm use 16.0.0
+-To check currently used node version
+ nvm current / node -v
+ 
+ 
 
 
 REPL
@@ -287,18 +302,28 @@ accept arguments from the command line
 	})
 -we can get only the additional arguments by creating a new array that excludes the first 2 params
  const args = process.argv.slice(2)
--The best way to deal with key:value arguements is by using the minimist library.
+
+
+Assignment:
+-Ask user to enter 2 numbers and 1 operator(+ - * /) 
+-perform arithmetic operation on those 2 numbers
+Note: hanlde edge cases also
+
+
+
+Minimist
+========
+-The best way to deal with key:value arguements is by using the 'minimist' library.
  const args = require('minimist')(process.argv.slice(2))
  console.log(args['name'])
 -use double dashes before each argument name
- node app.js --name=sanjay
+ node app.js --name=sanjay --add=bangalore
 Note: process module does not need a "require", it's automatically available.
 
-Assignment: Create 1 Arithmetic example using command Line Arg
 
 
 
-Visual Studio Code
+VS Code Extensions
 ==================
 vscode-icons
 prettier
@@ -312,6 +337,7 @@ Browser extensions
 -json viewer 
 -POSTMAN
 -Allow CORS
+-Mobile Simulator
 
 
 
