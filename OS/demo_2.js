@@ -1,17 +1,12 @@
 const os = require("os");
 
-// info about current user
-const user = os.userInfo();
-console.log(user);
-
 // method returns the system uptime in seconds
 console.log(`The System Uptime is ${os.uptime()} seconds`);
-console.log(`The System Uptime is ${os.uptime()/60/60} hours`);
+console.log(`The System Uptime is ${os.uptime() / 60 / 60} hours`);
 
-const currentOS = {
-  name: os.type(),
-  release: os.release(),
-  totalMem: os.totalmem(),
-  freeMem: os.freemem(),
-};
-console.log(currentOS);
+// System Information
+const cpus = os.cpus(); // [{},{}]
+console.log(cpus.length + " core"); // 4 core
+console.log(os.homedir()); //current user's home directory
+console.log(os.tmpdir()); //current user's temp directory
+console.log(os.hostname()); //host name

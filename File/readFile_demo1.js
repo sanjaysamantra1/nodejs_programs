@@ -1,4 +1,4 @@
-var fs = require("fs");
+const fs = require("fs");
 
 console.log("program started");
 // Asynchonously read the file

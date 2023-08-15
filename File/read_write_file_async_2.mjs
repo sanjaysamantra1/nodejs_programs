@@ -4,7 +4,6 @@ console.log("start");
 try {
   const firstFileContent = await readFile("./content/first.txt");
   const secondFileContent = await readFile("./content/second.txt");
-  console.log(firstFileContent)
   await writeFile(
     "./content/result-async.txt",
     `2 files content:: ${firstFileContent} & ${secondFileContent}`

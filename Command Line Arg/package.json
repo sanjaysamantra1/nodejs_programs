@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
-    "minimist": "~1.2.8"
+    "minimist": "^1.2.8"
   }
 }

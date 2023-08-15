@@ -8,9 +8,5 @@ process    - info about env where the program is being executed */
 
 console.log("current directory:: ", __dirname);
 console.log("current file name:: ", __filename);
-console.log("this value in global scope::", this);
 
-function f1() {
-  console.log("this value inside function:: ", this);
-}
-f1();
+
