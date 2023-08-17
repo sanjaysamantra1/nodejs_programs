@@ -1,8 +1,8 @@
 const http = require("http");
 
-let server = http.createServer((req, res) => {
+const server = http.createServer((req, res) => {
   console.log("Request received...");
-  res.write("<h1>This is response From server</h1>");
+  res.write("<h1>This is response From server...</h1>");
 });
 
 server.listen(5000, () => {

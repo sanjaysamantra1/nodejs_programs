@@ -1,16 +1,16 @@
-var http = require("http");
-var url = require("url");
+const http = require("http");
+const url = require("url");
 
 const server = http.createServer(function (req, res) {
   let params = url.parse(req.url, true).query;
   let { name, age } = params;
   let msg = "";
   if (name && age) {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    msg = `${name} is ${age} years old`;
+    res.writeHead(200, { "Content-Type": "text/html" });
+    msg = `<p><center><b>${name}</b> is <b>${age}</b> years old<center></p>`;
   } else {
-    res.writeHead(400, { "Content-Type": "text/plain" });
-    msg = `Bad Request`;
+    res.writeHead(400, { "Content-Type": "text/html" });
+    msg = `<p><center><b>Bad request</b><center></p>`;
   }
   res.write(msg);
   res.end();
