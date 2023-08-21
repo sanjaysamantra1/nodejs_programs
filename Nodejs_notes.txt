@@ -752,7 +752,7 @@ JSON
 FS Module Error Handling
 ========================
 -No Error tracking is required : appendFile(), writeFile()
--default error tracking : readFile() (No Errors thrown)
+-default error tracking : readFile() 
 -manual error tracking is required: unlink(),rename()
 
 
@@ -899,7 +899,7 @@ HEAD - method returns info about resource (version/length/type)
 
 
 Route-Parameter
-================
+===============
 1. PathParam
 -passed after /
  ex:- /productDetails/101
@@ -1107,7 +1107,10 @@ Express generator
    express project2 --no-view
 
 
-
+Folder Structure for NodeJS & ExpressJS project
+================================================
+https://www.developerupdates.com/blog/folder-structure-for-nodejs-and-expressjs-project
+https://dev.to/mr_ali3n/folder-structure-for-nodejs-expressjs-project-435l
 
 
 

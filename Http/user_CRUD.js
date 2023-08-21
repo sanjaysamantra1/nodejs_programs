@@ -11,10 +11,10 @@ const server = http.createServer((req, res) => {
   if (url === "/") {
     res.write(`<h1>This is the home page</h1>`);
   }
-  if (url === "/users") {
+  if (url === "/users" && method === "GET") {
     res.write(JSON.stringify(users));
   }
-  if (url.includes("/users/") && userId) {
+  if (url.includes("/users/") && method === "GET" && userId) {
     const user = users.find((user) => user.id == userId);
     res.write(JSON.stringify(user));
   }

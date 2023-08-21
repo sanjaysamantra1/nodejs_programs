@@ -4,9 +4,9 @@ const app = express();
 app.use(express.json());
 
 app.post("/login", (req, res) => {
-  console.log(req.body.email); // "user@example.com"
-  console.log(req.body.password); // "helloworld"
-  res.send("POST Request Received");
+  const { email, password } = req.body;
+  console.log(email, password);
+  res.send("POST Request Received on /login");
 });
 
 app.listen(5000, () => {
