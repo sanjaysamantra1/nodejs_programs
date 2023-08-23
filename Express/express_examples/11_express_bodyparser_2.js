@@ -22,6 +22,7 @@ app.post("/login", urlencodedParser, function (req, res) {
 // POST /api/users gets JSON bodies
 app.post("/api/users", jsonParser, function (req, res) {
   // create user in req.body
+  res.send(req.body.userName + "Added successfully");
 });
 
 app.listen(5000, function () {

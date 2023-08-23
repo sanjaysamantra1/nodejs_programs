@@ -16,9 +16,14 @@ const middleware3 = (req, res, next) => {
   next();
 };
 
-app.get("/", middleware1, middleware2, middleware3, (req, res) => {
-  console.log("This is Home Page");
+app.get("/", (req, res) => {
   res.send("This is Home Page");
+});
+app.get("/about", middleware1, middleware2, (req, res) => {
+  res.send("This is About Us Page");
+});
+app.get("/contact", middleware1, middleware2, middleware3, (req, res) => {
+  res.send("his is Contact Us Page");
 });
 
 app.listen(5000, () => {

@@ -9,7 +9,7 @@ const loggerMiddleWare = (req, res, next) => {
   next();
 };
 
-app.get("/", loggerMiddleWare, (req, res) => {
+app.get("/", (req, res) => {
   res.send("Home Route");
 });
 app.get("/about", loggerMiddleWare, (req, res) => {
