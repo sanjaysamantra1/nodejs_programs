@@ -1187,16 +1187,17 @@ setMaxListeners()		Sets the maximum number of listeners allowed for one event. D
 
 Template Engines for Node.js
 ============================
--Template engine helps us to create an HTML template with minimal code. 
+-Template engine helps  to create an HTML template with minimal code. 
 -It can inject data into HTML template at client side and produce the final HTML.
--template engines for Node.js (Jade/pug,Vash,EJS,Handlebars)
+-Template engines for Node.js (Jade/pug,Vash,EJS,Handlebars)
 
 
 
 
 Data Access in Node.js
 ======================
--Node.js supports all kinds of databases(RDBMS/NO-SQl).However, NoSQL databases like MongoDB are the best fit with Node.js
+-Node.js supports all kinds of databases(RDBMS/NO-SQl)
+ However, NoSQL databases like MongoDB are the best fit with Node.js
 -To access the database from Node.js, the driver needs to be installed for the database 
 ex:npm install mysql (for MySQL)
    npm install oracledb (for Oracle)
@@ -1250,16 +1251,17 @@ MongoDB Shell (CLI for mongoDB)
 -download mongoDB shell 
  https://www.mongodb.com/try/download/shell
 -extract and run mongosh.exe
--set path for mongo-server  & mongo-shell
-	 C:\Program Files\MongoDB\Server\6.0\bin
+-set path for mongo-shell
 	 C:\mongo-shell\bin	    
 -verify the path setup is done correctly by running below 2 commands
  mongod --version
- mongosh -version 
+ mongosh --version 
 -Run the below command to Start Mongo Shell 
  start mongosh.exe 
 -Enter mongoDB Connection String 
  mongodb://localhost:27017
+ mongodb://0.0.0.0:27017/
+ 
  
  
 Note: If mongoDB and mongoShell are installed & path is set
@@ -1323,6 +1325,8 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  db.employees.find().count()
  db.employees.countDocuments({salary:13001});
  db.employees.find().limit(2)
+ db.employees.distinct('eid');
+ 
 -To Update the existing Data
  db.employees.updateOne( { id: 101 }, { $set: { sal: 2000 } } ) 
  db.employees.updatemany( { sal:6000 }, { $set: { sal: 6500 } } )
@@ -1332,8 +1336,7 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  db.employees.deleteOne({ sal:6000 })
  db.employees.deleteMany({ name: "sanjay" })
  db.employees.remove({ id:101 }) 	// Deprecated
- db.employees.remove({ id:101 }, 1)
- db.employees.remove({})   // Remove All Documents(equivalent of SQL's truncate)
+ db.users.deleteMany({})   // Remove All Documents(equivalent of SQL's truncate)
  
  db.employees.drop()
  db.dropDatabase() 
@@ -1371,15 +1374,27 @@ Managing Indexes
 
 Assignment
 ==========
-1. Find distinct salaries in asccending order and store in a variable.
+1. Find distinct salaries in asccending order.
 2. Find the 3rd highest salary in the employee table.
-   db.employees.countDocuments({salary:13001});
 3. Find the employees whose DOB is today's date.
 4. increase the salary of every employee by 500.
 5. change the 'gender' of every employee (male-->female,female-->male)
 
 
-
+Assignment Solutions
+====================
+1.db.employees.distinct('salary',{}).sort((a,b)=>a-b);
+2.db.employees.find().sort({'salary':-1}).skip(2).limit(1);
+3.
+4.db.employees.updateMany({},{ $inc: { salary: 500 } });
+5.db.employees.updateMany({},[ {$set:{gender:{$cond:{
+		if: { $eq: ['$gender', 'male'] },
+		then: 'female',
+		else: 'male'
+	}}}} ]);
+	
+	
+	
 
 MongoDB Atlas
 =============

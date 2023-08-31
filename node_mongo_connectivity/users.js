@@ -8,15 +8,18 @@ app.get("/", function (req, res) {
 app.get("/users", async function (req, res) {
   let connection;
   try {
-    connection = await MongoClient.connect("mongodb://localhost:27017/");
-    console.log("Connection Established", connection);
-    const users = connection.db("march2023").collection("users").find({});
+    console.log("Connecting to database...");
+    connection = await MongoClient.connect("mongodb://0.0.0.0:27017/");
+    console.log("Connection Established...");
+    const users = connection.db("july2023").collection("users").find({});
     const result = await users.toArray();
     res.json(result);
   } catch (err) {
     console.log(err);
   } finally {
-    await connection.close();
+    if (connection) {
+      await connection.close();
+    }
   }
 });
 

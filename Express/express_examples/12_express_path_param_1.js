@@ -13,7 +13,7 @@ app.get("/courses/:coursename/:topicname", function (req, res) {
 });
 
 // Pattern matching routes
-app.get('/things/:id([0-9]{5})', function(req, res){
+app.get('/users/:id([0-9]{2})', function(req, res){
     res.send('id: ' + req.params.id);
 });
 

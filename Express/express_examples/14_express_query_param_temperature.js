@@ -20,3 +20,5 @@ app.listen(PORT, function (error) {
   if (error) throw error;
   console.log("Server created Successfully on PORT", PORT);
 });
+
+// http://localhost:5000/temp?city=mumbai

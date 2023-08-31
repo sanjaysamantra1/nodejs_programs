@@ -1,14 +1,15 @@
-var express = require("express");
-var cors = require("cors");
-var app = express();
+const express = require("express");
+const users = require("./users.json");
+const cors = require("cors");
+const app = express();
 
-var corsOptions = {
+const corsOptions = {
   origin: "https://www.w3schools.com",
   // allow the requests from w3schools
 };
 
-app.get("/products/:id", cors(corsOptions), function (req, res, next) {
-  res.json({ msg: "This is CORS-enabled for only w3schools.com" });
+app.get("/users", cors(corsOptions), function (req, res, next) {
+  res.json(users);
 });
 
 app.listen(5000, function () {
