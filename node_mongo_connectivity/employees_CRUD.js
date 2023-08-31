@@ -43,7 +43,7 @@ app.post("/employee", async (req, res) => {
 app.patch("/employees/:id", (req, res) => {
   const empId = +req.params.id;
   const payload = req.body;
-  db.collection("employees").updateOne({ id: empId },{ $set: payload },{upsert:true});
+  conn.db("july2023").collection("employees").updateOne({ id: empId },{ $set: payload },{upsert:true});
   res.send("Employee Updated successfully");
 });
 
