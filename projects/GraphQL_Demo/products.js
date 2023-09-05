@@ -1,8 +1,12 @@
 const express = require("express");
+const cors = require("cors");
 const port = 5000;
 const app = express();
 const { graphqlHTTP } = require("express-graphql");
 const productSchema = require("./product-schema");
+
+app.use(cors());
+app.use(express.json());
 
 app.use(
   "/products",

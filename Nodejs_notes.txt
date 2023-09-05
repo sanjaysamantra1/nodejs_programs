@@ -1406,7 +1406,9 @@ MongoDB Atlas
 -Add your connection IP address to your IP access list
 -Create a database user for your cluster
 -Connect to your cluster
--Load sample data or your own data!
+-Load sample data or your own data
+
+Follow the Steps mentioned in the below URL
 https://www.javatpoint.com/mongodb-atlas
 
 mongodb+srv://sanjaysamantra:<password>@cluster0.geshq.mongodb.net/?retryWrites=true&w=majority

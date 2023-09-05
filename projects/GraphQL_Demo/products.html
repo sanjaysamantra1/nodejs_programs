@@ -1,0 +1,26 @@
+<script>
+    let prodId = +prompt('Enter Product id: ', 2);
+
+    async function fetchProducts1() {
+        const url = `https://fakestoreapi.com/products/${prodId}`;
+        const response = await fetch(url);
+        const products = await response.json();
+        console.log(products);
+    }
+    fetchProducts1();
+
+    async function fetchProducts2() {
+        const url = `http://localhost:5000/products`;
+        const myQuery = `{ Products(id:${prodId}) { id, price,category,title } }`;
+        let response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({ query: myQuery }),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        let data = await response.json();
+        console.log(data.data.Products)
+    }
+    fetchProducts2()
+</script>

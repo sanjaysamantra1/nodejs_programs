@@ -1,13 +1,12 @@
-let express = require("express");
-let cors = require("cors");
-let express_graphql = require("express-graphql");
-let { buildSchema } = require("graphql");
+import express from "express";
+import cors from "cors";
+import { createHandler } from "graphql-http/lib/use/express";
+import { buildSchema } from "graphql";
 
 // GraphQL schema
 let schema = buildSchema(`
     type Query {
         course(id: Int!): Course
-        courses(topic: String): [Course]
     },
     type Course {
         id: Int
@@ -47,38 +46,26 @@ let coursesData = [
     url: "https://codingthesmartway.com/courses/understand-javascript/",
   },
 ];
+
 let getCourse = function (args) {
   let id = args.id;
   return coursesData.filter((course) => {
     return course.id == id;
   })[0];
 };
-let getCourses = function (args) {
-  if (args.topic) {
-    let topic = args.topic;
-    return coursesData.filter((course) => course.topic === topic);
-  } else {
-    return coursesData;
-  }
-};
+
 let root = {
   course: getCourse,
-  courses: getCourses,
 };
 // Create an express server and a GraphQL endpoint
 let app = express();
 app.use(cors());
 
-app.use(
-  "/courses",
-  express_graphql.graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true,
-  })
-);
+app.use("/courses", createHandler({ schema, rootValue: root, graphiql: true }));
 app.listen(5000, () =>
-  console.log("Express GraphQL Server Now Running On http://localhost:5000/courses")
+  console.log(
+    "Express GraphQL Server Now Running On http://localhost:5000/courses"
+  )
 );
 
 /* {course(id:1) {
