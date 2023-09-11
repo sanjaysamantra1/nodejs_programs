@@ -646,7 +646,7 @@ Local(Custom) Modules
 -By default, Node.js treats JavaScript as CommonJS modules. But we can tell Node.js to treat JavaScript code as ES modules.
 -Node.js will treat the following files as ES modules:
 	a.Files ending in .mjs
-	b.Files ending in .js when the nearest parent package.json file contains a top-level field "type" with a value of "module".
+	b.if "type": "module" is set in package.json
 
 
 
@@ -1406,7 +1406,7 @@ MongoDB Atlas
 -Add your connection IP address to your IP access list
 -Create a database user for your cluster
 -Connect to your cluster
--Load sample data or your own data
+-Add your own data / Load Sample Data
 
 Follow the Steps mentioned in the below URL
 https://www.javatpoint.com/mongodb-atlas
@@ -1432,7 +1432,7 @@ GraphQL
 -GraphQL is a query language for APIs.
 -GraphQL provides a complete and understandable description of the data in API.
 -It gives clients the power to ask for exactly what they need and nothing more.
--Advantages of GraphQL:- declarative, compositional, strongly-typed
+-Advantages of GraphQL:- declarative, compositional, strongly-typed.
 
 
 

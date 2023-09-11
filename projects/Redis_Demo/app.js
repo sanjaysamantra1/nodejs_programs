@@ -7,7 +7,7 @@ let redisClient = redis.createClient({ host: "localhost", port: 6379 });
 
 let app = express();
 app.get("/data", (req, res) => {
-  let countryName = req.query.country;
+  let countryName = req?.query?.country || "india";
   const url = `https://en.wikipedia.org/w/api.php?action=parse&format=json&section=0&page=${countryName}`;
 
   return redisClient.get(countryName, (err, result) => {
