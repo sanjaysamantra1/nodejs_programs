@@ -1,7 +1,7 @@
-const express = require("express");
-const formidable = require("formidable");
-const app = express();
 const fs = require("fs");
+const formidable = require("formidable");
+const express = require("express");
+const app = express();
 
 app.get("/", (req, res) => {
   res.send(`
@@ -33,10 +33,8 @@ app.post("/api/upload", (req, res, next) => {
     console.log(">>>new path>>", newPath);
 
     let imageFile = fs.readFileSync(oldPath);
-    fs.writeFile(newPath, imageFile, function (err) {
-      if (err) console.log(err);
-      return res.send("Successfully uploaded");
-    });
+    fs.writeFileSync(newPath, imageFile);
+    res.send("Successfully uploaded");
   });
 });
 

@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 
 const options = {
   multiples: true,
-  maxFileSize: 5 *1024*1024, // MAX 5 MB
+  maxFileSize: 5 * 1024 * 1024, // MAX 5 MB
   filter: function ({ name, originalFilename, mimetype }) {
     return mimetype && mimetype.includes("image");
   },
@@ -31,11 +31,9 @@ app.post("/api/upload", (req, res, next) => {
       let oldPath = file.filepath;
       let newPath = `${__dirname}/public/images/${file.originalFilename}`;
       let imageFile = fs.readFileSync(oldPath);
-      fs.writeFile(newPath, imageFile, function (err) {
-        if (err) console.log(err);
-      });
+      fs.writeFileSync(newPath, imageFile);
     }
-    return res.send("Successfully uploaded All Files");
+    res.send("Successfully uploaded All Files");
   });
 });
 
