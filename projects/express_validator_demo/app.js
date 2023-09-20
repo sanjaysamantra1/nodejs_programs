@@ -1,21 +1,20 @@
 const { check, validationResult } = require("express-validator");
 const express = require("express");
 const app = express();
-const bodyparser = require("body-parser");
-app.use(bodyparser.urlencoded({ extended: false }));
-app.use(bodyparser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", function (req, res) {
   res.send(`
   <form action="saveData" method="POST">
-        <pre>
-	Enter your Email : <input type="text" name="email"> <br>
-	Enter your Name	 : <input type="text" name="name"> <br>
-	Enter Mobile Number : <input type="number" name="mobile"> <br>
-	Enter your Password : <input type="password" name="password"> <br>
-	<input type="submit" value="Submit Form">
-    </pre>
-    </form>`);
+      <pre>
+        Enter your Email : <input type="text" name="email"> <br>
+        Enter your Name	 : <input type="text" name="name"> <br>
+        Enter Mobile Number : <input type="number" name="mobile"> <br>
+        Enter your Password : <input type="password" name="password"> <br>
+        <input type="submit" value="Submit Form">
+      </pre>
+  </form>`);
 });
 
 // check() is a middleware used to validate
@@ -41,7 +40,6 @@ app.post(
   ],
   (req, res) => {
     const errors = validationResult(req);
-    console.dir(req.body);
     if (!errors.isEmpty()) {
       res.status(400).json(errors);
     } else {

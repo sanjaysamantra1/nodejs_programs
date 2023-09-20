@@ -1,19 +1,16 @@
 const { check, validationResult } = require("express-validator");
 
-const bodyparser = require("body-parser");
 const express = require("express");
 const path = require("path");
 const app = express();
+app.use(express.urlencoded());
+app.use(express.json());
 
 var PORT = process.env.port || 5000;
 
 // View Engine Setup
 app.set("views", path.join(__dirname));
 app.set("view engine", "ejs");
-
-// Body-parser middleware
-app.use(bodyparser.urlencoded({ extended: false }));
-app.use(bodyparser.json());
 
 app.get("/", function (req, res) {
   res.render("login");
@@ -24,8 +21,11 @@ app.get("/", function (req, res) {
 app.post(
   "/login",
   [
-    check("email", "Please Enter Valid Email").isEmail(),    
-    check("password", "Password length should be minimum 8 characters").isLength({
+    check("email", "Please Enter Valid Email").isEmail(),
+    check(
+      "password",
+      "Password length should be minimum 8 characters"
+    ).isLength({
       min: 8,
     }),
   ],
@@ -36,7 +36,7 @@ app.post(
     // If errors
     if (!errors.isEmpty()) {
       const alerts = errors.array();
-      res.render("login", {alerts});
+      res.render("login", { alerts });
     }
     // if no errors
     else {
