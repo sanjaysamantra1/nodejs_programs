@@ -1,7 +1,8 @@
 const EventEmitter = require("events");
-const event = new EventEmitter();
+const eventObj = new EventEmitter();
 
-event.on("sayHi", () => {
+eventObj.on("sayHi", () => {
   console.log("Hi Sanjay!!!");
 });
-event.emit("sayHi");
+
+eventObj.emit("sayHi");

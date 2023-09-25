@@ -17,3 +17,4 @@ event.on("deleteFirst", () => {
 });
 
 event.emit("add", "maruti");
+event.emit("deleteFirst");

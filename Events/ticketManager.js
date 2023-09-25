@@ -1,18 +1,18 @@
 const EventEmitter = require("events");
 
 class TicketManager extends EventEmitter {
-  constructor(supply) {
+  constructor(ticketCount) {
     super();
-    this.supply = supply;
+    this.ticketCount = ticketCount;
   }
 
   buy(email, price) {
-    if (this.supply > 0) {
-      this.supply--;
-      this.emit("buy", email, price, new Date().toLocaleTimeString());
-      return;
+    if (this.ticketCount > 0) {
+      this.ticketCount--;
+      this.emit("buyTicket", email, price, new Date().toLocaleTimeString());
+    }else{
+      this.emit("NoTicketAvailable", new Error("There are no more tickets left to purchase"));
     }
-    this.emit("error", new Error("There are no more tickets left to purchase"));
   }
 }
 module.exports = TicketManager;

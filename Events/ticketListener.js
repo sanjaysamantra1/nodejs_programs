@@ -4,12 +4,12 @@ const EmailService = require("./EmailService");
 const ticketManager = new TicketManager(2);
 const emailService = new EmailService();
 
-ticketManager.on("buy", (person, price, time) => {
+ticketManager.on("buyTicket", (person, price, time) => {
   console.log(`${person} bought a ticket for Rs.${price} at ${time}`);
   emailService.send(person);
 });
 
-ticketManager.on("error", (error) => {
+ticketManager.on("NoTicketAvailable", (error) => {
   console.error(error);
 });
 
