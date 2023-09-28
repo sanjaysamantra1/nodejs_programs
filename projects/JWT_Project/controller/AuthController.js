@@ -10,11 +10,9 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 // Get all the users
-router.get("/users", (req, res) => {
-  User.find({}, (err, data) => {
-    if (err) throw err;
-    res.send(data);
-  });
+router.get("/users", async (req, res) => {
+  let users = await User.find({});
+  res.send(data);
 });
 
 // Regsiter User

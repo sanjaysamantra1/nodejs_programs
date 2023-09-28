@@ -8,5 +8,5 @@ const userSchema = new mongoose.Schema({
     role:String
 })
 
-mongoose.model('users',userSchema);
-module.exports = mongoose.model('users')
+let User = mongoose.model('users',userSchema);
+module.exports = User;

@@ -1546,9 +1546,16 @@ Swagger
 -It’s very important to write documentation for APIs so that whoever consumes those APIs understand them, implement them, and play around with them.
 -Swagger is a software tool used for designing, building, documenting, and using RESTful APIs.
 -create, update and share OpenAPI definitions with consumers.
-
 -We can define all the operations in the file swagger.json
 -We can have your custom CSS for our swagger page.
+
+Steps:
+1. npm init -y
+2. npm install swagger-jsdoc swagger-ui-express 
+3. add server.js
+4. add the file swagger.json to define the operations.
+5. add the file swagger.css to define custom css
+6. Node server.js and try 'http://localhost:5000/api-docs/'
 
 
 https://stackoverflow.com/questions/45518568/can-i-write-same-path-names-for-different-methods-in-rest-api
@@ -1556,17 +1563,6 @@ https://stackoverflow.com/questions/45518568/can-i-write-same-path-names-for-dif
 
 
 
-JSON Web Token
-==============
--JSON Web Token (JWT) is a standard that defines a compact and self-contained way for securely transmitting information between parties as a JSON object.
--used for authentication. After a user signs in to an application, the application then assigns JWT to that user. Subsequent requests by the user will include the assigned JWT. This token tells the server what routes, services, and resources the user is allowed to access.
--A JSON Web Token consists of: 1.Header  2.Payload  3.signature
-
-https://www.section.io/engineering-education/how-to-build-authentication-api-with-jwt-token-in-nodejs/
-
-1. npm init -y
-2. npm install mongoose express dotenv cors body-parser jsonwebtoken bcryptjs
-3. 
 
 
 
@@ -1643,7 +1639,7 @@ Unit testing with Mocha & Chai
 
 global install
 	npm install mocha -g
-project install
+project level install
 	npm i -D mocha chai chai-http
 	
 	
@@ -1655,10 +1651,20 @@ Chai Assertion Style
 1. should 
 	ex: abc.should.have.lengthOf(3)
 2. expect
-   ex: expect(foo).to.have.lengthOf(3)
+   ex: expect(abc).to.have.lengthOf(3)
 3. assert
-   ex: assert.lengthOf(foo,3)
+   ex: assert.lengthOf(abc,3)
+   
+var chai = require('chai');  
+var assert = chai.assert;    // Using Assert style
+var expect = chai.expect;    // Using Expect style
+var should = chai.should();  // Using Should style
 
+
+Hooks
+=====
+-Mocha provides the hooks before(), after(), beforeEach(), and afterEach(). 
+-These should be used to set up preconditions and clean up after  tests are executed.
 
 
 Exclusive/Inclusive Test
@@ -1667,6 +1673,24 @@ describe.only()
 it.only()
 describe.skip()
 it.skip()
+
+
+
+
+
+JSON Web Token
+==============
+-JSON Web Token (JWT) is a standard for securely transmitting information between backend-frontend as a JSON object.
+-used for authentication. After a user signs in to an application, the application then assigns JWT to that user. Subsequent requests by the user will include the assigned JWT. This token tells the server what routes, services, and resources the user is allowed to access.
+-A JSON Web Token consists of: 1.Header  2.Payload  3.signature
+
+https://www.section.io/engineering-education/how-to-build-authentication-api-with-jwt-token-in-nodejs/
+
+1. npm init -y
+2. npm install mongoose express dotenv cors body-parser jsonwebtoken bcryptjs
+3. 
+
+
 
 
 
