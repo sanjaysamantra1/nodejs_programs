@@ -1,7 +1,7 @@
 let chai = require("chai");
 let chaiHttp = require("chai-http");
-let expect = chai.expect;
 chai.use(chaiHttp);
+let expect = chai.expect;
 
 describe("Testing Todos application", () => {
   it("Should return 200 for /health", (done) => {

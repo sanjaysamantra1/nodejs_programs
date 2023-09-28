@@ -49,6 +49,6 @@ Projects
 -Image Upload (Formidable) 
 -NodeEmailer (Send Email)
 -Chat Application (Socket.io)
--JWT Token
 -Swagger
 -Unit testing
+-JWT Token

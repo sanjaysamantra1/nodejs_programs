@@ -3,7 +3,7 @@ const app = express();
 const port = 5000;
 
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./user-swagger.json");
+const swaggerDocument = require("../Swagger_Demo_2/user-swagger.json");
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 let users = [
@@ -22,13 +22,14 @@ app.get("/api/users", (req, res) => {
 
 app.get("/api/users/:id", (req, res) => {
   const id = +req.params.id;
-  users = users.filter((user) => user.id === id);
-  res.json(users);
+  const result = users.filter((user) => user.id === id);
+  res.json(result);
 });
+
 app.get("/api/myusers", (req, res) => {
   const name = req.query.name;
-  users = users.filter((user) => user.name === name);
-  res.json(users);
+  const result = users.filter((user) => user.name === name);
+  res.json(result);
 });
 
 app.listen(port, () => {

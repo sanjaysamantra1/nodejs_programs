@@ -3,7 +3,7 @@
   "info": {
     "description": "This is a simple example NodeJS API project to demonstrate Swagger Documentation",
     "version": "1.0.0",
-    "title": "Tasks API Titl",
+    "title": "Tasks API Title",
     "contact": {
       "email": "sanjaysamantra2@gmail.com"
     },
@@ -18,7 +18,7 @@
   "paths": {
     "/todos": {
       "get": {
-        "summary": "Get all the tasks",
+        "summary": "Get all tasks",
         "description": "Get all the tasks",
         "produces": ["application/json"],
         "parameters": [],
