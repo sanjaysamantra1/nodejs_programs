@@ -752,8 +752,11 @@ JSON
 FS Module Error Handling
 ========================
 -No Error tracking is required : appendFile(), writeFile()
+ File gets created if it doesn't exist
 -default error tracking : readFile() 
+ callBack(err,data)
 -manual error tracking is required: unlink(),rename()
+ No Param CallBack - error should be thrown explicitely
 
 
 
