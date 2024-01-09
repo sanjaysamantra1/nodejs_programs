@@ -10,17 +10,17 @@ app.get("/", (req, res) => {
 const userRouter = express.Router();
 const productRouter = express.Router();
 
-userRouter.route("/").get(function (req, res) {
+userRouter.get("/", function (req, res) {
   res.end("Users Router Working");
 });
-userRouter.route("/details").get(function (req, res) {
+userRouter.get("/details", function (req, res) {
   res.end("User Details Router Working");
 });
 
-productRouter.route("/").get(function (req, res) {
+productRouter.get("/", function (req, res) {
   res.end("products Router Working");
 });
-productRouter.route("/details").get(function (req, res) {
+productRouter.get("/details", function (req, res) {
   res.end("product Details Router Working");
 });
 

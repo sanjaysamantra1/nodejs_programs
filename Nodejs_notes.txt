@@ -112,11 +112,13 @@ V8 JavaScript Engine
 ====================
 -V8 is the name of the JavaScript engine that powers Google Chrome.
 -V8 takes our JavaScript and executes it while browsing with Chrome.
+-The same V8 Engine is used in NodeJS also.
 -V8 is written in C++, and it's continuously improved.
 -JavaScript is generally considered an interpreted language, but modern JavaScript engines no longer just interpret JavaScript, they compile it.
 -JavaScript is internally compiled by V8 with 
 
-JS Code -->
+JS Code --> V8  -->  Parsing  --> Abstract Syntax Tree  --> ByteCode -->
+Machine Code  --> Runs On CPU
 
 
 
@@ -202,7 +204,7 @@ How to Maintain multiple NodeJS versions
 ========================================
 -NVM : Node version Manager
 -NVM is a version manager for node.js
--multiple nodeJS versions can be maintained with the help of NVM.
+-Multiple nodeJS versions can be maintained with the help of NVM.
 -It allows to easily switch the Node.js version.
   NVM for Mac - https://tecadmin.net/install-nvm-macos-with-homebrew/
   NVM for windows - https://github.com/coreybutler/nvm-windows
@@ -212,7 +214,7 @@ NVM useful commands
 -------------------
 -Check NVM is installed
  nvm --version
--List all the available Node Versions
+-List all the available Node Versions to be installed
  nvm list available
 -List all the installed Node Versions
  nvm list installed / nvm ls
@@ -244,7 +246,7 @@ REPL
 -To launch the REPL (Node shell), open command prompt and type 'node'.
 -If you need to write multi line JavaScript expression or function then just press Enter.
  (The REPL terminal will display three dots (...), it means you can continue on next line)
--We can execute an external JavaScript file by writing 'Node Filename'.
+-We can execute an external JavaScript file by writing 'node <Filename>'.
 -assign the result of the most recently evaluated expression to the special variable _ (underscore)
 	 a = 10; b = 20; a+b;
 	 sum = _; console.log(sum);
@@ -259,17 +261,15 @@ REPL
 REPL Command		Description
 --------------------------------
 .help				Display help on all the commands
-.editor			    enables editor mode, to write multiline JavaScript code with ease. Once you are in this mode, enter ctrl-D to run the code you wrote
-tab Keys			Display the list of all commands.
+.editor			    enables editor mode, multiline JS code , ctrl+D  
+Tab Key				Display the list of all commands. (Math. tab twice)
 Up/Down Keys		See previous commands applied in REPL.
-.save filename		Save current Node REPL session to a file.
+.save filename		Save current Node REPL session to a file. (.save e:/abc.txt)
 .load filename		Load the specified file in the current Node REPL session.
 .exit				exits the repl (same as pressing ctrl+C two times)
 ctrl + c			Terminate the current command.
 ctrl + c (twice)	Exit from the REPL.
 ctrl + d			Exit from the REPL.
-.break				Exit from multiline expression.
-.clear				Exit from multiline expression.(Alias for .break)
 
 
 
@@ -318,7 +318,7 @@ Minimist
  console.log(args['name'])
 -use double dashes before each argument name
  node app.js --name=sanjay --add=bangalore
-Note: process module does not need a "require", it's automatically available.
+Note: process module does not need a "require", it's defaultly available.
 
 
 
@@ -335,7 +335,7 @@ ESLint
 Browser extensions
 ==================
 -json viewer 
--POSTMAN
+-POSTMAN 
 -Allow CORS
 -Mobile Simulator
 
@@ -346,7 +346,6 @@ Debug NodeJs Code
 1. Debugging natively
   a. node inspect your-script.js  (type next, help)
      go to browser --> chrome://inspect/
-     https://nodejs.dev/en/api/v19/debugger/
   b. use debugger;  in a code line you want
   
 cont, c               Resume execution
@@ -357,8 +356,10 @@ backtrace, bt         Print the current backtrace
   
   
 2. visual Studio Code
-   In the Debug panel, click the settings icon to open .vscode/launch.json.
+   a. In the Debug panel, click the settings icon to open .vscode/launch.json.
    Select "Node.js" for initial setup.
+   b. go to the JS file add debug points
+   c. go to Debug Panel, click 'Run' button
 
 
 
@@ -449,8 +450,8 @@ NPM Global vs Local Installation
  
 -Globally installed packages/dependencies are stored in system directory. 
 -Such dependencies can be used in CLI (Command Line Interface), but cannot be imported using require() in Node application directly. 
- ex:- npm i express -g
-      const express = require('express'); //No
+ ex:- npm i nodemon -g
+      const nodemon = require('nodemon'); //No
 -Few packages that should be gloabbllay installed: 
  1.npm   2.nodemon  3.typescript  4.create-react-app  5.angular-cli  6.json-server
 -Run the below command command to list down all the globally installed modules. 
@@ -471,7 +472,8 @@ Package.json
 	  description,
 	  author,
 	  keywords 
-	  scripts etc.
+	  scripts 
+	  dependencies etc.
 -package.json file is normally located at the root directory of a Node.js project.
 
 
@@ -519,6 +521,9 @@ Nodemon
  ex:- npm i -g nodemon
 -Check if Nodemon is installed?
  nodemon -v
+-nodemon help
+ nodemon -h 
+ nodemon --help
 -Just use nodemon instead of node to run your code, your process will automatically restart when your code changes
  ex:- node file1.js      (server won't be re-started when code is changed)
       nodemon file1.js   (server gets re-started when there is a code change)
@@ -530,12 +535,10 @@ Nodemon
 Nodemon Features:
 ----------------
 -Automatic restarting of application.
--Detects default file extension to monitor.
--Default support for node & coffeescript, but easy to run any executable (such as python, make, etc).
 -Ignoring specific files or directories.
+ nodemon --ignore public server.js
 -Watch specific directories.
--Works with server applications or one time run utilities and REPLs.
--Requirable in node apps.
+ nodemon --watch src server.js
 -Open source and available on github.
  
 
@@ -563,12 +566,13 @@ Node.js Global Objects
 	require
 	fetch
 	global
+	navigator
 
 
 setImmediate() vs setTimeout()
 ==============================
 -setImmediate() is designed to execute a script once the current poll phase completes.
--setTimeout() schedules a script to be run after a minimum threshold in ms has elapsed.
+-setTimeout() schedules a script to be executed after a minimum threshold in ms has elapsed.
 -setImmediate callbacks are called after I/O Queue callbacks are finished or timed out. setImmediate callbacks are placed in Check Queue, which are processed after I/O Queue.
 -setTimeout(fn, 0) callbacks are placed in Timer Queue and will be called after I/O callbacks as well as Check Queue callbacks. As event loop, process the timer queue first in each iteration, so which one will be executed first depends on which phase event loop is.
 
@@ -580,7 +584,7 @@ setImmediate() vs setTimeout()
 Symbol 
 ======
 -A 'symbol' represents a unique identifier.
--Symbols are often used to add unique property keys to an object that won’t collide with keys.
+-Symbols are used to add unique property keys to an object that won’t collide with keys.
 -create a symbol by calling the Symbol(), not by using new keyword.
  let sym1 = Symbol()  // correct
  let sym2 = new Symbol()  // TypeError
@@ -605,9 +609,13 @@ This
 ex: console.log(this, this === module.exports); //true
 	module.exports.name = "sanjay";
 	console.log(this); // { name:sanjay }
--The object left of the dot is the value of this. If there is no object left of the dot the value of this is the module.exports object.
--This rule does not apply for arrow function which don't have their own binding of this.
--in strictmode this value inside a function is undefined.
+	
+-in Normal Mode, this value inside a function is 'global Object'.
+-in strictmode, this value inside a function is undefined.
+
+-The object left of the dot is the value of this for normal functions.
+-This rule does not apply for arrow function, as they don't have their own binding of this.
+
 
 
 
@@ -617,11 +625,11 @@ NodeJs Modules
 ==============
 -A way of encapsulating code in to separate logical units.
 -Module:A set of functions you want to include in your application.
--In the Node.js module system, each file is treated as a separate module.
+-In Node.js module system, each file is treated as a separate module.
 -Node.js includes three types of modules:
 	1. Core(Built-in) Modules     	  (os,fs,http,process,path,url)
 	2. Local(Custom) Modules    	  (created locally in our application)
-	3. Third Party(External) Modules  (can be downloaded using NPM) ex:-minimist,express,mongoose,lodash,moment,chalk,cors
+	3. Third Party(External) Modules  (can be downloaded using NPM) ex:-minimist,express,mongoose,lodash,moment,chalk,cors,axios
 
 
 Core Modules:
@@ -755,6 +763,8 @@ FS Module Error Handling
  File gets created if it doesn't exist
 -default error tracking : readFile() 
  callBack(err,data)
+ Program Execution doesn't stop, as no error object is thrown.
+ Its Recommended to handle error scenario.
 -manual error tracking is required: unlink(),rename()
  No Param CallBack - error should be thrown explicitely
 
@@ -819,11 +829,12 @@ join() vs resolve()
 
 
 
+
 Process Module
 ==============
--The process core module of Node.js provides the env property which hosts all the environment variables that were set at the moment the process was started.
--Note: process does not require a "require", it's automatically available.
--If you have multiple environment variables in your node project, you can also create an .env file in the root directory of your project, and then use the dotenv package to load them during runtime.
+-Process Module provides the env property which hosts all the environment variables that were set at the moment the process was started.
+Note: process does not need a "require", it's automatically available.
+-If you have multiple environment variables in your node project, create an .env file in the root directory of project, and then use the dotenv package to load them during runtime.
 .env file
 	USER_ID="239482"
 	USER_KEY="abcd"
@@ -855,7 +866,7 @@ exec() : creates a new shell process and executes a command in that shell.
          The output of the command can be collected via a callback function passed to exec()
 execFile() : execute a file (bat/sh)
 spawn(): when the command we want to run can output a large amount of data
-fork() : 
+fork() : communication channel is established to the child process when using fork, so we can use the send function on the forked process along with the global process object itself to exchange messages between the parent and forked processes
  
  
  
@@ -876,6 +887,9 @@ response.writeHead() should be called first when initiating a response, allows 	
 response.write(chunk[, encoding][, callback]) allows us to send a chunk of data as part of our response.
 
 response.end() signalizes the response as complete, MUST be called once per response.
+
+
+Note:Unless you change the path to your favicon in an HTML document, browsers will (usually) make a request to the /favicon.ico path in order to get the favicon of your server.
 
 
 HTTP Methods
@@ -1750,12 +1764,13 @@ Interview Questions & Answers
 
 ---------------------------
 md5 generator
-express file uploader
-express-validator, joi validator
+joi validator
 formidable - https://www.w3schools.com/nodejs/nodejs_uploadfiles.asp
 loadtest npm package
+Sequelize
+NestJs
 ---------------------------------------
-Asked Questions
+Interview Questions
 
 1- update() findOneAndUpdate()
 2- drop & remove()
