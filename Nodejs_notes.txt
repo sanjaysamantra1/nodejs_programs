@@ -882,6 +882,7 @@ createServer()   		Returns a new instance of Server.
 listen(PORT,CallBack)   Binds the server to listen on a specific port
 close()					Stops the server from listening to more requests
 
+response.setHeader('Content-Type', 'text/html');
 response.writeHead() should be called first when initiating a response, allows 	us to set up the HTTP response code and headers we are sending back.
 
 response.write(chunk[, encoding][, callback]) allows us to send a chunk of data as part of our response.
@@ -923,7 +924,7 @@ Route-Parameter
 -Need to define in the route
  ex: app.get('users/:id')
 -If defined than need to pass in url
--Used to pass 1 value
+-only 1 value can be passed
 
 2. QueryParam
 -passed after ?
@@ -958,7 +959,9 @@ Express.JS
 -Express.js is a web application framework for Node.js.
 -a framework is a set of helper functions,tools and rules that help us to build our application.
 -It provides various features that make web application development fast and easy which otherwise takes more time using only Node.js.
--Alternatives to Express.js are 'Vanilla Node.js','koa','sails.js'
+-Alternatives to Express.js are 'NestJS' , 'Vanilla Node.js','koa','sails.js'
+-NestJS : A progressive Node.js framework for building efficient, reliable and scalable server-side applications.
+
 
 Advantages of Express.js
 ========================
@@ -1067,7 +1070,7 @@ res.sendStatus()	Set the response status code and send its string representation
 
 Serving static files in Express
 ===============================
--To serve static files such as images, CSS files, and JavaScript files, use the express.static built-in middleware function in Express. 
+-To serve static files such as images, CSS files, and JavaScript files, use the express.static() built-in middleware function in Express. 
 express.static(root, [options])
 -The root argument specifies the root directory from which to serve static assets.
  app.use(express.static('public'))
@@ -1080,7 +1083,7 @@ express.static(root, [options])
 Middlewares
 ===========
 -Middlewares are like a middleman between a request and the response in a REQUEST → RESPONSE cycle.
--Middlewares in ExpressJS are just functions that can modify these Request and Response objects either to retrieve or store relevant information.
+-Middlewares in ExpressJS are functions that can modify Request and Response objects either to retrieve or store relevant information.
 -An example of a simple express js middleware could be to log the current date and time on every URL the user visits on our website.
 
 req => middleware => res
@@ -1093,7 +1096,7 @@ app.use((req, res, next) => {
 
 Order of Middleware Calls
 =========================
--The order in which they are written/included in your file; the order in which they are executed.
+-The order in which they are written/included in the file; the order they are executed.
 
 
 
@@ -1112,6 +1115,23 @@ Body-parser
  // parse application/json
  app.use(bodyParser.json())
  
+ 
+Note: ExpressJS provides its inbuilt functions for parsing request body
+	app.use(express.json()); 
+	app.use(express.urlencoded()); 
+ 
+
+
+Express PathParam & QueryParam
+==============================
+1. Path-Param
+	ex:- /productDetails/101
+	const userId = req.params.userId;
+
+2. Query-param
+	ex:- /search?searchWord=skybag&filter=something
+	const {searchWord,filter} = req.query;
+
 
 
 cookie-parser
@@ -1215,7 +1235,7 @@ Data Access in Node.js
 ======================
 -Node.js supports all kinds of databases(RDBMS/NO-SQl)
  However, NoSQL databases like MongoDB are the best fit with Node.js
--To access the database from Node.js, the driver needs to be installed for the database 
+-To access the database in Node.js application, the driver needs to be installed for the database 
 ex:npm install mysql (for MySQL)
    npm install oracledb (for Oracle)
    npm install mongodb (MongoDB)
@@ -1230,6 +1250,8 @@ MongoDB
  MongoDB(Database,Collection,Document,Field)
 -indexing , shemaless , Replication, Scalability, Performance, High Availability.
 -No SQL databases - MongoDB, cassandra, Amazon Dynamo DB, couchbase, redis.
+ Relational databases - MySql , Oracle , PostgreSQL
+ 
 
 Sql         NoSql
 ===================
@@ -1259,7 +1281,7 @@ MongoDB Local
    "{"error":"NonExistentPath: Data directory C:\\data\\db\\ not found"
 5. create folder 'c:\data\db'
 6. run 'mongod.exe'
-7. set path for mongo-server 
+7. set path for mongo-server(To start mongodb from any path)
 	C:\Program Files\MongoDB\Server\6.0\bin
 
 
@@ -1278,8 +1300,6 @@ MongoDB Shell (CLI for mongoDB)
 -Enter mongoDB Connection String 
  mongodb://localhost:27017
  mongodb://0.0.0.0:27017/
- 
- 
  
 Note: If mongoDB and mongoShell are installed & path is set
 -open 2 command prompts
@@ -1769,6 +1789,7 @@ formidable - https://www.w3schools.com/nodejs/nodejs_uploadfiles.asp
 loadtest npm package
 Sequelize
 NestJs
+passportjs npm
 ---------------------------------------
 Interview Questions
 
