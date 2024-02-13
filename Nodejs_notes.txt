@@ -1597,7 +1597,17 @@ Upload File
 
 
 Socket IO / Chat Application
-=============================
+============================
+-Socket.IO is a library that enables low-latency, bidirectional and event-based communication between a client and a server.
+
+io.on('connection', socket => {
+  socket.emit('request', /* … */); // emit an event to the socket
+  io.emit('broadcast', /* … */); // emit an event to all connected sockets
+  socket.on('reply', () => { /* … */ }); // listen to the event
+});
+
+
+
 -"socket.io": "^2.2.0"
 
 

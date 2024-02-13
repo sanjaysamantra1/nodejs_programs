@@ -1,19 +1,16 @@
 let express = require("express");
-let http = require("http");
-let path = require("path");
-let socketio = require("socket.io");
-
 let app = express();
+
+let path = require("path");
 app.use(express.static(path.join(__dirname, "public")));
 
-let server = http.createServer(app).listen(5000, ()=> {
-  console.log(`Server running on port 5000`);
-});
+const server = require('http').createServer(app);
+server.listen(5000, () => console.log('Server Running on port 5000'));
 
-io = socketio.listen(server);
+const io = require('socket.io')(server);
 
 // handle socket traffic
-io.sockets.on("connection", function (socket) {
+io.on("connection", function (socket) {
   socket.on("nick", function (name) {
     socket.nickname = name;
   });
@@ -29,8 +26,6 @@ io.sockets.on("connection", function (socket) {
       nick: nickname,
       time: currentTime,
     };
-
-    socket.emit("chat", payload);
-    socket.broadcast.emit("chat", payload);
+    io.emit("chat", payload);
   });
 });
