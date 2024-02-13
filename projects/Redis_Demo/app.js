@@ -1,36 +1,34 @@
-let express = require("express");
-let axios = require("axios");
-let redis = require("redis");
+import express from "express";
+import axios from "axios";
+import { createClient } from "redis";
 
-// Redis Client
-let redisClient = redis.createClient({ host: "localhost", port: 6379 });
+const redisClient = await createClient()
+    .on('error', err => console.log('Redis Client Error', err))
+    .connect();
 
 let app = express();
-app.get("/data", (req, res) => {
-  let countryName = req?.query?.country || "india";
-  const url = `https://en.wikipedia.org/w/api.php?action=parse&format=json&section=0&page=${countryName}`;
 
-  return redisClient.get(countryName, (err, result) => {
-    if (result) {
-      const output = JSON.parse(result);
-      res.send(output);
+app.get('/fetchData', async (req, res) => {
+
+    let countryName = req?.query?.country || "india";
+    const url = `https://en.wikipedia.org/w/api.php?action=parse&format=json&section=0&page=${countryName}`;
+
+    const dataInRedis = await redisClient.get(countryName);
+    if (dataInRedis) {
+        console.log(('Data found in Redis'))
+        let output = JSON.parse(dataInRedis)
+        res.send({ source: 'REDIS', output });
     } else {
-      console.log("No data found in redis cache for country: " + countryName);
-      axios.get(url).then((response) => {
-        const output = response.data;
-        // set data with expiry time
-        redisClient.setex(
-          countryName,
-          3600,
-          JSON.stringify({ source: "Redis Cache", output: output })
-        );
-        // send the API response to client
-        res.send({ source: "API Response", output: output });
-      });
-    }
-  });
-});
+        console.log('Data not found in Redis');
+        let response = await axios.get(url);
+        let output = response.data;
 
-app.listen(5000, () => {
-  console.log("server listening on http://localhost:5000");
-});
+        // Store data in REDIS
+        await redisClient.set(countryName, JSON.stringify(output));
+        console.log('data stored in REDIS')
+
+        res.send({ source: 'API', output });
+    }
+})
+
+app.listen(5000)

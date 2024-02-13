@@ -6,7 +6,8 @@ Functions
 Arrow Function
 this operator
 Loops
-Arrays
+String
+Array
 fetch()
 ES-6 and beyond 
 (class,module,rest,spread,promise,async await)
@@ -77,6 +78,7 @@ What NodeJs is?
 -No FileSystem				-FileSystem
 -Database Interaction(No)	-Database Interaction(yes)
 -Client Apps/ UI			-Server side Apps / Back-End
+-Consume APIs				-Develop APIs
 
 
 
@@ -115,7 +117,7 @@ V8 JavaScript Engine
 -The same V8 Engine is used in NodeJS also.
 -V8 is written in C++, and it's continuously improved.
 -JavaScript is generally considered an interpreted language, but modern JavaScript engines no longer just interpret JavaScript, they compile it.
--JavaScript is internally compiled by V8 with 
+-JavaScript is internally compiled by V8 
 
 JS Code --> V8  -->  Parsing  --> Abstract Syntax Tree  --> ByteCode -->
 Machine Code  --> Runs On CPU
@@ -138,11 +140,11 @@ How NodeJs works/NodeJs Process Model
 If no thread is available in the thread pool at any point of time then the request waits till the next available thread. 
 -Dedicated thread executes a particular request and does not return to thread pool until it completes the execution and returns a response.
 
--All the user requests will be handled by a single thread and all the I/O work or long running job is performed asynchronously for a particular request. 
+-All the user requests are handled by a single thread and all the I/O work or long running job is performed asynchronously for a particular request. 
 this single thread doesn't have to wait for the request to complete and is free to handle the next request. 
 -When asynchronous I/O work completes then it processes the request further and sends the response.
 -An event loop is constantly watching for the events to be raised for an asynchronous job and executing callback function when the job completes. 
--Internally, Node.js uses libev for the event loop which in turn uses internal C++ thread pool to provide asynchronous I/O.
+-Internally, Node.js uses libuv for the event loop which in turn uses internal C++ thread pool to provide asynchronous I/O.
 
 
 
@@ -198,6 +200,7 @@ How to install Node.js
 ======================
 -Official packages for all the major platforms are available in the below URL
  https://nodejs.dev/en/download/
+ https://nodejs.org/en/about/previous-releases
  
  
 How to Maintain multiple NodeJS versions
@@ -1343,9 +1346,10 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  db.employees.insertMany([{eid:1,name:'sanjay',sal:5000},
             {eid:2,name:'sameer',sal:6000}])
 -To  see data inside collections
- db.employees.find() // db.employees.findOne()
+ db.employees.find() 
  db.employees.find().pretty()
  db.employees.find( {sal: 6000} )
+ db.employees.findOne({sal: 6000})
  db.employees.find( {name:'abc',sal: 6000} )
  db.employees.find({"address.city":"bangalore"}) //Nested
  db.employees.find({sal: {$lt:6000}}) 
@@ -1357,8 +1361,8 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  db.employees.find({"name":/san/i})   // (Like in SQL)
  db.employees.find( {} , {sal:0} ) // all columns except sal
  db.employees.find( {} , {sal:1,name:1} ) // name,sal column in result
- db.employees.find().sort({sal:1}).pretty()   //asc
- db.employees.find().sort({sal:-1}).pretty() //desc
+ db.employees.find().sort({sal:1})   //asc
+ db.employees.find().sort({sal:-1}) //desc
  db.employees.find().count()
  db.employees.countDocuments({salary:13001});
  db.employees.find().limit(2)
@@ -1375,12 +1379,15 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  db.employees.remove({ id:101 }) 	// Deprecated
  db.users.deleteMany({})   // Remove All Documents(equivalent of SQL's truncate)
  
- db.employees.drop()
- db.dropDatabase() 
+ db.employees.drop()  // Drop The Collection
+ db.dropDatabase()    // Drop Database
  
  
 implicit and vs explicit $and
 ==============================
+implicit - {name:'abc',sal: 6000}
+Explicit - { $and: [ {name:'sanjay',sal:6000}] }
+
 -don't use implecit AND if the field name is same;
 -it ignores the first condition, only executes second condition.
 
@@ -1409,6 +1416,21 @@ Managing Indexes
  
 
 
+
+Aggregation Pipelines
+======================
+-An aggregation pipeline consists of one or more stages that process documents:
+-Each stage performs an operation on the input documents. For example, a stage can filter documents, group documents, and calculate values.
+-The documents that are output from a stage are passed to the next stage.
+-An aggregation pipeline can return results for groups of documents. For example, return the total, average, maximum, and minimum values.
+
+-db.collectionName.aggregate(pipeline, options)
+ input --> $match  --> $group --> $sort --> output
+
+
+
+
+
 Assignment
 ==========
 1. Find distinct salaries in asccending order.
@@ -1420,17 +1442,27 @@ Assignment
 
 Assignment Solutions
 ====================
-1.db.employees.distinct('salary',{}).sort((a,b)=>a-b);
+1.db.employees.distinct('salary').sort((a,b)=>a-b);
 2.db.employees.find().sort({'salary':-1}).skip(2).limit(1);
-3.
+3. db.employees.find({
+	  $expr: {
+		$and: [
+		  { $eq: [{ $dayOfMonth: "$dob" }, { $dayOfMonth: new Date() }] },
+		  { $eq: [{ $month: "$dob" }, { $month: new Date() }] }
+		]
+	  }
+	});
 4.db.employees.updateMany({},{ $inc: { salary: 500 } });
+  // For Decrement - $inc: { salary: -500 }
 5.db.employees.updateMany({},[ {$set:{gender:{$cond:{
 		if: { $eq: ['$gender', 'male'] },
 		then: 'female',
 		else: 'male'
 	}}}} ]);
 	
+
 	
+
 	
 
 MongoDB Atlas
@@ -1439,7 +1471,10 @@ MongoDB Atlas
 
 -Register for an Atlas account
  https://www.mongodb.com/atlas/database (click on try Free)
--Create and deploy an M0 cluster
+ Fill in the registration form with your information and click Sign up
+-Create a cluster and deploy an M0 cluster
+ 
+ 
 -Add your connection IP address to your IP access list
 -Create a database user for your cluster
 -Connect to your cluster
@@ -1450,6 +1485,7 @@ https://www.javatpoint.com/mongodb-atlas
 
 mongodb+srv://sanjaysamantra:<password>@cluster0.geshq.mongodb.net/?retryWrites=true&w=majority
 
+https://www.freecodecamp.org/news/get-started-with-mongodb-atlas/
 
 
 
@@ -1492,15 +1528,16 @@ How To Install Redis
    C:\Program Files\Redis 
 4. check redis version (in command prompt)
    redis-server -v
-5. open CMD-->redis-cli 
-   127.0.0.1:6379 
+5. open command prompt & run the below command
+   redis-cli (redis cli should open 127.0.0.1:6379 )
+   
 
 
 Commands
 ========
 -To check the existing Data
  KEYS *
--Set Data (Syntax: set key value expiryTime)
+-Set Data (Syntax: set key value expiryTime in seconds)
  SET name sanjay
  SET add bangalore ex 2000 
  SETEX age 3600 45
@@ -1759,6 +1796,11 @@ Best Practices to keep NodeJS Secure
 5. Don’t send unnecessary information
 6. Limit request sizes
 7. Validate user input
+
+
+Web-Hooks
+=========
+
 
 
 
