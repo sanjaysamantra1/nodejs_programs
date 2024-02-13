@@ -1,18 +1,16 @@
 {
-  "name": "imageupload",
+  "name": "fileupload",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ejs": "^3.1.8",
-    "express": "^4.18.2",
-    "express-fileupload": "^1.4.0"
+    "express-fileupload": "^1.4.3",
+    "formidable": "^2.1.1"
   }
 }
