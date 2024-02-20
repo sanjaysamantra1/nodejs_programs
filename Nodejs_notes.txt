@@ -484,6 +484,9 @@ package.json  VS  package-lock.json
 ===================================
 -package.json maintains only the main packages's information.
  "cors": "^2.8.5"
+ "bootstrap" : "^5.2.1"
+-package-lock.json containes the exact version. 
+	"bootstrap" : "5.3.2" (npm update bootstrap)
 -package-lock.json maintains main packages's information + nested-packages information
     "node_modules/cors": {  
       "dependencies": {
@@ -522,8 +525,8 @@ Nodemon
 -Nodemon is a utility that will monitor for any changes in your source and automatically restart your server.
 -Nodemon can be installed using NPM.
  ex:- npm i -g nodemon
--Check if Nodemon is installed?
- nodemon -v
+-Nodemon can be used without installing also, using npx
+ npx nodemon file1.js
 -nodemon help
  nodemon -h 
  nodemon --help
@@ -532,7 +535,7 @@ Nodemon
       nodemon file1.js   (server gets re-started when there is a code change)
 	  npx nodemon file1.js   (server gets re-started when there is a code change)
 -The 'node_modules' folder is ignored by default by nodemon.
--You can restart the process at any time by typing rs and hitting enter.
+-You can restart the process at any time by typing 'rs' and hitting enter.
 
 
 Nodemon Features:
@@ -553,7 +556,7 @@ Node.js Global Objects
 -A list of Node.js global objects are given below:
 	__dirname
 	__filename
-	console - log(),error(),warn(),time(),timeEnd(),trace(),dir()
+	console - log(),error(),warn(),time(),timeEnd(),trace(),dir(),assert(),table()
 	process - exit(),beforeExit(), uncaughtException()
 	buffer
 	setImmediate(callback[, arg][, ...])
@@ -592,7 +595,7 @@ Symbol
  let sym1 = Symbol()  // correct
  let sym2 = new Symbol()  // TypeError
 -Even if we create many symbols with the same description, they are different values.
- Symbol('foo') === Symbol('foo')  // false
+ Symbol('abc') === Symbol('abc')  // false
 -Symbols allow us to create “hidden” properties of an object, 
  that no other part of code can accidentally access or overwrite.
 -If we want to use a symbol in an object literal,we need square brackets around it.
@@ -613,7 +616,9 @@ ex: console.log(this, this === module.exports); //true
 	module.exports.name = "sanjay";
 	console.log(this); // { name:sanjay }
 	
--in Normal Mode, this value inside a function is 'global Object'.
+-in Normal Mode:
+	a. this value inside a regular/normal function is 'global Object'.
+	b. this value inside an arrow function is {} (module.exports)
 -in strictmode, this value inside a function is undefined.
 
 -The object left of the dot is the value of this for normal functions.
@@ -632,7 +637,7 @@ NodeJs Modules
 -Node.js includes three types of modules:
 	1. Core(Built-in) Modules     	  (os,fs,http,process,path,url)
 	2. Local(Custom) Modules    	  (created locally in our application)
-	3. Third Party(External) Modules  (can be downloaded using NPM) ex:-minimist,express,mongoose,lodash,moment,chalk,cors,axios
+	3. Third Party(External) Modules  (can be installed using NPM, and can be used) ex:-minimist,express,mongoose,lodash,moment,chalk,cors,axios
 
 
 Core Modules:
@@ -675,12 +680,10 @@ External Modules(minimist,chalk,validator,lodash,moment)
 Node.js OS Module
 =================
 -The OS module provides information about the computer's operating system.
--while downloading gitbash,mongoDB,postman(OS is auto-populated)
 
 arch()	      Returns the operating system CPU architecture-32/64
-constants	 Returns an object containing the operating system's constants for process signals, error cotes etc.
 cpus()	       Returns an array containing information about the computer's CPUs
-endianness()	Returns the endianness of the CPU
+endianness()	Returns the endianness of the CPU (LE-Little Endian , BE-Big Endian)
 EOL	Returns the end-of-line marker for the current operating system
 freemem()	Returns the number of free memory of the system
 hostname()	Returns the hostname of the operating system
@@ -693,16 +696,8 @@ totalmem()	Returns the number of total memory of the system
 type()	    Returns the name of the operating system
 uptime()	Returns the uptime of the operating system, in seconds
 userInfo()	Returns information about the current user
-
-
-
-
-CallBacks
-=========
--Callback is an asynchronous equivalent for a function. 
--A callback function is called at the completion of a given task. 
--All the APIs of Node are written in such a way that they support callbacks.
-ex: fs.readFile('filePath',callbackFn);
+availableParallelism() 
+constants	 Returns an object containing the operating system's constants for process signals, error cotes etc.
 
 
 
@@ -1604,11 +1599,10 @@ io.on('connection', socket => {
   socket.emit('request', /* … */); // emit an event to the socket
   io.emit('broadcast', /* … */); // emit an event to all connected sockets
   socket.on('reply', () => { /* … */ }); // listen to the event
+  socket.broadcast.emit(); //emit an event to all connected sockets, except the sender
 });
 
-
-
--"socket.io": "^2.2.0"
+https://socket.io/docs/v4/tutorial/introduction
 
 
 

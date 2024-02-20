@@ -1,6 +1,6 @@
 describe("lets Understand Jasmine Global Functions", () => {
   beforeAll(() => {
-    console.log("Before All..."); // Common Logic -  1
+    console.log("Before All...");
   });
   beforeEach(() => {
     console.log("Before Each...");

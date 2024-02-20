@@ -7,7 +7,7 @@ const app = express(),
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
-const customCss = fs.readFileSync(process.cwd() + "/swagger.css", "utf8");
+// const customCss = fs.readFileSync(process.cwd() + "/swagger.css", "utf8");
 
 // place holder for the data
 let tasks = [
@@ -41,7 +41,8 @@ app.use(bodyParser.json());
 app.use(
   "/api-docs",
   swaggerUi.serve,
-  swaggerUi.setup(swaggerDocument, { customCss })
+  // swaggerUi.setup(swaggerDocument, { customCss })
+  swaggerUi.setup(swaggerDocument,{})
 );
 
 app.get("/api/todos", (req, res) => {

@@ -12,7 +12,7 @@ const chatSchema = new mongoose.Schema({
 	msg: String,
 	created: { type: String, default: Date.now }
 });
-const Chat = mongoose.model('chat', chatSchema);
+const chatModel = mongoose.model('chat', chatSchema);
 
 
 app.get('/', function (req, res) {
@@ -21,10 +21,10 @@ app.get('/', function (req, res) {
 
 const users = {}
 
-io.sockets.on('connection', async function (socket) {
+io.on('connection', async function (socket) {
 
-	let docs = await Chat.find({});
-	socket.emit('load old msgs', docs);
+	let oldMsgs = await chatModel.find({});
+	socket.emit('load old msgs', oldMsgs);
 
 	socket.on('new user', function (data, callback) {
 		//if(nicknames.indexOf(data) != -1){
@@ -40,6 +40,7 @@ io.sockets.on('connection', async function (socket) {
 	});
 
 	socket.on('send message', async function (data, callback) {
+		console.log(data)
 		const msg = data.trim();
 		if (msg.substr(0, 3) === '/w ') {
 			msg = msg.substr(3);
@@ -56,17 +57,19 @@ io.sockets.on('connection', async function (socket) {
 				callback('Error : Please enter message!!');
 			}
 		} else {
-			await new Chat({ 'nickname': socket.nickname, 'msg': data }).save()
+			console.log('else', socket.nickname)
+			await new chatModel({ 'nickname': socket.nickname, 'msg': data }).save()
 			io.sockets.emit('new message', { msg: data, nickname: socket.nickname });
 			// socket.broadcast.emit('new message', data);
 		}
 	});
 
-	socket.on('disconnect', function (data) {
+	socket.on('disconnect', function () {
 		if (!socket.nickname) return;
 		//nicknames.splice(nicknames.indexOf(socket.nickname),1);
 		delete users[socket.nickname];
 		updateNickname();
+		console.log('user disconnected')
 	});
 
 	function updateNickname() {

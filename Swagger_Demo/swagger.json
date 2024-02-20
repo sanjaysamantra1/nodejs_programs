@@ -14,7 +14,7 @@
   },
   "schemes": ["http"],
   "host": "localhost:5000",
-  "basePath": "/api",
+  "basePath": "api",
   "paths": {
     "/todos": {
       "get": {
