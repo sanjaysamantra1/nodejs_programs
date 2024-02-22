@@ -4,6 +4,15 @@ chai.use(chaiHttp);
 let expect = chai.expect;
 
 describe("Testing Todos application", () => {
+  it("Should return 404 for /abc", (done) => {
+    chai
+      .request("http://localhost:5000")
+      .get("/abc")
+      .then((res) => {
+        expect(res).to.have.status(404);
+        done();
+      })
+  });
   it("Should return 200 for /health", (done) => {
     chai
       .request("http://localhost:5000")

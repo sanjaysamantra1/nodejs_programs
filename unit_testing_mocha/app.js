@@ -29,7 +29,7 @@ let tasks = [
     task: "task4",
     assignee: "assignee1000",
     status: "completed",
-  },
+  }
 ];
 
 app.use(bodyParser.json());

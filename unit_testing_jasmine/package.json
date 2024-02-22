@@ -1,11 +1,11 @@
 {
   "scripts": {
     "test": "jasmine",
-    "testWithCoverage": "istanbul cover --include-all-sources spec/tests/index.spec.js && istanbul check-coverage"
+    "testWithCoverage": "istanbul cover --include-all-sources spec/tests/demo1.spec.js && istanbul check-coverage"
   },
   "devDependencies": {
     "istanbul": "^0.4.5",
-    "jasmine": "^5.0.0",
+    "jasmine": "^5.1.0",
     "jasmine-console-reporter": "^3.1.0",
     "jasmine-node": "^3.0.0",
     "jasmine-supertest": "^1.0.0",

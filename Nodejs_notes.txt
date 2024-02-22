@@ -784,6 +784,9 @@ var url = require('url');
 var urlStr = 'http://localhost:8080/default.htm?year=2023&month=february';
 var urlObj = url.parse(urlStr, true);
 
+-format() converts url Object to URL String
+let urlString = url.format(urlOb);
+
 
 
 
@@ -819,7 +822,9 @@ join() vs resolve()
 ===================
 -join() concatenates(joins) the path segments.
 -resolve() creates an absolute path from the root. 
+
 -Both methods will normalize the paths i.e. they treat .. as we normally use them when navigating in the folder structure.
+
 -join() concatenates the the path fragments.
 -resolve() looks for the first segment with / from the right and append everything up to this point to the root.
 
@@ -1677,6 +1682,7 @@ Jasmine Terminologies
 =====================
 describe()  Test suite (Group of testcases)
 it() 		test case / spec
+test()      test case / spec
 
 expect(actual).matcher(expected);
 expect(app.add(2,3)).toBe(5);
@@ -1707,6 +1713,39 @@ fdescribe() - focused describe. If it exists, jasmine will run only fdescribe sp
 xdescribe() - disabled describe. It will never be executed.
 fit() - focused it()
 xit() - disabled it()
+
+
+Stub
+=====
+-stub: A stub is a function/object that replaces the actual behavior of a module with a fixed response.
+ex: if you’re testing a function that writes a value to the database, you should write a stub that avoids the db interaction but returns a successful result
+-we have to set the expectations beforehand to make sure that everything we wanted would be executed.
+
+function saveUser(usrData, dbConn) {  
+  let q = createQueryFromUser(usrData)
+  let result = dbConn.query(q)
+  return result;
+}
+
+makeStub(dbConn, 'query', () => {
+  return true;
+})
+
+it("should return TRUE when the query succeeds", () => {
+  let result = saveUser({
+    name: "Fernando",
+    password: "1234"
+  }, dbConn)
+  result.should.be.true
+})
+
+
+Spy
+===
+-spies are stubs that gather execution information, so they can tell you, in the end, what got called, when and with which parameters.
+Spies and stubs are two types of test doubles, which are objects or functions that mimic the behavior or state of the real ones in your code. A spy is a function that records how it was called, such as the arguments, the return value, and the context. A stub is a function that replaces the real one and returns a predefined value or performs a predefined action. You can use spies and stubs to isolate your code under test from its dependencies, such as external services, databases, or other modules.
+
+
 
 
 
@@ -1836,6 +1875,7 @@ loadtest npm package
 Sequelize
 NestJs
 passportjs npm
+node profiler : https://nodejs.org/en/learn/getting-started/profiling
 ---------------------------------------
 Interview Questions
 

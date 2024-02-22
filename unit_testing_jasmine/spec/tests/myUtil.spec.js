@@ -1,4 +1,5 @@
-const { fibonacci, isPrime } = require("../..")
+const { fibonacci, isPrime } = require("../..");
+
 describe('This is test suite for index file', () => {
   it('This is testcase for is Prime', () => {
     expect(isPrime(6)).toBe(false);

@@ -26,3 +26,6 @@ console.log(normalizedPath);
 
 const normalizedPath2 = path.normalize("../process/process_demo_1.js");
 console.log(path.parse(normalizedPath2));
+
+const relativePath = path.relative('E:/Training/UI/UI_progs/NodeJS/OS/demo_1.js', 'E:/Training/UI/UI_progs');
+console.log(relativePath)
