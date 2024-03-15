@@ -793,8 +793,9 @@ let urlString = url.format(urlOb);
 Node.js Path Module
 ===================
 -The Path module provides a way of working with directories and file paths.
-basename()	Returns the last part of a path
+sep	        Returns the segment separator specified for the platform
 delimiter	Returns the delimiter specified for the platform
+basename()	Returns the last part of a path
 dirname()	Returns the directories of a path
 extname()	Returns the file extension of a path
 format()	Formats a path object into a path string
@@ -804,7 +805,6 @@ normalize()	normalizes the given path, resolving '..' and '.' segments.
 parse()	Formats a path string into a path object
 relative()	Returns the relative path from one specified path to another specified path
 resolve()	Resolves the specified paths into an absolute path
-sep	Returns the segment separator specified for the platform
 win32	Returns an object containing Windows specific properties and methods
 posix	Returns an object containing POSIX specific properties and methods
 
@@ -828,6 +828,7 @@ join() vs resolve()
 -join() concatenates the the path fragments.
 -resolve() looks for the first segment with / from the right and append everything up to this point to the root.
 
+https://www.scaler.com/topics/nodejs/path-module-in-node-js/
 
 
 
@@ -851,6 +852,7 @@ Note: process does not need a "require", it's automatically available.
 -How to find which version of V8 ships with a particular version of Node.js?
 	node -p process.versions.v8
 -process.nextTick() : invoke this function at the end of the current operation, before the  next event loop tick starts
+-This function defers the execution of a callback function until the next Event Loop Iteration.
 -Every time the event loop takes a full trip, we call it a tick.
 -setTimeout(() => {}, 0) will execute the function at the end of next tick, much later than when using nextTick() which prioritizes the call and executes it just before the beginning of the next tick
  
@@ -858,7 +860,7 @@ Note: process does not need a "require", it's automatically available.
 
 Child Processes Module
 ======================
--Node.js allows single-threaded, non-blocking but running a single thread in a CPU cannot handle increasing workload.
+-Node.js is single-threaded, non-blocking but running a single thread in a CPU cannot handle increasing workload.
 -The child_process module can be used to start child processes, and those child processes can easily communicate with each other with a messaging system.
 -There are four different ways to create a child process in Node:
 	1. exec() 
@@ -867,9 +869,16 @@ Child Processes Module
 	4. fork()
 exec() : creates a new shell process and executes a command in that shell.
          The output of the command can be collected via a callback function passed to exec()
+		ex: exec("dir", (error, stdout, stderr) =>{});
+		error - if command not found
+		stdout - output of the executed command
+		stderr - if error while executing the command
+			
 execFile() : execute a file (bat/sh)
+			 
 spawn(): when the command we want to run can output a large amount of data
-fork() : communication channel is established to the child process when using fork, so we can use the send function on the forked process along with the global process object itself to exchange messages between the parent and forked processes
+
+fork() : communication channel is established to the child process when using fork, so we 	can use the send function on the forked process along with the global process object itself to exchange messages between the parent and forked processes.
  
  
  
@@ -877,7 +886,9 @@ HTTP Module
 ===========
 -The HTTP module can create an HTTP server.
 -Receives the request from client & gives a response back to the client.
--Get headers, URL, method and body data from request objects.
+
+
+-headers, URL, method and body data can be collected from request objects.
 -Make routing decisions based on URL and/or other data in request objects.
 -Send headers, HTTP status codes and body data via response objects.
 
@@ -913,8 +924,50 @@ DELETE - Remove a resource/delete a record from DB
 		 Delete naukri account
 OPTIONS - information about the Permitted HTTP methods (methods/content type)
        Identifying which HTTP methods a resource supports, e.g. can we DELETE it or update it via a PUT?
-HEAD - method returns info about resource (version/length/type)
-	  similar to the GET method. But it doesn’t have any response body.
+HEAD - method returns info about resource (http version/length/type)
+	  used to request the headers of a resource without actually fetching the body of the resource.
+	  HEAD request is a way to retrieve metadata about a resource, such as its size, modification date, or content type
+
+
+
+http status codes
+=================
+1xx Informational  (100-Continue,101-switching Protocols,102-processing)
+2xx Success		   (200-OK,201-created,202-accepted,204-No Content)
+3xx Redirection	   (300-Multiple Choices,301-Moved Permanently,302-Found,304-Not Modified)
+4xx Client Error   (400-Bad Request,401-Unauthorized,403-Forbidden,404-Not Found)
+5xx Server Error   (500-Internal Server Error,502-Bad Gateway,503-Service Unavailable)
+
+
+
+
+200 OK 
+201 Created 
+202 Accepted      accepted for processing,processing has not been finished
+204 No Content    successfully fulfilled the request, there is no available content
+205 ResetContent  the user should reset the document that sent this request
+206 Partial Content 
+
+300 MultipleChoices  request has multiple possible responses, user should choose one 
+301 MovedPermanently the target resource has been assigned a new permanent URL
+
+400 BadRequest   the server could not understand the request because of invalid syntax.
+401 Unauthorized  client needs to authenticate itself to get access.such as a username and password.
+402 Payment Required
+403 Forbidden   the client has been authenticated, but it does not have the necessary 	permissions to access the requested resource
+404 NotFound   could not locate the requested resource. Page/URL not found
+405 MethodNotAllowed  the method has been disabled and can not be used(only get ,not post,put)
+406 NotAcceptable   if a client requests a response in JSON format by including "Accept: application/json" in the request header, but the server can only provide data in XML format
+407 Proxy Authentication Required
+408 RequestTimeout  server did not receive a complete request in the time that it prepared to wait
+409 Conflict  
+
+500 InternalServerError   server has encountered an unexpected condition
+500 Not Implemented   server does not recognize the request method
+502 BadGateway  the server received an invalid response while working as a gateway to handle the response
+503 Service Unavailable temporarily
+504 GatewayTimeout did not receive a timely response from the upstream server
+505 HTTP Version Not Supported
 
 
 
@@ -1177,10 +1230,19 @@ Default Configuration
   "preflightContinue": false,
   "optionsSuccessStatus": 204
 }
+
+var whitelist = ['http://example1.com', 'http://example2.com']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
 https://www.npmjs.com/package/cors
-
-
-
 
 
 
@@ -1193,11 +1255,9 @@ Events
 -An event can be emitted with zero or more arguments. 
 -We can specify any name for a custom event in the emit() function.
 -addListener() can be used to subscribe/listen an event. 
--Event names are camel-cased strings but any valid JavaScript property key can be used.
--When the EventEmitter object emits an event, all of the functions attached to that specific event are called synchronously. 
+-Event names are camel-cased strings but any valid JavaScript property key can be used. 
 -Any values returned by the called listeners are ignored and will be discarded.
 -The eventEmitter.on() method is used to register listeners, 
--eventEmitter.emit() method is used to trigger the event.
 -The EventEmitter calls all listeners synchronously in the order in which they were registered.
 -This ensures the proper sequencing of events and helps avoid race conditions and logic errors. 
 When appropriate, listener functions can switch to an asynchronous mode of operation using the setImmediate() or process.nextTick() methods:
@@ -1231,6 +1291,8 @@ Template Engines for Node.js
 -It can inject data into HTML template at client side and produce the final HTML.
 -Template engines for Node.js (Jade/pug,Vash,EJS,Handlebars)
 
+https://expressjs.com/en/guide/using-template-engines.html
+
 
 
 
@@ -1256,7 +1318,7 @@ MongoDB
  Relational databases - MySql , Oracle , PostgreSQL
  
 
-Sql         NoSql
+Sql         MongoDB
 ===================
 Database    Database
 Table       Collection
@@ -1286,6 +1348,8 @@ MongoDB Local
 6. run 'mongod.exe'
 7. set path for mongo-server(To start mongodb from any path)
 	C:\Program Files\MongoDB\Server\6.0\bin
+
+https://treehouse.github.io/installation-guides/mac/mongo-mac.html
 
 
 MongoDB Shell (CLI for mongoDB)
@@ -1359,8 +1423,14 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  db.employees.find({"name":{$in:["Raj", "Ram", "Raghu"]}})
  db.employees.find({$or:[{name:"ram"},{sal:5000}]})
  db.employees.find({"name":/san/i})   // (Like in SQL)
+ 
+Projection : which fields to include in the results
+             use 1 to include a field and 0 to exclude a field.
+
  db.employees.find( {} , {sal:0} ) // all columns except sal
  db.employees.find( {} , {sal:1,name:1} ) // name,sal column in result
+ 
+
  db.employees.find().sort({sal:1})   //asc
  db.employees.find().sort({sal:-1}) //desc
  db.employees.find().count()
@@ -1371,7 +1441,7 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
 -To Update the existing Data
  db.employees.updateOne( { id: 101 }, { $set: { sal: 2000 } } ) 
  db.employees.updatemany( { sal:6000 }, { $set: { sal: 6500 } } )
- db.employees.updateOne( { id: 101 }, {eid:1,name:'sanjay',sal:5000},{ upsert: true } )
+ db.employees.updateOne({id: 101},{$set:{eid:1,name:'sanjay',sal:5000}},{ upsert: true })
  // Update the document, but if not found insert it
 -To Delete 
  db.employees.deleteOne({ sal:6000 })
@@ -1381,18 +1451,64 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  
  db.employees.drop()  // Drop The Collection
  db.dropDatabase()    // Drop Database
- 
+
+
+MongoDB Query Operators
+=======================
+Comparison : $eq, $ne, $gt, $gte, $lt, $lte, $in
+Logical    : $and, $or, $nor, $not  
+Evaluation : $regex, $text, $where
+
+
+$regex
+======
+db.employees.find( { phone: { $regex: /789$/ } } );  
+
+$text
+=====
+db.articles.find( { $text: { $search: "coffee" } } )
+db.articles.find( { $text: { $search: "Coffee", $caseSensitive: true } } )
+db.articles.find( { $text: { $search: "bake coffee cake" } } ) 
+ bake / coffee / cake
+db.articles.find( { $text: { $search: "\"coffee shop\"" } } )
+ coffee shop
+db.articles.find( { $text: { $search: "\'coffee shop\' \'Cafe con Leche\'" } } )
+ Or
+
+$where
+db.table3.find( { $where: function() { return (this.english == this.science) }})
+
+
+MongoDB Update Operators
+========================
+$currentDate: Sets the field value to the current date
+$inc: Increments the field value
+$rename: Renames the field
+$set: Sets the value of a field
+$unset: Removes the field from the document
+
+Array
+$addToSet: Adds distinct elements to an array
+$pop: Removes the first or last element of an array
+$pull: Removes all elements from an array that match the query
+$push: Adds an element to an array
+
  
 implicit and vs explicit $and
 ==============================
 implicit - {name:'abc',sal: 6000}
 Explicit - { $and: [ {name:'sanjay',sal:6000}] }
 
+db.employees.deleteMany({name:'sanjay',name:'geeta',name:'sameer'})
+-only sameer will be deleted, first 2 conditions are ignored
+
 -don't use implecit AND if the field name is same;
 -it ignores the first condition, only executes second condition.
+db.inventory.find( { $and: [ { price: { $ne: 1.99 } }, { price: { $exists: true } } ] } )
 
+ 
 
-
+ 
  
  
 Managing Indexes
@@ -1427,7 +1543,7 @@ Aggregation Pipelines
 -db.collectionName.aggregate(pipeline, options)
  input --> $match  --> $group --> $sort --> output
 
-
+$match, $group, $limit, $project, $sort, $addFields, $count, $lookup, $out
 
 
 
@@ -1444,11 +1560,11 @@ Assignment Solutions
 ====================
 1.db.employees.distinct('salary').sort((a,b)=>a-b);
 2.db.employees.find().sort({'salary':-1}).skip(2).limit(1);
-3. db.employees.find({
+3.db.employees.find({
 	  $expr: {
 		$and: [
-		  { $eq: [{ $dayOfMonth: "$dob" }, { $dayOfMonth: new Date() }] },
-		  { $eq: [{ $month: "$dob" }, { $month: new Date() }] }
+		  { $eq: [{ $dayOfMonth: "$dob" }, { $dayOfMonth: new Date() }] },  // day
+		  { $eq: [{ $month: "$dob" }, { $month: new Date() }] }				// month
 		]
 	  }
 	});
@@ -1472,7 +1588,8 @@ MongoDB Atlas
 -Register for an Atlas account
  https://www.mongodb.com/atlas/database (click on try Free)
  Fill in the registration form with your information and click Sign up
--Create a cluster and deploy an M0 cluster
+ 
+-Create a cluster and deploy an M0(Free) cluster
  
  
 -Add your connection IP address to your IP access list
@@ -1488,6 +1605,9 @@ mongodb+srv://sanjaysamantra:<password>@cluster0.geshq.mongodb.net/?retryWrites=
 https://www.freecodecamp.org/news/get-started-with-mongodb-atlas/
 
 
+mongodb+srv://sanjaysamantra1:berhampur@cluster0.ga81v5y.mongodb.net/
+
+
 
 ORM - Object Relational Model
 =============================
@@ -1497,7 +1617,11 @@ ORM - Object Relational Model
 Mongoose
 ========
 -Mongoose is a MongoDB object modeling tool.
+
 https://mongoosejs.com/docs/guide.html
+https://mongoosejs.com/docs/validation.html#built-in-validators
+
+
 
 
 GraphQL
@@ -1766,11 +1890,11 @@ project level install
 Chai Assertion Style
 --------------------
 1. should 
-	ex: abc.should.have.lengthOf(3)
+	ex: arr.should.have.lengthOf(3)
 2. expect
-   ex: expect(abc).to.have.lengthOf(3)
+   ex: expect(arr).to.have.lengthOf(3)
 3. assert
-   ex: assert.lengthOf(abc,3)
+   ex: assert.lengthOf(arr,3)
    
 var chai = require('chai');  
 var assert = chai.assert;    // Using Assert style
@@ -1792,6 +1916,9 @@ describe.skip()
 it.skip()
 
 
+
+https://www.digitalocean.com/community/tutorials/test-a-node-restful-api-with-mocha-and-chai
+https://blog.logrocket.com/node-js-unit-testing-mocha-chai-sinon/
 
 
 
@@ -1868,6 +1995,7 @@ Interview Questions & Answers
 
 
 ---------------------------
+url shortener
 md5 generator
 joi validator
 formidable - https://www.w3schools.com/nodejs/nodejs_uploadfiles.asp

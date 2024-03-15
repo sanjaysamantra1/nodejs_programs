@@ -28,8 +28,9 @@ app.post("/api/auth/register", async function (req, res) {
 app.post("/api/auth/login", async function (req, res) {
   try {
     let user = await userModel.findOne({ email: req.body.email });
-    if (!user)
+    if (!user){
       res.send({ auth: false, msg: "No User Found,Please Register First" });
+    }
     else {
       const passIsValid = bcrypt.compareSync(req.body.password, user.password);
 
@@ -51,7 +52,7 @@ app.get("/logout", (req, res) => {
   res.send("Logged out Successfully");
 });
 
-app.get("/employees", async function (req, res) {
+app.get("/api/auth/employees", async function (req, res) {
   let token = req.headers["my-token"];
   if (!token) res.send({ auth: false, token: "No Token Provided" });
 

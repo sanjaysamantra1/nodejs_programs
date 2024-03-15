@@ -4,6 +4,17 @@ const app = express();
 const bodyParser = require("body-parser");
 const port = 5000;
 
+connectToDB = ()=>{
+  if(process.env.NODE_ENV === 'development'){
+    console.log('COnnet to Dev DB')
+    // mongo.connect(URL)
+  }else if(process.env.NODE_ENV === 'test'){
+    console.log('COnnet to TEST DB')
+  }else{
+    console.log('COnnet to PROD DB')
+  }
+}
+
 // place holder for the data
 let tasks = [
   {
@@ -35,6 +46,7 @@ let tasks = [
 app.use(bodyParser.json());
 
 app.get("/todos", (req, res) => {
+  connectToDB();
   console.log("api/todos called!!!!!");
   res.json(tasks);
 });
@@ -46,6 +58,7 @@ app.get("/todos/:id", (req, res) => {
 });
 
 app.post("/todo", (req, res) => {
+  console.log('Add To Do')
   const task = req.body.task;
   task.id = randomId(10);
   tasks.push(task);
@@ -56,6 +69,7 @@ app.delete("/todo/:id", (req, res) => {
   console.log("Id to delete:::::", req.params.id);
   tasks = tasks.filter((task) => task.id != req.params.id);
   res.json(tasks);
+  console.table(tasks)
 });
 
 app.put("/todos/:id", (req, res) => {

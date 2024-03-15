@@ -2,6 +2,7 @@ let chai = require("chai");
 let chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 let expect = chai.expect;
+process.env.NODE_ENV = 'test'
 
 describe("Testing Todos application", () => {
   it("Should return 404 for /abc", (done) => {
