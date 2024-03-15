@@ -24,7 +24,10 @@ app.get('/fetchData', async (req, res) => {
         let output = response.data;
 
         // Store data in REDIS
-        await redisClient.set(countryName, JSON.stringify(output));
+        await redisClient.set(countryName, JSON.stringify(output),{
+            EX: 60, // Expiry Time in Seconds
+            NX: true, // NX - Set Only when it doesn't exist
+          });
         console.log('data stored in REDIS')
 
         res.send({ source: 'API', output });
