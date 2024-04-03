@@ -10,7 +10,7 @@ fs.readdir("./", { withFileTypes: true }, (err, files) => {
   console.log("files: ");
   files.forEach((file) => {
     // the `isDirectory` method returns true if the entry is a directory
-    const type = file.isDirectory() ? "📂" : "📄" ;
+    const type = file.isDirectory() ? "📂" : "📄" ; // Emoji
     console.log(type, file.name);
   });
 });
