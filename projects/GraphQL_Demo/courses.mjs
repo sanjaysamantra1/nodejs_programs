@@ -1,22 +1,25 @@
-import express from "express";
-import cors from "cors";
-import { createHandler } from "graphql-http/lib/use/express";
-import { buildSchema } from "graphql";
+var express = require("express")
+var cors = require('cors')
+var { createHandler } = require("graphql-http/lib/use/express")
+var { buildSchema, GraphQLList } = require("graphql")
+var { ruruHTML } = require("ruru/server")
 
-// GraphQL schema
-let schema = buildSchema(`
-    type Query {
-        course(id: Int!): Course
-    },
-    type Course {
-        id: Int
-        title: String
-        author: String
-        description: String
-        topic: String
-        url: String
+// GraphQL Schema
+let courseSchema = buildSchema(`
+    type Query{
+        course(id:Int):Course
+        courses:[Course]
+    }
+    type Course{
+        id:Int,
+        title:String
+        author:String
+        description:String
+        topic:String
+        url:String
     }
 `);
+
 let coursesData = [
   {
     id: 1,
@@ -48,33 +51,44 @@ let coursesData = [
 ];
 
 let getCourse = function (args) {
-  let id = args.id;
-  return coursesData.filter((course) => {
-    return course.id == id;
-  })[0];
-};
-
+    let id = args.id;
+    return coursesData.find(course => course.id == id);
+}
+let getAllCourses = function () {
+    return coursesData;
+}
 let root = {
-  course: getCourse,
-};
-// Create an express server and a GraphQL endpoint
+    course: getCourse,
+    courses: getAllCourses
+}
+
+// express
 let app = express();
 app.use(cors());
 
-app.use("/courses", createHandler({ schema, rootValue: root, graphiql: true }));
-app.listen(5000, () =>
-  console.log(
-    "Express GraphQL Server Now Running On http://localhost:5000/courses"
-  )
-);
+app.all(
+    "/courses",
+    createHandler({
+        schema: courseSchema,
+        rootValue: root,
+    })
+)
 
-/* {course(id:1) {
-  id,title,author,topic
+// Serve the GraphiQL IDE.
+app.get("/", (req, res) => {
+    res.type("html")
+    res.end(ruruHTML({ endpoint: "/courses" }))
+});
+
+// Start the server at port
+app.listen(5000)
+console.log("Running a GraphQL API server at http://localhost:5000/courses")
+
+
+/* {coursess {
+  id,title,author
 }} */
 
-/* {
-  courses(topic: "JavaScript") {
-    id
-    title
-  }
-} */
+/* {course(id:1) {
+  id,title,author
+}} */

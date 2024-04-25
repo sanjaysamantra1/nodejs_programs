@@ -745,20 +745,6 @@ JSON
   const jsonString = fs.readFileSync("./customer.json","utf8");
   const customer = JSON.parse(jsonString);
   
-  
-  
-  
-
-FS Module Error Handling
-========================
--No Error tracking is required : appendFile(), writeFile()
- File gets created if it doesn't exist
--default error tracking : readFile() 
- callBack(err,data)
- Program Execution doesn't stop, as no error object is thrown.
- Its Recommended to handle error scenario.
--manual error tracking is required: unlink(),rename()
- No Param CallBack - error should be thrown explicitely
 
 
 
@@ -774,12 +760,14 @@ Node.js URL Module
 -The URL module splits up a web address into readable parts.
 -Parse an address with the url.parse() method, and it will return a URL object with each part of the address as properties.
 ex:-
-var url = require('url');
-var urlStr = 'http://localhost:8080/default.htm?year=2023&month=february';
-var urlObj = url.parse(urlStr, true);
+const url = require('url');
+let urlStr = 'http://localhost:8080/default.htm?year=2023&month=february';
+let urlObj = url.parse(urlStr, true);
+console.log(urlObj)
 
 -format() converts url Object to URL String
-let urlString = url.format(urlOb);
+let urlString = url.format(urlObj)
+console.log(urlString)
 
 
 
@@ -857,9 +845,9 @@ Child Processes Module
 -Node.js is single-threaded, non-blocking but running a single thread in a CPU cannot handle increasing workload.
 -The child_process module can be used to start child processes, and those child processes can easily communicate with each other with a messaging system.
 -There are four different ways to create a child process in Node:
-	1. exec() 
-	2. execFile()
-	3. spawn()
+	1. exec() / execSync()
+	2. execFile() / execFileSync()
+	3. spawn()  /  spawnSync()
 	4. fork()
 exec() : creates a new shell process and executes a command in that shell.
          The output of the command can be collected via a callback function passed to exec()
@@ -1006,7 +994,7 @@ Node.js Streams
 
 Express.JS
 ==========
--Express.js is a web application framework for Node.js.
+-Express.js is a web application framework for building RESTful APIs with Node.js.
 -a framework is a set of helper functions,tools and rules that help us to build our application.
 -It provides various features that make web application development fast and easy which otherwise takes more time using only Node.js.
 -Alternatives to Express.js are 'NestJS' , 'Vanilla Node.js','koa','sails.js'
@@ -1205,7 +1193,6 @@ Express generator
 
 Folder Structure for NodeJS & ExpressJS project
 ================================================
-https://www.developerupdates.com/blog/folder-structure-for-nodejs-and-expressjs-project
 https://dev.to/mr_ali3n/folder-structure-for-nodejs-expressjs-project-435l
 
 
@@ -1432,6 +1419,7 @@ Projection : which fields to include in the results
  db.employees.find().count()
  db.employees.countDocuments({salary:13001});
  db.employees.find().limit(2)
+ db.employees.find().sort({sal:-1}).skip(2).limit(1)
  db.employees.distinct('eid');
  
 -To Update the existing Data
@@ -1630,6 +1618,16 @@ GraphQL
 npm install express graphql-http graphql ruru --save
 
 
+		REST          		 GraphQL
+=========================================
+1. Server Driven            1. Client Driven
+2. Slower                   2. faster
+3. Over-fetching 		    3. No over-fetching , under-fetching
+4. fileuploading-Yes	    4. File-uploading - No
+5. Simple, Resource driven  5. Micro Services   
+
+
+
 Redis
 =====
 -Redis Stands for 'Remote Dictionary Server'.
@@ -1682,6 +1680,8 @@ Commands
 
 Fake APIs to fetch data
 =======================
+https://api.openweathermap.org/data/2.5/weather?q=${city}&mode=json&units=metric&cnt=5&appid=fbf712a5a83d7305c3cda4ca8fe7ef29
+
 https://api.openweathermap.org/data/2.5/forecast/daily?q=bangalore&mode=json&units=metric&cnt=5&appid=fbf712a5a83d7305c3cda4ca8fe7ef29
 
 https://en.wikipedia.org/w/api.php?action=parse&format=json&section=0&page=india
@@ -1960,20 +1960,7 @@ https://www.section.io/engineering-education/how-to-build-authentication-api-wit
 
 NodeJS Security Risks
 =====================
-1.Cross-Site Scripting(XSS) 
-If a web application fails to adequately validate user input, malicious actors can inject modified JavaScript code into the web pages users are viewing. Because the browser can’t determine the trustworthiness of the code, it executes the script by default, potentially giving the attacker access to cookies, tokens, user information, and more
 
-2.Cross-site request forgery (CSRF)
- A cross-site request forgery attack hijacks user sessions by hiding malicious code under seemingly trustworthy HTML elements. Because the user is already logged in and authenticated, clicking one of these masked links gives the hacker the ability to execute changes in the underlying systems.
-
-3.Code injection 
-Attackers can use an input validation flaw to inject malicious code into your codebase, changing the way your application executes. Code injection can give them access to sensitive data, provide information about your environment, or infect your system with malware.
-
-4.Distributed denial of service (DDoS) attacks 
-In a DDoS attack, an attacker floods production servers with internet traffic to disrupt their normal function. This traffic can overwhelm the system and cause significant damage and outages. Versions 4-4.1.1 of Node.js that contained a bug with the HTTP handling are one example of this.
-
-5.Regular expression denial of service attacks (ReDos)
-This type of denial-of-service (DoS) attack can take a system down by providing an input that makes it time-consuming for the program to evaluate a regular expression. This slows or even halts the program and produces a DoS to legitimate users.
 
 
 
@@ -1986,6 +1973,10 @@ Best Practices to keep NodeJS Secure
 5. Don’t send unnecessary information
 6. Limit request sizes
 7. Validate user input
+
+https://anywhere.epam.com/en/blog/node-js-security-best-practices
+https://www.aquasec.com/cloud-native-academy/application-security/node-js-security/
+https://anywhere.epam.com/en/blog/node-js-security-best-practices
 
 
 Web-Hooks
@@ -2021,6 +2012,7 @@ References:
 6. https://codeforgeek.com/nodejs/
 7. https://www.geeksforgeeks.org/nodejs/
 8. https://training-course-material.com/training/Nodejs
+9. https://expressjs.com/en/advanced/best-practice-performance.html
 
 
 
