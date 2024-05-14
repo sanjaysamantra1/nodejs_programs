@@ -1561,7 +1561,38 @@ Assignment Solutions
 	}}}} ]);
 	
 
+
+
+Use a View to Join Two Collections
+==================================
+-We can use $lookup to create a view over two collections and then run queries against the view.
+-Applications can query the view without having to construct or maintain complex pipelines
 	
+1. create inventory & orders table
+2. Create a Joined View : 
+   db.createView( "sales", "orders", [
+   {
+      $lookup:
+         {
+            from: "inventory",
+            localField: "prodId",
+            foreignField: "prodId",
+            as: "inventoryDocs"
+         }
+   },
+   {
+      $project:
+         {
+           _id: 0,
+           prodId: 1,
+           orderId: 1,
+           numPurchased: 1,
+           price: "$inventoryDocs.price"
+         }
+   },
+      { $unwind: "$price" }
+] )
+
 
 	
 
@@ -1618,6 +1649,7 @@ GraphQL
 npm install express graphql-http graphql ruru --save
 
 
+
 		REST          		 GraphQL
 =========================================
 1. Server Driven            1. Client Driven
@@ -1625,6 +1657,16 @@ npm install express graphql-http graphql ruru --save
 3. Over-fetching 		    3. No over-fetching , under-fetching
 4. fileuploading-Yes	    4. File-uploading - No
 5. Simple, Resource driven  5. Micro Services   
+
+
+apollo-server is used to create a graphQL server
+apollo-server-express is used to integrate graphQL with express app
+mongoose is MongoDB object modelling tool to interact with MongoDB
+
+npm i apollo-server  apollo-server-express mongoose
+
+
+
 
 
 
@@ -1706,6 +1748,8 @@ Google App password
 -->Security --> How you sign in to Google --> 2-Step Verification
 -->App passwords --> Generate a new password
 
+https://myaccount.google.com/apppasswords
+
 
 
 Upload File
@@ -1748,6 +1792,7 @@ ESLint
          'quotes': ['error', 'single'],
 		 'no-var': 2   (0 = off, 1 = warn, 2 = error)
 		 'eqeqeq': 2
+		 'prefer-template' : 2
     }
 
 1. npm i eslint -g
@@ -1764,15 +1809,18 @@ Swagger
 =======
 -It’s very important to write documentation for APIs so that whoever consumes those APIs understand them, implement them, and play around with them.
 -Swagger is a software tool used for designing, building, documenting, and using RESTful APIs.
--create, update and share OpenAPI definitions with consumers.
--We can define all the operations in the file swagger.json
+-create, update and share API definitions with consumers.
+
+
+-All the operations should be mentioned in the file swagger.json
 -We can have custom CSS for our swagger page.
 
 Steps:
 1. npm init -y
-2. npm install swagger-jsdoc swagger-ui-express 
-3. add server.js
+2. npm install swagger-ui-express 
+3. add server.js and add Routes code
 4. add the file swagger.json to define the operations.
+   https://github.com/OAI/OpenAPI-Specification/blob/main/examples/v2.0/json/petstore-simple.json
 5. add the file swagger.css to define custom css
 6. Node server.js and try 'http://localhost:5000/api-docs/'
 
@@ -2032,6 +2080,17 @@ Sequelize
 NestJs
 passportjs npm
 node profiler : https://nodejs.org/en/learn/getting-started/profiling
+
+
+
+Sample Projects
+===============
+https://github.com/itzabhinavarya/ShopingKaro
+https://github.com/idurar/mern-admin
+https://github.com/claykabongok/CRUD_REST_API_NODEJS_TYPESCRIPT
+
+
+
 ---------------------------------------
 Interview Questions
 

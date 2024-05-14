@@ -1,0 +1,15 @@
+.DS_Store
+node_modules
+.env
+.env.local
+.env.develop
+.env.development
+.env.staging
+.env.production
+
+# Editor directories and files
+.idea
+.vscode
+
+# build folder
+dist/
