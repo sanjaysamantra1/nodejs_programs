@@ -340,8 +340,9 @@ ESLint
 Debug NodeJs Code
 =================	
 1. Debugging natively
-  a. node inspect your-script.js  (type next, help)
-     go to browser --> chrome://inspect/
+  a. node inspect script.js  (type next, help)
+     node --inspect-brk app.js
+     go to browser --> chrome://inspect/   OR  about:inspect
   b. use debugger;  in a code line you want
   
 cont, c               Resume execution
@@ -840,6 +841,26 @@ Note: process does not need a "require", it's automatically available.
  
 
 
+Node.js, the difference between development and production
+==========================================================
+-We can have different configurations for production and development environments.
+-Node.js assumes it's always running in a development environment.
+-We can signal Node.js that we are running in production by setting the NODE_ENV=production environment variable
+ NODE_ENV=production node app.js  (environemnt)
+ node --env-file=.env --env-file=.development.env app.js (environment file)
+ 
+Note: if the same variable is defined in the environment and in the file, the value from the environment takes precedence.
+ 
+if (process.env.NODE_ENV === 'development') {
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+}
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.errorHandler());
+}
+
+
+
+
 Child Processes Module
 ======================
 -Node.js is single-threaded, non-blocking but running a single thread in a CPU cannot handle increasing workload.
@@ -987,7 +1008,20 @@ querystring.stringify(obj[, sep][, eq][, options]) object to string.
 Node.js Streams
 ===============
 -Streams are objects that let you read data from a source or write data to a destination in continuous fashion.
--four types of streams: 1.Readable  2.writeable  3.Duplex   4.Transform
+-When we try to read a file, the contents of the file is read and all the content gets saved in memory
+-Streams read chunks of data piece by piece, processing its content without keeping it all in memory.
+
+-4 types of streams in Node.js:
+1.Readable    fs.createReadStream()
+2.writeable   fs.createWriteStream()
+3.Duplex      net.Socket 
+  mix of both the readable and writable streams.
+  both streams are independent of each other.
+4.Transform   
+
+Piping the Streams:
+-Piping is a mechanism where we provide the output of one stream as the input to another stream.
+
 
 
 
@@ -1831,11 +1865,6 @@ https://stackoverflow.com/questions/45518568/can-i-write-same-path-names-for-dif
 
 
 
-
-
-
-
-
 Unit Testing with Jasmine
 =========================
 -Unit testing is important to verify the behavior of the smallest units of code in application. 
@@ -1844,10 +1873,10 @@ Unit Testing with Jasmine
 -Jasmine is an open-source and  popular JavaScript testing framework to test any kind of JavaScript application.
 
 
-1.install jasmine globally
-   npm i -g jasmine
-2.Install jasmine-node
-   npm install jasmine-node
+1. Create a npm project
+   npm init -y
+2.install jasmine 
+   npm i jasmine
 3.Initialize the Jasmine Environment
   jasmine init
 4.verify your configuration file. (spec/support/jasmine.json)
@@ -1998,11 +2027,31 @@ JSON Web Token
 https://www.section.io/engineering-education/how-to-build-authentication-api-with-jwt-token-in-nodejs/
 
 1. npm init -y
-2. npm install mongoose express dotenv cors body-parser jsonwebtoken bcryptjs
+2. npm install express mongoose dotenv cors jsonwebtoken bcryptjs
 3. 
 
 
 
+Deploy Nodejs Application
+=========================
+https://www.freecodecamp.org/news/how-to-deploy-nodejs-application-with-render/
+https://devcenter.heroku.com/articles/deploying-nodejs
+
+
+
+
+How to measure and improve Node.js performance
+==============================================
+-Use caching to reduce latency (REDIS)
+-Optimize your data handling methods
+ a.streams  b.pagination c.DB query
+-Use asynchronous programming
+ fs.readfile('',()=>{})
+-Use Compression
+ Middleware libraries such as compression or gzip
+-Use Load Balancing
+
+ 
 
 
 
