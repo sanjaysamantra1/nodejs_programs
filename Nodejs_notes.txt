@@ -60,7 +60,7 @@ Projects
 
 What NodeJs is?
 ===============
--Opensource and cross-platform JavaScript runtime environment.
+-NodeJS is a platform to execute JavaScript on server side
 -Allows to run JavaScript on the server(outside the browser).
 -Built on Google Chrome's JavaScript V8 Engine. 
 -Single threaded, non-blocking, and event-driven execution model.
@@ -147,16 +147,26 @@ this single thread doesn't have to wait for the request to complete and is free 
 -Internally, Node.js uses libuv for the event loop which in turn uses internal C++ thread pool to provide asynchronous I/O.
 
 
-
-1. Clients send HTTP requests to NodeJS server.
-2. Event-Loop(Single Thread) delegates long-running operations to non-blocking workers and becomes available to handle the next request.
-3. When asynchronous I/O work completes, EventLoop processes the request further and sends the response to the client.
-
-https://www.dotnettricks.com/learn/nodejs/exploring-nodejs-code-execution-process
 https://cdn.buttercms.com/0Nh1yR6SSPwqnsKYSfHa
+https://www.scholarhat.com/tutorial/nodejs/nodejs-vs-other-server-side-frameworks
  
 process.env.UV_THREADPOOL_SIZE=6  (4 default, max 128)
 Worker Threads- File System API, Cryptography, Compression, DNS Lookup
+
+
+
+
+The Workflow of Node.js Architecture:
+======================================
+-Clients send requests to the webserver to interact with the web application. Requests can be non-blocking or blocking:
+            -Querying for data
+            -Deleting data 
+            -Updating the data
+-Node.js retrieves the incoming requests and adds those requests to the Event Queue
+-The requests are then passed one-by-one through the Event Loop. It checks if the requests are simple enough to not require any external resources
+-Event Loop processes simple requests (non-blocking operations), such as I/O Polling, and returns the responses to the corresponding clients
+-A single thread from the Thread Pool is assigned to a single complex request. This thread is responsible for completing a particular blocking request by accessing the external resources, such as compute, database, file system, etc.
+-Once, the task is carried out completely, the response is sent to the Event Loop that in turn sends that response back to the Client
 
 
 
@@ -286,6 +296,10 @@ There are various ways to terminate a Node.js application.
 -process.kill(process.pid)
 
 
+How to run a javascript/NodeJs file 
+===================================
+node <fileName>.js
+
 
 
 
@@ -317,11 +331,13 @@ Note: hanlde edge cases also
 Minimist
 ========
 -The best way to deal with key:value arguements is by using the 'minimist' library.
- const args = require('minimist')(process.argv.slice(2))
- console.log(args['name'])
+ const minimist = require('minimist');
+ const argArr = process.argv.slice(2);
+ const argObj = minimist(argArr);
+ console.log(argObj)
 -use double dashes before each argument name
  node app.js --name=sanjay --add=bangalore
-Note: process module does not need a "require", it's defaultly available.
+ Note: process module does not need a "require", it's defaultly available.
 
 
 
@@ -341,8 +357,8 @@ Debug NodeJs Code
 =================	
 1. Debugging natively
   a. node inspect script.js  (type next, help)
-     node --inspect-brk app.js
-     go to browser --> chrome://inspect/   OR  about:inspect
+     node inspect --port=5000 app.js
+     go to browser --> chrome://inspect   OR  about:inspect
   b. use debugger;  in a code line you want
   
 cont, c               Resume execution
@@ -436,7 +452,7 @@ NPM Global vs Local Installation
 --------------------------------
 -By default, NPM installs any dependency in the local mode. 
 -Local mode refers to the package installation in node_modules directory of our project.
--Locally deployed packages are accessible via require() method. 
+-Locally installed packages are accessible via require() method. 
  ex: npm i minimist
     const minimist = require('minimist');
 -Run the below command command to list down all the locally installed modules. 
@@ -457,7 +473,22 @@ NPM Global vs Local Installation
 -If we want to use a module in shell/command-prompt not using require(), install that globally.
  
 
- 
+
+
+
+yarn package Manager
+====================
+-Yarn is an open-source package manager used to manage dependencies in JavaScript projects. 
+-It assists with the process of installing, updating, configuring, and removing packages dependencies
+
+npm install -g yarn
+yarn --version
+yarn init
+yarn add minimist
+
+
+
+
  
 Package.json
 ============
@@ -1103,13 +1134,6 @@ app.all( "/book/*" , handler);
 
 
 
-
-Express Routers
-===============
--Routing refers to how an application’s endpoints (URIs) respond to client requests.
-
-
-
 Express.js Request Object Properties
 ====================================
 req.app
@@ -1130,7 +1154,7 @@ Response methods
 The methods on the response object (res) in the following table can send a response to the client, and terminate the request-response cycle. If none of these methods are called from a route handler, the client request will be left hanging.
 
 Method	Description
-res.send()	Send a response of various types.
+res.send()	Send a response of various types. (Buffer / JSON / HTML / String)
 res.end()	End the response process.
 res.json()	Send a JSON response.
 res.jsonp()	Send a JSON response with JSONP support.
@@ -1141,11 +1165,32 @@ res.download()	Prompt a file to be downloaded.
 res.sendStatus()	Set the response status code and send its string representation as the response body.
 
 
+Status() vs sendStatus()
+========================
+res.sendStatus(200); // equivalent to res.status(200).send('OK') 
+res.sendStatus(403); // equivalent to res.status(403).send('Forbidden')
+res.sendStatus(404); // equivalent to res.status(404).send('Not Found') 
+res.sendStatus(500); // equivalent to res.status(500).send('Internal Server Error')
+
+
+
+Express Routers
+===============
+-Routing refers to how an application’s endpoints (URIs) respond to client requests.
+
+express.Router()
+================
+-express.Router() function is used to create a new router object.
+-To create a new router object in our program to handle requests.
+-Use the express.Router class to create modular, mountable route handlers.
+-router.use(timeLog) , adds a middleware for a router object
+
+
 
 Serving static files in Express
 ===============================
 -To serve static files such as images, CSS files, and JavaScript files, use the express.static() built-in middleware function in Express. 
-express.static(root, [options])
+express.static(root<directory Name>, [options])
 -The root argument specifies the root directory from which to serve static assets.
  app.use(express.static('public'))
 -To use multiple static assets directories, call the express.static() middleware function multiple times:
@@ -1156,22 +1201,79 @@ express.static(root, [options])
 
 Middlewares
 ===========
--Middlewares are like a middleman between a request and the response in a REQUEST → RESPONSE cycle.
--Middlewares in ExpressJS are functions that can modify Request and Response objects either to retrieve or store relevant information.
+-Middlewares in ExpressJS are functions that can modify Request and Response objects.
+-Either to retrieve something from request Object or store Some relevant informationin response object.
 -An example of a simple express js middleware could be to log the current date and time on every URL the user visits on our website.
 
-req => middleware => res
+request => middleware1 => middleware2 => Route => Response
 
-app.use((req, res, next) => {
+
+https://expressjs.com/en/guide/using-middleware.html
+https://expressjs.com/en/resources/middleware/body-parser.html
+
+logger middleware
+==================
+const logger = (req, res, next) => {
   console.log('The time is: '+ Date.now())
   next();
-})
+}
+
+An Express application can use the following types of middleware:
+1. Application-level middleware
+   app.use(logger)
+2. Router-level middleware
+   const userRouter = express.Router();
+   userRouter.use(logger);
+3. Error-handling middleware
+   try{
+   }catch(err){
+	 next(err); // transfers error object to error handling middleware
+   }   
+4. Built-in middleware
+    express.static()
+	express.json()        converts request body to JSON.     
+	express.urlencoded()  converts form-data to JSON
+5. Third-party middleware 
+   cors , body-parser, cookie-parser
+   
 
 
-Order of Middleware Calls
-=========================
--The order in which they are written/included in the file; the order they are executed.
+Q.How to run a middleware for all the routes in an application
+  app.use(logger);
+  
+Q.How to run a middleware for all the routes for a router object
+  const userRouter = express.Router();
+  userRouter.use(logger);
 
+Q.How to run a middleware for a particular route
+  app.get('/route1', middleware,routeHandler);
+  
+ 
+ 
+isLoggedin middleware
+=====================
+module.exports = function isLoggedIn(req, res, next) {
+  if (req.user) {
+    next();
+  } else {
+    res.send(401, "Unauthorized");
+  }
+};
+
+
+Error handler
+=============
+let myError = (err, req, res, next) => {
+  const errorStatus = err.status || 500;
+  const errorMessage = err.message || 'Something went wrong, Try again!';
+ 
+  return res.status(errorStatus).json({
+    status: errorStatus,
+    message: errorMessage,
+    stack: err.stack,
+    success: false,
+  });
+};
 
 
 
@@ -1221,8 +1323,13 @@ cookie-parser
 Express generator
 =================
 1. npm install -g express-generator
-2. express --view=ejs project1
+2. express project1 (--view=jade  default)
+   express --view=ejs project1
    express project2 --no-view
+   
+cd project1
+npm install
+SET DEBUG=project1:* & npm start
 
 
 Folder Structure for NodeJS & ExpressJS project
@@ -1239,9 +1346,22 @@ CORS(Cross-Origin-Resource-Sharing)
 -CORS is a npm package.
 -How to Install
  npm install cors
+ 
+ 
+How to use cors
+===============
+const cors = require('cors');
+const app = express();
+app.use(cors());
+
+var corsOptions = {
+  origin: 'http://example.com'
+}
+app.use(cors(corsOptions));
+
 
 Default Configuration 
-{
+corsOptions = {
   "origin": "*",
   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
   "preflightContinue": false,
@@ -1307,6 +1427,11 @@ Template Engines for Node.js
 -Template engine helps  to create an HTML template with minimal code. 
 -It can inject data into HTML template at client side and produce the final HTML.
 -Template engines for Node.js (Jade/pug,Vash,EJS,Handlebars)
+-To render template files, set the following application properties, in app.js
+ app.engine('pug', require('pug').__express)
+ app.set('views', './views')
+ app.set('view engine', 'pug')
+ 
 
 https://expressjs.com/en/guide/using-template-engines.html
 
@@ -1326,7 +1451,7 @@ ex:npm install mysql (for MySQL)
 MongoDB
 =======
 -it stores data in the collections as JSON based documents and does not enforce schemas. 
--UnStructured data.
+-UnStructured data. structure of every document must not be the same.
 -It does not have tables, rows, and columns as other SQL (RDBMS) databases.
 -RDBMS  (Database,Table,Row,Column)
  MongoDB(Database,Collection,Document,Field)
@@ -1334,6 +1459,26 @@ MongoDB
 -No SQL databases - MongoDB, cassandra, Amazon Dynamo DB, couchbase, redis.
  Relational databases - MySql , Oracle , PostgreSQL
  
+
+MongoDB
+=======
+-Type: NoSQL, document-oriented database.
+-Data Storage: Stores data in flexible, JSON-like documents (BSON).
+-Schema: Schema-less; fields can vary from document to document.
+-Scalability: Horizontal scaling is easier; designed to scale out by sharding.
+-Performance: Can be faster for certain types of applications, especially those dealing with unstructured data or requiring flexible schema.
+-Use Cases: Ideal for content management systems, real-time analytics, IoT, and applications requiring flexible, hierarchical data structures.
+
+Relational Databases (MySQL, PostgreSQL, etc.)
+==============================================
+-Type: SQL-based, relational database management systems.
+-Data Storage: Stores data in tables with rows and columns.
+-Schema: Enforced schema; data must adhere to a predefined structure.
+-Scalability: Typically scales vertically, although horizontal scaling (sharding) is possible with more complexity.
+-Performance: Can be faster for applications with complex queries, transactions, and operations requiring joins across multiple tables.
+-Use Cases: Suitable for applications requiring ACID (Atomicity, Consistency, Isolation, Durability) properties, such as financial systems, e-commerce platforms, and other data-centric applications.
+
+
 
 Sql         MongoDB
 ===================
@@ -1346,9 +1491,11 @@ Insert      Insert
 Update      Update
 Delete      Remove
 
-schema- predefined  schema-run time
-join                no join
 
+
+db.employees.insertMany([{id:1,name:'sanjay},{id:2,name:'deepak',sal:5000}])
+db.employees.insertMany([{id:1,name:'sanjay},{prodid:111,name:'prod1',price:5000}])
+-if it was RDBMS, we would have changed the schema(alter) first 
 
 
 MongoDB Local
@@ -1366,7 +1513,10 @@ MongoDB Local
 7. set path for mongo-server(To start mongodb from any path)
 	C:\Program Files\MongoDB\Server\6.0\bin
 
+
 https://treehouse.github.io/installation-guides/mac/mongo-mac.html
+https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/
+
 
 
 MongoDB Shell (CLI for mongoDB)
@@ -1426,9 +1576,13 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  db.employees.insertOne({_id:1,name:'sanjay',sal:5000})
  db.employees.insertMany([{eid:1,name:'sanjay',sal:5000},
             {eid:2,name:'sameer',sal:6000}])
+ db.employees.insertMany([{eid:1,name:'sanjay',sal:5000},
+            {eid:2,name:'sameer',sal:6000}] , {ordered:false}); 
+// ordered:false , trying to insert 3 docs, if 2 fails, 1 & 3 should be inserted
 -To  see data inside collections
  db.employees.find() 
  db.employees.find().pretty()
+ db.employees.find({},{eid:1,sal:1}) // projection
  db.employees.find( {sal: 6000} )
  db.employees.findOne({sal: 6000})
  db.employees.find( {name:'abc',sal: 6000} )
@@ -1461,6 +1615,7 @@ Projection : which fields to include in the results
  db.employees.updatemany( { sal:6000 }, { $set: { sal: 6500 } } )
  db.employees.updateOne({id: 101},{$set:{eid:1,name:'sanjay',sal:5000}},{ upsert: true })
  // Update the document, but if not found insert it
+ 
 -To Delete 
  db.employees.deleteOne({ sal:6000 })
  db.employees.deleteMany({ name: "sanjay" })
@@ -1469,6 +1624,33 @@ Projection : which fields to include in the results
  
  db.employees.drop()  // Drop The Collection
  db.dropDatabase()    // Drop Database
+
+
+
+Q. find() vs findOne()
+======================
+findOne() - if query matches, first document is returned, otherwise null.
+find() - no matter the number of documents matched, a cursor is returned, never null.
+
+-cursor is a pointer that references the documents of the collection returned.
+-cursor will find 20 documents at once.
+-db.employees.find({sal:8000}).forEach(ele=>print(ele.name))
+
+cursor Methods: count() , forEach(print,printjson), hasNext(), isClosed(), close(), explain(), limit(),map(),max(),min(),pretty(), size(), skip(), sort(), toArray()
+
+
+MongoDB Datatypes
+=================
+-String
+-Boolean
+-Numebr : Int32 , Long , Double
+-Date: Date() , new Date() , ISODate()
+-ObjectId : new ObjectId()
+-Timestamp : new Timestamp() 
+ Timestamp{ "t": <integer>, "i": <integer> } Used for ordering when there are multiple operations within a given second
+
+
+
 
 
 MongoDB Query Operators
@@ -1572,6 +1754,7 @@ Assignment
 3. Find the employees whose DOB is today's date.
 4. increase the salary of every employee by 500.
 5. change the 'gender' of every employee (male-->female,female-->male)
+5. add 'mr.' before the names of all male employees
 
 
 Assignment Solutions
@@ -1593,6 +1776,18 @@ Assignment Solutions
 		then: 'female',
 		else: 'male'
 	}}}} ]);
+6.db.employees.updateMany(
+   { gender: "male" },
+   [
+      {
+         $set: {
+            name: {
+               $concat: [ "Mr. ", "$name" ]
+            }
+         }
+      }
+   ]
+);
 	
 
 
@@ -1648,27 +1843,84 @@ MongoDB Atlas
 
 Follow the Steps mentioned in the below URL
 https://www.javatpoint.com/mongodb-atlas
-
-mongodb+srv://sanjaysamantra:<password>@cluster0.geshq.mongodb.net/?retryWrites=true&w=majority
-
 https://www.freecodecamp.org/news/get-started-with-mongodb-atlas/
 
-
+mongodb+srv://sanjaysamantra:<password>@cluster0.geshq.mongodb.net/?retryWrites=true&w=majority
 mongodb+srv://sanjaysamantra1:berhampur@cluster0.ga81v5y.mongodb.net/
 
 
 
-ORM - Object Relational Model
+ODM (Object-Document Mapping)
 =============================
--The benefit of using an ORM is that programmers can continue to think in terms of JavaScript objects rather than database semantics.
--There are many ODM/ORM solutions available-Mongoose, Sequelize, GraphQL
+-ORM : Used with relational databases like MySQL and PostgreSQL
+-ODM : Used with non-relational databases like MongoDB, Cassandra, and Redis
+-ODM maps between objects in code and documents in a NoSQL database collection.
+-ODM provides a schema-based solution for modeling application data.
+-built-in features like type casting, validation, query building etc.
+-They streamline database operations, enhance code organization, and boost developer productivity
+-There are many ODM/ORM solutions available - Mongoose, Sequelize, GraphQL
 
 Mongoose
 ========
 -Mongoose is a MongoDB object modeling tool.
+-Mongoose is a JavaScript object-oriented programming library that creates a connection between MongoDB and the Node.js.
+-Provides features like: Data validation, Middleware and hooks, Schema enforcement, Abstraction
 
 https://mongoosejs.com/docs/guide.html
 https://mongoosejs.com/docs/validation.html#built-in-validators
+
+
+Mongoose Terminologies
+======================
+Schema:
+-Each schema maps to a MongoDB collection and defines the shape of the documents within that collection
+ new mongoose.Schema({eId: { type: Number,required:true,min:18,default:20 }});
+ 
+Model:
+-To use schema definition, we need to convert a Schema into a Model. 
+ mongoose.model(modelName, schema):
+ 
+Constructing Documents:
+-An instance of a model is called a document.
+ const emp = new EmployeeModel({ id:1,name:'sanjay });
+ await emp.save();
+   (or)
+ await emp.create({ id:1,name:'sanjay });
+ 
+Querying: 
+-Finding documents is easy with Mongoose.
+-Documents can be retrieved using a model's find, findById, findOne, or where static functions.
+ await UserModel.find({ add.city:'bangalore }).where('sa').gt(5000).exec();
+ 
+Validating:
+-Documents are casted and validated before they are saved. Mongoose first casts values to the specified type and then validates them. 
+-Internally, Mongoose calls the document's validate() method before saving.
+ Built-in Validators : type, required, min, max, enum 
+
+Custom Error Messages :
+-Array syntax: min: [6, 'Must be at least 6, got {VALUE}']
+-Object syntax: enum: { values: ['Coffee', 'Tea'], message: '{VALUE} is not supported' }
+
+
+
+
+
+
+Steps to use mongoose
+======================
+1. connect to DB
+   const url = 'mongodb://localhost:27017/june_2024';
+   mongoose.connect(url);
+2. Create Schema
+   let employeeSchema = new mongoose.Schema({
+    eId: { type: Number,required:true },
+    name: { type: String,required:true },
+    sal: { type: Number,required:true },
+    gender: { type: String,required:true  }
+   })
+3. Create a Model
+   let employeeModel = mongoose.model("employees", employeeSchema);
+4. 
 
 
 
@@ -2040,24 +2292,45 @@ https://devcenter.heroku.com/articles/deploying-nodejs
 
 
 
-How to measure and improve Node.js performance
+Profiling Node.js Applications
+==============================
+https://nodejs.org/en/learn/getting-started/profiling
+
+
+
+
+
+
+How to improve Node.js performance
 ==============================================
+-Use the latest version of Node.js for better performance
 -Use caching to reduce latency (REDIS)
 -Optimize your data handling methods
  a.streams  b.pagination c.DB query
+-Ensure secure client-side authentication
+-Improve throughput through clustering
+-Use a Content Delivery Network (CDN)
 -Use asynchronous programming
  fs.readfile('',()=>{})
+-Reduce the number of dependencies
 -Use Compression
  Middleware libraries such as compression or gzip
 -Use Load Balancing
+-Employ efficient algorithms and data structures.
+-Reduce I/O operations
 
- 
+
 
 
 
 NodeJS Security Risks
 =====================
-
+1. Code Injection
+1. Brute-Force Attacks   :  attackers generate random passwords and try implementing them on login endpoints
+2. Cross-Site Scripting (XSS) Attack  :  attacker can use XSS to send a malicious script
+3. Cross-Site Resource Forgery (CSRF) :  attackers hijack the sessions of real users, thereby bypassing security rules for non-users.
+4. Exploited and Malicious Packages
+5. Distributed Denial of Service (DDoS) attacks : attempt to disrupt the regular traffic of a server with a flood of internet traffic
 
 
 
@@ -2070,10 +2343,12 @@ Best Practices to keep NodeJS Secure
 5. Don’t send unnecessary information
 6. Limit request sizes
 7. Validate user input
+8. Set up cookie flags like httpOnly, Secure, or SameSite.
 
+
+https://www.simform.com/blog/nodejs-security/
 https://anywhere.epam.com/en/blog/node-js-security-best-practices
 https://www.aquasec.com/cloud-native-academy/application-security/node-js-security/
-https://anywhere.epam.com/en/blog/node-js-security-best-practices
 
 
 Web-Hooks
@@ -2120,6 +2395,7 @@ Interview Questions & Answers
 
 
 ---------------------------
+helmet vs cors
 url shortener
 md5 generator
 joi validator

@@ -1,9 +1,11 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
+app.use(cors())
 const port = 5000;
 const mongoose = require("mongoose");
 const userModel = require("./user-model");
@@ -15,6 +17,7 @@ app.get("/api/auth/users", async function (req, res) {
   let users = await userModel.find({});
   res.json(users);
 });
+
 app.post("/api/auth/register", async function (req, res) {
   req.body.password = bcrypt.hashSync(req.body.password, 8);
   try {
