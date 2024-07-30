@@ -76,7 +76,7 @@ db.customers.insertMany([
         email:"janesamith@example.com",
         address:"456, Main Street"
     },
-    ,{
+    {
         name:"Mike Johnson",
         email:"mikejohnson@example.com",
         address:"789, Main Street"
