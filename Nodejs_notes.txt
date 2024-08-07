@@ -599,6 +599,14 @@ Node.js Global Objects
 	fetch
 	global
 	navigator
+	
+
+Note: 
+__dirname :  __dirname is not defined in ES module scope
+
+to use __dirname in ES modules, use the below code
+const __dirname = import.meta.dirname;
+
 
 
 setImmediate() vs setTimeout()
@@ -1715,10 +1723,24 @@ Managing Indexes
 ================
 -Without indexes, MongoDB must scan every document of a collection to select those documents that match the query statement. 
 -This scan is highly inefficient and require MongoDB to process a large volume of data.
+-Indexes support efficient execution of queries in MongoDB
 -Indexes are special data structures, that store a small portion of the data set in an easy-to-traverse form. 
--The index stores the value of a specific field or set of fields, ordered by the value of the field as specified in the index.
--Avoids Collection Scan, Effective Indexing Strategy, Search Efficiency.
+-If an appropriate index exists for a query, MongoDB uses the index to limit the number of documents it must scan
 
+db.employees.find({sal:5000}).explain('executionStats'); // nReturned, totalDocsExamined
+
+
+Single Field Indexes:
+-store information from a single field in a collection
+ ex:db.students.createIndex( { gpa: 1 } )
+
+Index on an Embedded Field:
+db.students.createIndex( { "location.state": 1 } )
+
+Compound Indexes:
+-Compound indexes collect and sort data from two or more fields
+ ex:db.students.createIndex( {name:1,gpa:-1})
+   
 
 -Create an index (db.COLLECTION_NAME.createIndex({KEY:1}))
  db.user.createIndex({"name.family": 1})
@@ -1730,6 +1752,14 @@ Managing Indexes
  db.user.dropIndex("email")
  db.user.dropIndexes()
  
+
+Aggregation Operations
+======================
+-Aggregation operations process multiple documents and return computed results
+-Used to: 
+	1. Group values from multiple documents together.
+	2. Perform operations on the grouped data to return a single result.
+	3. Analyze data changes over time.
 
 
 
@@ -1743,7 +1773,7 @@ Aggregation Pipelines
 -db.collectionName.aggregate(pipeline, options)
  input --> $match  --> $group --> $sort --> output
 
-$match, $group, $limit, $project, $sort, $addFields, $count, $lookup, $out
+$match, $group, $limit, $project, $sort, $addFields, $count, $lookup, $out , $unwind
 
 
 
@@ -1790,6 +1820,16 @@ Assignment Solutions
 );
 	
 
+
+Views
+======
+-A MongoDB view is a read-only queryable object whose contents are defined by an aggregation pipeline on other collections or views.
+db.createView(
+    "firstYears",
+    "students",
+    [{ $match: { year: 1 } }]
+)
+db.firstYears.find({}, { _id: 0 } )
 
 
 Use a View to Join Two Collections
@@ -1858,7 +1898,7 @@ ODM (Object-Document Mapping)
 -ODM provides a schema-based solution for modeling application data.
 -built-in features like type casting, validation, query building etc.
 -They streamline database operations, enhance code organization, and boost developer productivity
--There are many ODM/ORM solutions available - Mongoose, Sequelize, GraphQL
+-There are many ODM/ORM solutions available - Mongoose, Sequelize
 
 Mongoose
 ========
@@ -1920,9 +1960,13 @@ Steps to use mongoose
    })
 3. Create a Model
    let employeeModel = mongoose.model("employees", employeeSchema);
-4. 
+4. using model try to perform DB operations
+   await employeeModel.find({});
+   
 
 
+Note: By Default Validations work for POST calls, to run validations for PUT,PATCh , use the below code
+mongoose.set('runValidators', true); 
 
 
 GraphQL
@@ -1932,7 +1976,7 @@ GraphQL
 -It gives clients the power to ask for exactly what they need and nothing more.
 -Advantages of GraphQL:- declarative, compositional, strongly-typed.
 
-npm install express graphql-http graphql ruru --save
+npm install  graphql-http graphql ruru --save
 
 
 
@@ -2026,7 +2070,10 @@ https://dummyjson.com/docs/products
 
 Nodemailer
 ==========
-1. npm install nodemailer 
+-Nodemailer is a module for Node.js to send emails.
+
+
+https://nodemailer.com/usage/using-gmail/
 
 Google App password
 ===================
@@ -2034,7 +2081,10 @@ Google App password
 -->Security --> How you sign in to Google --> 2-Step Verification
 -->App passwords --> Generate a new password
 
-https://myaccount.google.com/apppasswords
+if app-password option is not there:
+1. enable 2-Step Verification
+2. create app password using the below URL
+  https://myaccount.google.com/apppasswords
 
 
 
@@ -2372,6 +2422,17 @@ CRON
 https://www.npmjs.com/package/node-cron
 
 
+
+
+
+Differentiate between sharding and replication 
+===============================================
+-Sharding, also called partitioning, refers to the data's splitting by the key. 
+We use sharding to increase performance and to reduce the hit as well as memory load on a single resource.
+
+-Replication, also called mirroring, refers to copying all the data. 
+This helps to get high availability of reads. 
+The hit rate on all the resources will reduce if you are reading from multiple replicas. But the memory requirement remains the same for all the resources.
 
 
 References:
