@@ -34,6 +34,8 @@ Node.js Syllabus
 -Swagger  (API Documentation)
 -Unit testing (Mocha, Jasmine)
 -JWT
+-Deployment
+-CRON
 
 
 

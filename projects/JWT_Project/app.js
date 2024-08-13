@@ -1,13 +1,18 @@
-const express = require("express");
+const express = require('express');
+const cors = require('cors');
+const { connectToDB } = require('./config/db.config');
+const employeeRouter = require('./routes/employee_routes');
+const authRouter = require('./routes/auth_routes');
+
 const app = express();
-const db = require("./db");
-const port = 5000;
-const cors = require("cors");
+app.use(express.json());
 app.use(cors());
 
-const AuthController = require("./controller/AuthController");
-app.use("/api/auth", AuthController);
+app.use('/employees', employeeRouter)
+app.use('/auth', authRouter)
 
-app.listen(port, () => {
-  console.log(`Listing to port ${port}`);
-});
+app.listen(4000, () => {
+    connectToDB();
+    console.log('server running at 4000 port');
+})
+
