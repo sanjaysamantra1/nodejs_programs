@@ -8,7 +8,8 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 describe('GET /employees', () => {
-    let findByIdStub;
+    let findStub;
+    let findOneStub;
 
     beforeEach(() => {
         findStub = sinon.stub(EmployeeModel, 'find');
