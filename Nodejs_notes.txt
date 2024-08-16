@@ -2292,12 +2292,27 @@ global install
 	npm install mocha -g
 	
 project level install
-	npm install --save-dev mocha chai sinon supertest
+	npm install --save-dev express cors mocha mongoose chai@4 chai-http@4 sinon
 
 	
 Run Testcases
 =============
-mocha --timeout 10000	
+mocha
+
+
+Code Coverage
+=============
+1. npm i nyc
+
+2. For nyc related help 
+   npx nyc --help
+
+3. Add Below code in package.json
+   "scripts": {
+    "test": "mocha 'specs/**/*.js'",
+    "test-report": "nyc mocha 'specs/**/*.js'",
+    "coverage": "nyc report --reporter=html && npm run test"
+  },
 	
 	
 
