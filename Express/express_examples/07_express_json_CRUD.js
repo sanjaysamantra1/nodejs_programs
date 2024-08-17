@@ -81,6 +81,13 @@ app.delete("/todos/:id", (request, response) => {
   }
   response.status(404).json({ msg: "Todo not found" });
 });
+
+app.options("/*", function (req, res) {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+  res.sendStatus(200)
+});
 // Endppoint ends here
 
 // App listens to incoming requests here

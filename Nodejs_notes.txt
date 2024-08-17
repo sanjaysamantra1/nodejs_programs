@@ -1329,6 +1329,21 @@ cookie-parser
 
 
 
+
+Morgan 
+======
+-Morgan is a popular HTTP request logger middleware for Node.js
+-It simplifies the process of logging HTTP requests in a Node.js application by automatically generating logs for incoming requests.
+-Morgan provides various logging formats and options, allowing developers to customize the logging output according to their requirements
+
+
+
+1. npm i morgan
+2. 
+
+
+
+
 Express generator
 =================
 1. npm install -g express-generator
@@ -2452,6 +2467,37 @@ Web-Hooks
 CRON
 =====
 https://www.npmjs.com/package/node-cron
+
+
+1. npm i node-cron
+2.Add the below code
+var cron = require('node-cron');
+cron.schedule('* * * * *', () => {
+  console.log('running a task every minute');
+});
+
+
+
+1. second (optional)
+2. minute
+3. hour
+4. day of month
+5. month
+6. day of week
+
+
+* * * * * *        Every Second
+*/10 * * * * *     Every 10 Second
+* * * * *          Every  minute
+*/2 * * * *        Every 2 minute
+
+0 * * * *        Every Hour
+0 0 * * *        every day 12 am
+
+0 0 * * 1-5     Weekday  12:00 AM
+
+0 0 1 * *       Every Month
+     
 
 
 

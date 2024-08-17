@@ -1,0 +1,9 @@
+ 
+# Ignore node_modules directory
+node_modules/
+credentials/*
+.env
+cert.pem
+
+# Ignore dependency lock files
+package-lock.json
