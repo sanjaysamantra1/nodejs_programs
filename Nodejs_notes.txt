@@ -61,7 +61,7 @@ Projects
 
 What NodeJs is?
 ===============
--NodeJS is a platform to execute JavaScript on server side
+-NodeJS is a Runtime Environment to execute JavaScript on server side
 -Allows to run JavaScript on the server(outside the browser).
 -Built on Google Chrome's JavaScript V8 Engine. 
 -Single threaded, non-blocking, and event-driven execution model.
@@ -120,8 +120,7 @@ V8 JavaScript Engine
 -JavaScript is generally considered an interpreted language, but modern JavaScript engines no longer just interpret JavaScript, they compile it.
 -JavaScript is internally compiled by V8 
 
-JS Code --> V8  -->  Parsing  --> Abstract Syntax Tree  --> ByteCode -->
-Machine Code  --> Runs On CPU
+JS Code --> V8  -->  Parsing  --> Abstract Syntax Tree  --> ByteCode --> Machine Code  --> Runs On CPU
 
 
 
@@ -163,6 +162,7 @@ The Workflow of Node.js Architecture:
             -Querying for data
             -Deleting data 
             -Updating the data
+			-Adding Data In to database
 -Node.js retrieves the incoming requests and adds those requests to the Event Queue
 -The requests are then passed one-by-one through the Event Loop. It checks if the requests are simple enough to not require any external resources
 -Event Loop processes simple requests (non-blocking operations), such as I/O Polling, and returns the responses to the corresponding clients
@@ -210,8 +210,10 @@ Q. What is Reactor Pattern in Node.js?
 How to install Node.js
 ======================
 -Official packages for all the major platforms are available in the below URL
- https://nodejs.dev/en/download/
+ https://nodejs.org/en/download/prebuilt-installer
  https://nodejs.org/en/about/previous-releases
+ 
+ 
  
  
 How to Maintain multiple NodeJS versions
@@ -225,7 +227,7 @@ How to Maintain multiple NodeJS versions
 
 
 NVM useful commands
--------------------
+===================
 -Check NVM is installed
  nvm --version
 -List all the available Node Versions to be installed
@@ -295,6 +297,8 @@ There are various ways to terminate a Node.js application.
 -type .exit and press Enter
 -process.exit()
 -process.kill(process.pid)
+
+
 
 
 How to run a javascript/NodeJs file 
@@ -382,7 +386,7 @@ backtrace, bt         Print the current backtrace
 
 NPM (Node Package Manager)
 ==========================
--npm is the standard package manager for Node.js.
+-npm is the standard package manager for NodeJS Applications.
 -Node Package Manager (NPM) provides two main functionalities:
 	1.Online repositories for node.js packages
 	which are searchable on https://www.npmjs.com/
@@ -450,7 +454,7 @@ npm i --no-optional  --> will prevent optional dependencies from being installed
 
 
 NPM Global vs Local Installation
---------------------------------
+=================================
 -By default, NPM installs any dependency in the local mode. 
 -Local mode refers to the package installation in node_modules directory of our project.
 -Locally installed packages are accessible via require() method. 
@@ -467,7 +471,7 @@ NPM Global vs Local Installation
 -Such dependencies can be used in CLI (Command Line Interface), but cannot be imported using require() in Node application directly. 
  ex:- npm i nodemon -g
       const nodemon = require('nodemon'); //No
--Few packages that should be gloabbllay installed: 
+-Few packages that should be globally installed: 
  1.npm   2.nodemon  3.typescript  4.create-react-app  5.angular-cli  6.json-server
 -Run the below command command to list down all the globally installed modules. 
  npm ls -g
@@ -483,8 +487,11 @@ yarn package Manager
 -It assists with the process of installing, updating, configuring, and removing packages dependencies
 
 npm install -g yarn
+
 yarn --version
-yarn init
+yarn --help
+
+yarn init  (OR) yarn init -y
 yarn add minimist
 
 
@@ -565,21 +572,13 @@ Nodemon
 -You can restart the process at any time by typing 'rs' and hitting enter.
 
 
-Nodemon Features:
-----------------
--Automatic restarting of application.
--Ignoring specific files or directories.
- nodemon --ignore public server.js
--Watch specific directories.
- nodemon --watch src server.js
--Open source and available on github.
  
 
 
 Node.js Global Objects
 ======================
 -Node.js global objects are global in nature and available in all modules.
--we dont have to include these objects in our application; they can be directly used.
+-we don't have to include these objects in our application; they can be directly used.
 -A list of Node.js global objects are given below:
 	__dirname
 	__filename
@@ -595,11 +594,13 @@ Node.js Global Objects
 	structuredClone()
 	atob()
 	btoa()
-	export
+	exports
 	require
 	fetch
 	global
+	globalThis
 	navigator
+	module
 	
 
 Note: 
@@ -610,8 +611,92 @@ const __dirname = import.meta.dirname;
 
 
 
-setImmediate() vs setTimeout()
-==============================
+Nodejs Global Variables
+=======================
+-In Node.js, the global object is global.
+-abc.js
+ global.myGlobalVariable = "Hello from global!";
+-xyz.js
+console.log(global.myGlobalVariable);
+
+ 
+
+
+global and globalThis
+=====================
+-global and globalThis are used to access the global object, but they differ slightly in terms of scope and standardization.
+
+global (Node.js specific)
+-------------------------
+-In Node.js, the global object is used to access the global scope.
+-It contains global variables such as setTimeout, process, and Buffer among others.
+-global is specific to Node.js, meaning it may not be present in other environments (like browsers).
+	console.log(global.setTimeout);  // Node.js global object
+	console.log(global.process);     // Node.js global object
+-The global object allows access to Node.js-specific features like the process object, which provides information about the current process, environment variables, etc.
+
+globalThis (Universal across environments)
+-------------------------------------------
+-globalThis was introduced in ECMAScript 2020 (ES11) as a standardized way to access the global object across different environments.
+-It provides a universal way to access the global object, regardless of whether you're running the code in Node.js, a browser, or any other JavaScript environment.
+-In Node.js, globalThis is essentially an alias for global, but in the browser environment, it refers to the window object.
+	console.log(globalThis.setTimeout);  // Works in both Node.js and browsers
+	
+	global									globalThis
+===============================================================
+Node.js Specific-Yes				Node.js Specific-No(Universal across environments)
+Standardized-No 					Standardized-Yes (Standardized by ECMAScript)
+Only available in Node.js			Works in Node.js, browsers, and more
+Access Node.js-specific globals		Access global objects in any environment
+
+
+
+
+
+This
+====
+-The behavior of the this keyword depends on the context in which it is used. 
+-The value of this can vary between global scope, functions, and object methods, and it behaves differently in different scenarios, including strict mode, classes, and modules.
+
+1.In the top-level code 
+  in a Node module, 'this' is equivalent to module.exports. That's the empty object.
+  ex: console.log(this, this === module.exports); //true
+	module.exports.name = "sanjay";
+	console.log(this); // { name:sanjay }
+	
+2. Inside Functions 
+  -in Normal Mode:
+	a. this value inside a regular/normal function is 'global Object'.
+	b. this value inside an arrow function is {} (module.exports)
+  -in strictmode, this value inside a function is undefined.
+
+3. Inside Object Methods 
+  -When this is used in an object method, it refers to the object itself (i.e., the object that owns the method).
+  -If the method is assigned to a different object or called as a standalone function, this will lose its reference to the original object.
+  
+4. Inside Classes
+  -In classes, this refers to the instance of the class.
+  
+5. in Event Listeners and Callbacks
+  -If it's a regular function, this often refers to the global object, but arrow functions will capture the lexical this from the surrounding code
+
+
+
+Event Loop
+==========
+-Event loop's order of operations:
+
+1. timers: this phase executes callbacks scheduled by setTimeout() and setInterval().
+2. pending callbacks: executes I/O callbacks deferred to the next loop iteration.
+3. idle, prepare: only used internally.
+4. poll: retrieve new I/O events; execute I/O related callbacks 
+5. check: setImmediate() callbacks are invoked here.
+6. close callbacks: some close callbacks, e.g. socket.on('close', ...)
+
+
+NodeJs Timers
+=============
+
 -setImmediate() is designed to execute a script once the current poll phase completes.
 -setTimeout() schedules a script to be executed after a minimum threshold in ms has elapsed.
 -setImmediate callbacks are called after I/O Queue callbacks are finished or timed out. setImmediate callbacks are placed in Check Queue, which are processed after I/O Queue.
@@ -619,48 +704,6 @@ setImmediate() vs setTimeout()
 
 -if we run setImmediate() & setTimeout() which is not within an I/O cycle (i.e. the main module), the order in which the two timers are executed is non-deterministic.
 -However, if you move the two calls within an I/O cycle, the immediate callback is always executed first.
-
-
-
-Symbol 
-======
--A 'symbol' represents a unique identifier.
--Symbols are used to add unique property keys to an object that won’t collide with keys.
--create a symbol by calling the Symbol(), not by using new keyword.
- let sym1 = Symbol()  // correct
- let sym2 = new Symbol()  // TypeError
--Even if we create many symbols with the same description, they are different values.
- Symbol('abc') === Symbol('abc')  // false
--Symbols allow us to create “hidden” properties of an object, 
- that no other part of code can accidentally access or overwrite.
--If we want to use a symbol in an object literal,we need square brackets around it.
- let id = Symbol();
- let user = {name:'sanjay',[id]:123}
--Symbols are not enumerated,Symbols are skipped by for…in while we iterate object properties.
--Symbols are not part of the Object.keys() or Object.getOwnPropertyNames()
--Symbols assigned to an object can be accessed using the Object.getOwnPropertySymbols() method
--Object.assign() copies both string and symbol properties.
-
-
-
-This
-====
--this is determined when a function is called. Not when a function is created.
--In the top-level code in a Node module, 'this' is equivalent to module.exports. That's the empty object.
-ex: console.log(this, this === module.exports); //true
-	module.exports.name = "sanjay";
-	console.log(this); // { name:sanjay }
-	
--in Normal Mode:
-	a. this value inside a regular/normal function is 'global Object'.
-	b. this value inside an arrow function is {} (module.exports)
--in strictmode, this value inside a function is undefined.
-
--The object left of the dot is the value of this for normal functions.
--This rule does not apply for arrow function, as they don't have their own binding of this.
-
-
-
 
 
 
@@ -886,8 +929,13 @@ Node.js, the difference between development and production
 -We can have different configurations for production and development environments.
 -Node.js assumes it's always running in a development environment.
 -We can signal Node.js that we are running in production by setting the NODE_ENV=production environment variable
- NODE_ENV=production node app.js  (environemnt)
- node --env-file=.env --env-file=.development.env app.js (environment file)
+ 
+ NODE_ENV=production node app.js  (environemnt variable)
+ 
+ node --env-file=.env  app.js (environment file)
+ node --env-file=.development.env app.js
+ node --env-file=.qa.env app.js
+ node --env-file=.prod.env app.js
  
 Note: if the same variable is defined in the environment and in the file, the value from the environment takes precedence.
  
@@ -1216,7 +1264,7 @@ Middlewares
 
 request => middleware1 => middleware2 => Route => Response
 
-
+https://www.turing.com/kb/building-middleware-for-node-js
 https://expressjs.com/en/guide/using-middleware.html
 https://expressjs.com/en/resources/middleware/body-parser.html
 
@@ -2503,6 +2551,15 @@ cron.schedule('* * * * *', () => {
 
 
 
+PhonePe Integration
+====================
+https://developer.phonepe.com/v1/docs/api-integration/
+
+1. npm init -y
+2. npm i express axios cors 
+
+
+
 Differentiate between sharding and replication 
 ===============================================
 -Sharding, also called partitioning, refers to the data's splitting by the key. 
@@ -2577,3 +2634,18 @@ Interview Questions
 7 - findModify() findOneAndUpdate()
 	findModify - atomically modifies and return a single document
 	findOneAndUpdate - Find a single document and upd
+
+
+
+syllabus
+11. Passport for authentication 
+15. Child processes with fork method and cluster module, worker processes, main processes
+16. Worker threads
+17. Multiple parallel processing using promises
+18. RxJS in Nodejs
+19. Streams handling
+28. Micro services
+
+https://medium.com/@ben.dev.io/node-js-for-real-time-communication-cf71f985f983
+
+https://chatgpt.com/c/66dbe630-a978-800e-8a4b-1a3944ddbfc4

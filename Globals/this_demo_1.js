@@ -1,12 +1,8 @@
-console.log(this); // {}
+console.log(this, module.exports); // {} , this === module.exports which is an empty object for now
 
-function f1() {
-  console.log(this); //Object [global]
-}
-f1();
+module.exports.name = "sanjay";
+module.exports.add = function (a, b) {
+  return a + b;
+};
 
-function f2() {
-  "use strict";
-  console.log("f2...", this); //undefined
-}
-f2();
+console.log(this); // { name:sanjay }

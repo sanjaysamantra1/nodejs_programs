@@ -1,8 +1,11 @@
-console.log(this, module.exports); // {} , this === module.exports which is an empty object for now
-
-module.exports.name = "sanjay";
-module.exports.add = function (a, b) {
-  return a + b;
+let obj = {
+  f1: function () {
+    console.log(this); // obj
+  },
+  f2: () => {
+    console.log(this); // {}
+  },
 };
 
-console.log(this); // { name:sanjay }
+obj.f1(); // obj is left of the dot, so this is obj
+obj.f2(); // this is module.exports
