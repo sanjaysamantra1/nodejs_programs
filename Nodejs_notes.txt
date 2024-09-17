@@ -304,6 +304,7 @@ There are various ways to terminate a Node.js application.
 How to run a javascript/NodeJs file 
 ===================================
 node <fileName>.js
+node --watch <fileName>.js
 
 
 
@@ -510,7 +511,9 @@ Package.json
 	  author,
 	  keywords 
 	  scripts 
-	  dependencies etc.
+	  dependencies 
+	  devdependencies
+	  optionaldependencies etc.
 -package.json file is normally located at the root directory of a Node.js project.
 
 
@@ -599,7 +602,6 @@ Node.js Global Objects
 	fetch
 	global
 	globalThis
-	navigator
 	module
 	
 
@@ -617,6 +619,7 @@ Nodejs Global Variables
 -abc.js
  global.myGlobalVariable = "Hello from global!";
 -xyz.js
+require('./abc');
 console.log(global.myGlobalVariable);
 
  
@@ -686,9 +689,9 @@ Event Loop
 ==========
 -Event loop's order of operations:
 
-1. timers: this phase executes callbacks scheduled by setTimeout() and setInterval().
-2. pending callbacks: executes I/O callbacks deferred to the next loop iteration.
-3. idle, prepare: only used internally.
+1. timers: this phase executes callbacks for timers like setTimeout() and setInterval() whose delay has expired
+2. I/O callbacks: executes I/O callbacks deferred to the next loop iteration.
+3. idle, prepare: Used internally by Node.js and is not directly used by user applications
 4. poll: retrieve new I/O events; execute I/O related callbacks 
 5. check: setImmediate() callbacks are invoked here.
 6. close callbacks: some close callbacks, e.g. socket.on('close', ...)
@@ -696,8 +699,9 @@ Event Loop
 
 NodeJs Timers
 =============
-
 -setImmediate() is designed to execute a script once the current poll phase completes.
+ setImmediate() is useful when you want to execute a callback after I/O tasks in the current event loop iteration but before timers in the next iteration
+ 
 -setTimeout() schedules a script to be executed after a minimum threshold in ms has elapsed.
 -setImmediate callbacks are called after I/O Queue callbacks are finished or timed out. setImmediate callbacks are placed in Check Queue, which are processed after I/O Queue.
 -setTimeout(fn, 0) callbacks are placed in Timer Queue and will be called after I/O callbacks as well as Check Queue callbacks. As event loop, process the timer queue first in each iteration, so which one will be executed first depends on which phase event loop is.
@@ -2614,6 +2618,7 @@ https://github.com/idurar/mern-admin
 https://github.com/claykabongok/CRUD_REST_API_NODEJS_TYPESCRIPT
 https://github.com/innextinit/foodOrdering?tab=readme-ov-file
 https://github.com/omzi/madam-sauce/blob/stable/routes/auth.js
+https://github.com/shoaib0657/foodmine/tree/main
 
 
 
