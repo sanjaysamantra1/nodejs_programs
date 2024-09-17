@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Path to the file you want to watch
-const fileToWatch = path.join(__dirname, 'file_1.txt');
+const fileToWatch = path.join(__dirname, 'watchedFile.txt');
 
 // Watch the file for changes
 fs.watch(fileToWatch, (eventType, filename) => {
