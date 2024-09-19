@@ -1,26 +1,24 @@
 const fs = require('fs');
 const path = require('path');
 
-// Path to the file you want to watch
-const fileToWatch = path.join(__dirname, 'watchedFile.txt');
+// Source and destination paths
+const sourceFile = path.join(__dirname, 'largeFile.txt');
+const destinationFile = path.join(__dirname, 'copiedLargeFile.txt');
 
-// Watch the file for changes
-fs.watch(fileToWatch, (eventType, filename) => {
-    if (filename) {
-        console.log(`File ${filename} has been ${eventType}`);
-        if (eventType === 'change') {
-            fs.readFile(fileToWatch, 'utf-8', (err, data) => {
-                if (err) throw err;
-                console.log('New content:', data);
-            });
-        }
-    }
+// Create read and write streams
+const readStream = fs.createReadStream(sourceFile);
+const writeStream = fs.createWriteStream(destinationFile);
+
+// Copy file using streams
+readStream.pipe(writeStream);
+
+// Handle stream events
+readStream.on('error', (err) => {
+    console.error('Error reading file:', err);
 });
-
-// Writing data to simulate file changes
-setTimeout(() => {
-    fs.writeFile(fileToWatch, 'New content added!', (err) => {
-        if (err) throw err;
-        console.log('Content added to the file');
-    });
-}, 3000);
+writeStream.on('error', (err) => {
+    console.error('Error writing file:', err);
+});
+writeStream.on('finish', () => {
+    console.log('File copied successfully');
+});

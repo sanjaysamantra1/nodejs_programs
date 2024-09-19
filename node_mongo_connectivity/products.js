@@ -1,5 +1,8 @@
 const express = require("express");
+const cors = require("cors");
+
 const app = express();
+app.use(cors());
 const { MongoClient } = require("mongodb");
 
 app.get("/products", async (req, res) => {
@@ -9,7 +12,7 @@ app.get("/products", async (req, res) => {
     console.log("Starting connection");
     connection = await MongoClient.connect("mongodb://localhost:27017");
     console.log("Connection Established", connection);
-    const products = connection.db("april2023").collection("products").find({});
+    const products = connection.db("sept_2024").collection("products").find({});
     const result = await products.toArray();
     res.json(result);
   } catch (err) {
