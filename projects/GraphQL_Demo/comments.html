@@ -1,7 +1,8 @@
 <script>
     async function getData() {
-        const url = 'http://localhost:5000/courses';
-        const myQuery = `{ course(id:2) { id, title,author,topic } }`;
+        const url = 'http://localhost:5000/api/comments';
+        // const myQuery = `{ comments(id:2) { id, name,email } }`;
+        const myQuery = `{comments{id,name,email}}`;
         let response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({ query: myQuery }),
