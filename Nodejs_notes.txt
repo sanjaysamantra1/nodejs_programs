@@ -1263,7 +1263,7 @@ express.static(root<directory Name>, [options])
 Middlewares
 ===========
 -Middlewares in ExpressJS are functions that can modify Request and Response objects.
--Either to retrieve something from request Object or store Some relevant informationin response object.
+-Either to retrieve something from request Object or to store something in response object.
 -An example of a simple express js middleware could be to log the current date and time on every URL the user visits on our website.
 
 request => middleware1 => middleware2 => Route => Response
@@ -1311,14 +1311,15 @@ Q.How to run a middleware for a particular route
   
  
  
-isLoggedin middleware
+authenticate middleware
 =====================
-module.exports = function isLoggedIn(req, res, next) {
-  if (req.user) {
-    next();
-  } else {
-    res.send(401, "Unauthorized");
-  }
+const authenticate = (req, res, next) => {
+    const token = req.headers['authorization'];
+    if (token === 'mysecrettoken') {
+        next(); // User is authenticated, proceed to next middleware or route handler
+    } else {
+        res.status(401).json({ message: 'Unauthorized' });
+    }
 };
 
 
@@ -1328,7 +1329,7 @@ let myError = (err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || 'Something went wrong, Try again!';
  
-  return res.status(errorStatus).json({
+  res.status(errorStatus).json({
     status: errorStatus,
     message: errorMessage,
     stack: err.stack,
@@ -1384,14 +1385,29 @@ cookie-parser
 
 Morgan 
 ======
--Morgan is a popular HTTP request logger middleware for Node.js
+-Morgan is a popular HTTP request logger middleware for Node.js.
+-Alternatives Packages to morgan are : Winston / Bunyan / Pino
 -It simplifies the process of logging HTTP requests in a Node.js application by automatically generating logs for incoming requests.
--Morgan provides various logging formats and options, allowing developers to customize the logging output according to their requirements
+-Morgan provides various logging formats and options, allowing developers to customize the logging output according to their requirements.
+-Logging formats : combined / common / short / tiny
+Ex: app.use(morgan('tiny'));
+app.use(morgan(':method :host :status :param[id] :res[content-length] - :response-time ms'));
 
+Custom token with argument:
+morgan.token('param', function(req, res, param) {
+    return req.params[param];
+});
+
+only log error responses:
+morgan('combined', {
+  skip: function (req, res) { return res.statusCode < 400 }
+})
 
 
 1. npm i morgan
-2. 
+2. const morgan = require('morgan');
+   app.use(morgan('tiny'));
+
 
 
 
@@ -1402,10 +1418,10 @@ Express generator
 2. express project1 (--view=jade  default)
    express --view=ejs project1
    express project2 --no-view
-   
-cd project1
-npm install
-SET DEBUG=project1:* & npm start
+3. once the project is created, run the below commands to start the app
+	cd project1
+	npm install
+	SET DEBUG=project1:* & npm start
 
 
 Folder Structure for NodeJS & ExpressJS project
@@ -1430,7 +1446,7 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 
-var corsOptions = {
+const corsOptions = {
   origin: 'http://example.com'
 }
 app.use(cors(corsOptions));
@@ -1444,8 +1460,8 @@ corsOptions = {
   "optionsSuccessStatus": 204
 }
 
-var whitelist = ['http://example1.com', 'http://example2.com']
-var corsOptions = {
+const whitelist = ['http://example1.com', 'http://example2.com']
+const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.includes(origin)) {
       callback(null, true)
@@ -1464,7 +1480,8 @@ Events
 -Node.js allows us to create and handle custom events easily by using events module.
 -Event module includes EventEmitter class which can be used to raise and handle custom events.
 -An event can be raised/triggered using emit(). in emit() First parameter is the name of the event as a string and then arguments.
- ex: emit(eventName, arg1 , arg2)
+ ex:  emit(eventName)
+	  emit(eventName, arg1 , arg2)
 -An event can be emitted with zero or more arguments. 
 -We can specify any name for a custom event in the emit() function.
 -addListener() can be used to subscribe/listen an event. 
@@ -1518,7 +1535,7 @@ Data Access in Node.js
 ======================
 -Node.js supports all kinds of databases(RDBMS/NO-SQl)
  However, NoSQL databases like MongoDB are the best fit with Node.js
--To access the database in Node.js application, the driver needs to be installed for the database 
+-To access the database in Node.js application, driver needs to be installed 
 ex:npm install mysql (for MySQL)
    npm install oracledb (for Oracle)
    npm install mongodb (MongoDB)
@@ -1536,8 +1553,8 @@ MongoDB
  Relational databases - MySql , Oracle , PostgreSQL
  
 
-MongoDB
-=======
+NoSQL Databases (MongoDB)
+=========================
 -Type: NoSQL, document-oriented database.
 -Data Storage: Stores data in flexible, JSON-like documents (BSON).
 -Schema: Schema-less; fields can vary from document to document.
@@ -1580,6 +1597,9 @@ MongoDB Local
    https://www.mongodb.com/try/download/community 
 					(OR)
    https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-6.0.5-signed.msi
+   
+   
+The Below Points are optional if we want to access our database in MongoDB Compass
 2. Go to the path where MongoDB is installed,and run 'mongod.exe'  
    By default it is "C:\Program Files\MongoDB\Server\6.0\bin"
 4. Expect Error as the data directory is not set
@@ -1609,7 +1629,7 @@ MongoDB Shell (CLI for mongoDB)
  start mongosh.exe 
 -Enter mongoDB Connection String 
  mongodb://localhost:27017
- mongodb://0.0.0.0:27017/
+ 
  
 Note: If mongoDB and mongoShell are installed & path is set
 -open 2 command prompts
@@ -1620,12 +1640,15 @@ Note: If mongoDB and mongoShell are installed & path is set
 MongoDB Compass
 ===============
 -MongoDB Compass is a graphical interface to interact with the MongoDB 
-1. download and install mongoDB Compass
-  https://www.mongodb.com/products/compass
+-Manage MongoDB data without writing complex shell commands
+ 
+1. Download and install MongoDB Compass (It comes along with mongoDB)
+   https://www.mongodb.com/try/download/compass
 2. open mongoDB Compass GUI
 3. Enter mongoDB Connection String 
-   mongodb://localhost:27017  (OR)
-   mongodb://127.0.0.1:27017
+   mongodb://localhost:27017  (OR) 
+   mongodb://127.0.0.1:27017   
+   mongodb://0.0.0.0:27017
 
  
 
@@ -1684,19 +1707,29 @@ Projection : which fields to include in the results
  db.employees.countDocuments({salary:13001});
  db.employees.find().limit(2)
  db.employees.find().sort({sal:-1}).skip(2).limit(1)
- db.employees.distinct('eid');
+ db.employees.distinct('eid');  // ['e101','e102']
  
 -To Update the existing Data
  db.employees.updateOne( { id: 101 }, { $set: { sal: 2000 } } ) 
  db.employees.updatemany( { sal:6000 }, { $set: { sal: 6500 } } )
- db.employees.updateOne({id: 101},{$set:{eid:1,name:'sanjay',sal:5000}},{ upsert: true })
+ db.employees.updateOne({id: 101},{$set:{eid:1,name:'sanjay',sal:5000}},{ upsert: true });  // Update or Insert
  // Update the document, but if not found insert it
+ db.employees.updateOne({eId:'e102'},{$inc:{sal:100}}); // increment
+ db.employees.updateOne({eId:'e102'},{$set:{address:{city:'bangalore'}}}); // add a new field
+ db.employees.updateOne({eId:'e102'},{$set:{address:{}}}); // update address value to {}
+ db.employees.updateOne({eId:'e102'},{$unset:{address:''}});  // remove a field
+ db.employees.updateOne({eId:'e102'},{joinDate : $currentDate });  // Sets the field value to the current date
+ db.employees.updateOne({eId:'e102'},{ $rename: { "username": "user_name" } }); // Renaming a Field
+ 
+ 
+ 
  
 -To Delete 
- db.employees.deleteOne({ sal:6000 })
- db.employees.deleteMany({ name: "sanjay" })
- db.employees.remove({ id:101 }) 	// Deprecated
- db.users.deleteMany({})   // Remove All Documents(equivalent of SQL's truncate)
+ db.employees.deleteOne({ sal:6000 });      
+ db.employees.deleteMany({ gender:"male" })
+ db.employees.deleteMany({})   // Delete All Documents(equivalent of SQL's truncate)
+ db.employees.deleteMany({$or:[{status:'inactive'},{sal:7000}]});  // Delete with Logical Operator
+ db.employees.deleteMany({name:{$regex:/si/}});  // Delete using REGEX
  
  db.employees.drop()  // Drop The Collection
  db.dropDatabase()    // Drop Database
@@ -1706,6 +1739,8 @@ Projection : which fields to include in the results
 Q. find() vs findOne()
 ======================
 findOne() - if query matches, first document is returned, otherwise null.
+			findOne() never returns a cursor
+			cursor methods cannot be used with the returned value of findOne()
 find() - no matter the number of documents matched, a cursor is returned, never null.
 
 -cursor is a pointer that references the documents of the collection returned.
@@ -1719,9 +1754,16 @@ MongoDB Datatypes
 =================
 -String
 -Boolean
--Numebr : Int32 , Long , Double
--Date: Date() , new Date() , ISODate()
+-Numebr  
+	Int32 
+	Long 
+	Double
+-Date 
+	Date()  : returns the current date as a string
+	new Date() : returns a Date object
+	ISODate()  : returns a Date object using the ISODate()
 -ObjectId : new ObjectId()
+	A special type used to uniquely identify documents in a collection
 -Timestamp : new Timestamp() 
  Timestamp{ "t": <integer>, "i": <integer> } Used for ordering when there are multiple operations within a given second
 
@@ -1731,14 +1773,21 @@ MongoDB Datatypes
 
 MongoDB Query Operators
 =======================
-Comparison : $eq, $ne, $gt, $gte, $lt, $lte, $in
+Comparison : $eq, $ne, $gt, $gte, $lt, $lte, $in, $nin
 Logical    : $and, $or, $nor, $not  
-Evaluation : $regex, $text, $where
+Element Query : $exists , $type , 
+Evaluation : $regex, $text, $where, $expr , $mod 
+Array Query : $all , $elemMatch , $size , 
 
 
 $regex
 ======
 db.employees.find( { phone: { $regex: /789$/ } } );  
+db.employees.find( { email: { $regex: /.org$/ } } );  // ends with .org
+db.comments.find({email:{$regex:/^ka/i}})    // starts with Ka
+db.comments.find({status:{$regex:/^(active|pending)/}})   // status : active | pending
+db.comments.find({name:{$regex:/^sanjay$/}}); // exact match
+
 
 $text
 =====
@@ -1750,18 +1799,10 @@ db.articles.find( { $text: { $search: "\"coffee shop\"" } } )
  coffee shop
 db.articles.find( { $text: { $search: "\'coffee shop\' \'Cafe con Leche\'" } } )
  Or
-
 $where
 db.table3.find( { $where: function() { return (this.english == this.science) }})
 
 
-MongoDB Update Operators
-========================
-$currentDate: Sets the field value to the current date
-$inc: Increments the field value
-$rename: Renames the field
-$set: Sets the value of a field
-$unset: Removes the field from the document
 
 Array
 $addToSet: Adds distinct elements to an array
@@ -1955,6 +1996,7 @@ https://www.freecodecamp.org/news/get-started-with-mongodb-atlas/
 
 mongodb+srv://sanjaysamantra:<password>@cluster0.geshq.mongodb.net/?retryWrites=true&w=majority
 mongodb+srv://sanjaysamantra1:berhampur@cluster0.ga81v5y.mongodb.net/
+mongodb+srv://sanjaysamantra1:berhampur@cluster0.ga81v5y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 
 
 
@@ -1976,6 +2018,7 @@ Mongoose
 
 https://mongoosejs.com/docs/guide.html
 https://mongoosejs.com/docs/validation.html#built-in-validators
+
 
 
 Mongoose Terminologies
@@ -2035,6 +2078,72 @@ Steps to use mongoose
 
 Note: By Default Validations work for POST calls, to run validations for PUT,PATCh , use the below code
 mongoose.set('runValidators', true); 
+
+
+Mongoose Middleware
+===================
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+
+// Create User Schema
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: [true, 'Username is required'],
+    unique: true,
+    trim: true,
+    minlength: [3, 'Username must be at least 3 characters long'],
+  },
+  email: {
+    type: String,
+    required: [true, 'Email is required'],
+    unique: true,
+    lowercase: true,
+    validate: {
+      validator: function (v) {
+        return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v);  // Simple email regex validation
+      },
+      message: props => `${props.value} is not a valid email address!`
+    },
+  },
+  password: {
+    type: String,
+    required: [true, 'Password is required'],
+    minlength: [6, 'Password must be at least 6 characters long'],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+// Middleware to hash the password before saving it to the database
+userSchema.pre('save', async function (next) {
+  const user = this;
+  
+  // Only hash the password if it has been modified (or is new)
+  if (!user.isModified('password')) return next();
+
+  // Generate a salt
+  const salt = await bcrypt.genSalt(10);
+
+  // Hash the password using the salt
+  user.password = await bcrypt.hash(user.password, salt);
+
+  next();
+});
+
+// Method to compare entered password with the hashed password
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// Create the User model
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;
+
+
 
 
 GraphQL
