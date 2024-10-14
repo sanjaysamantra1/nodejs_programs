@@ -330,7 +330,7 @@ accept arguments from the command line
 Assignment:
 -Ask user to enter 2 numbers and 1 operator(+ - * /) 
 -perform arithmetic operation on those 2 numbers
-Note: hanlde edge cases also
+Note: Handle edge cases also (user should pass arguments, if not show error message)
 
 
 
@@ -2153,7 +2153,7 @@ GraphQL
 -It gives clients the power to ask for exactly what they need and nothing more.
 -Advantages of GraphQL:- declarative, compositional, strongly-typed.
 
-npm install  graphql-http graphql ruru --save
+npm install graphql-http graphql ruru --save
 
 
 
@@ -2166,11 +2166,18 @@ npm install  graphql-http graphql ruru --save
 5. Simple, Resource driven  5. Micro Services   
 
 
+
+
+apollographql
+=============
+https://www.apollographql.com/docs
+
+
+npm i cors apollo-server apollo-server-express mongoose
+
 apollo-server is used to create a graphQL server
 apollo-server-express is used to integrate graphQL with express app
 mongoose is MongoDB object modelling tool to interact with MongoDB
-
-npm i apollo-server  apollo-server-express mongoose
 
 
 
@@ -2223,6 +2230,23 @@ Commands
 -Check Data type of the value
  TYPE keyName
 -INFO (to check redis server details)
+
+
+Redis Cache Usecases
+====================
+GET: 
+	1. Check if data is there in Redis or not?
+	2. if Data is there in redis, return the data from redis cache
+	3. if Data is not there in redis, fetch data from db , Add the Data in Redis, Return the data
+POST: 
+	1. Insert the data into Database
+	2. add the data in Redis
+PATCH:
+	1. Update the data in Database
+	2. Update the data in Redis
+DELETE:
+	1. Delete the data in Database
+	2. Delete the data in Redis
 
 
 
