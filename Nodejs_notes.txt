@@ -620,7 +620,10 @@ Nodejs Global Variables
  global.myGlobalVariable = "Hello from global!";
 -xyz.js
 require('./abc');
+console.log(myGlobalVariable);
 console.log(global.myGlobalVariable);
+console.log(globalThis.myGlobalVariable);
+
 
  
 
@@ -739,8 +742,8 @@ util-util module includes utility functions useful for programmers.
 Local(Custom) Modules 
 =====================
 -Node.js has two types of modules: 
-	1. ES modules 
-	2. CommonJS modules
+	1. ES modules  (.mjs)
+	2. CommonJS modules (.cjs)
 -By default, Node.js treats JavaScript as CommonJS modules. But we can tell Node.js to treat JavaScript code as ES modules.
 -Node.js will treat the following files as ES modules:
 	a.Files ending in .mjs
@@ -1432,8 +1435,15 @@ https://dev.to/mr_ali3n/folder-structure-for-nodejs-expressjs-project-435l
 
 CORS(Cross-Origin-Resource-Sharing)
 ====
--Cross Origin Resource Sharing or CORS is a technique to tell the browser whether a application can fetch resources from a different domain or not.
--By default, browsers will block certain requests if both the client and the server are not in the same origin.
+-Manages how our server will respond to requests from different origins.
+-Controls which domains can access our API or web application by setting Access-Control-Allow-Origin and other headers.
+
+Key Features:
+-Prevents unauthorized cross-origin requests: 
+	By default, browsers block requests made from one domain to another (a different origin). The cors middleware enables specific domains or all domains to access your resources.
+-Customizable origin policies: 
+	We can whitelist specific origins, methods, and headers that are allowed to interact with your server.
+
 
 -CORS is a npm package.
 -How to Install
@@ -1472,6 +1482,36 @@ const corsOptions = {
 }
 
 https://www.npmjs.com/package/cors
+
+
+
+CURL
+====
+-Client URL Request Library
+-curl -help
+
+
+Helmet
+======
+-It Helps to secure Node.js application by setting several HTTP headers.
+-automatically adds or removs HTTP headers to comply with web security standards.
+-protect Node.js Express apps from common security threats such as Cross-Site Scripting (XSS) and click-jacking attacks.
+-Express applications do not come with security HTTP headers out of the box
+-Without Helmet, default headers returned by Express expose sensitive information and make your Node.js app vulnerable to malicious actors
+
+
+curl http://localhost:3000/
+curl http://localhost:3000/ --include
+Or
+use an HTTP client such as Postman to inspect the HTTP headers of the response
+
+without Helmet
+==============
+-response header should have X-Powered-By header. As with all headers that begin with X-, it is a non-standard header. X-Powered-By indicates the name and version number of the framework or library used by the server to generate the HTTP response.
+-we should never give attackers details about your tech stack
+https://securityheaders.com/
+
+-
 
 
 
@@ -2146,6 +2186,19 @@ module.exports = User;
 
 
 
+Assignment
+==========
+-Create URL shorten application, with the below 2 routes 
+
+POST http://localhost:5000/api/url/shorten 
+{
+    "originalUrl" : "https://www.youtube.com/results?search_query=express+rate+limit"
+}
+
+GET http://localhost:5000/e32nODMkC<CODE>
+
+
+
 GraphQL
 =======
 -GraphQL is a query language for APIs.
@@ -2306,16 +2359,18 @@ Socket IO / Chat Application
 
 io.on('connection', socket => {
   socket.emit('request', /* … */); // emit an event to the socket
-  io.emit('broadcast', /* … */); // emit an event to all connected sockets
   socket.on('reply', () => { /* … */ }); // listen to the event
   socket.broadcast.emit(); //emit an event to all connected sockets, except the sender
+  io.emit('broadcast', /* … */); // emit an event to all connected sockets  
 });
 
 
-Private Message
+Private Message	
 ===============
 1. Create a Room and join
-   socket.join("sanjaypraveenroom");
+   io.on("connection", (socket) => {
+		socket.join("some room");
+   });
 2. Emit the message only to a room
   socket.to('sanjaypraveenroom').emit("chat message", data);
   
@@ -2731,7 +2786,6 @@ Interview Questions & Answers
 
 
 ---------------------------
-helmet vs cors
 url shortener
 md5 generator
 joi validator
@@ -2741,6 +2795,7 @@ Sequelize
 NestJs
 passportjs npm
 node profiler : https://nodejs.org/en/learn/getting-started/profiling
+Monitoring Node.js applications with tools like PM2
 
 
 
