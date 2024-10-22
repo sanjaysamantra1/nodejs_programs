@@ -1386,6 +1386,20 @@ Express PathParam & QueryParam
 
 
 
+
+NodeJs and Typescript
+=====================
+1. npm init -y
+2. npm install express typescript ts-node @types/node @types/express
+3. npx tsc --init
+4. add CRUD code
+5. npx ts-node src/app.ts
+		(OR)
+   a. npx tsc  b. node dist/app.js
+
+
+
+
 cookie-parser
 =============
 -It parses Cookie header and populate req.cookies with an object keyed by cookie names. 
@@ -2753,15 +2767,23 @@ cron.schedule('* * * * *', () => {
 
 * * * * * *        Every Second
 */10 * * * * *     Every 10 Second
-* * * * *          Every  minute
+* * * * *          Every minute
 */2 * * * *        Every 2 minute
 
 0 * * * *        Every Hour
+0 */2 * * *      Every alternate Hour
+30 * * * *       30th minute of every hour
 0 0 * * *        every day 12 am
+0 10 * * *       every day 10 am
+0 14 * * *       every day 2 pm
 
-0 0 * * 1-5     Weekday  12:00 AM
+0 10 * * 1       every monday 10 am
+0 10 * * 1-5     Weekday  10:00 AM
+0 10 */2 * *     every alternate day 10 am
+0 0 1 * *        Every Month
+0 0 1 1 *        Every Year jan 1st
 
-0 0 1 * *       Every Month
+https://crontab.guru/every-year
      
 
 
