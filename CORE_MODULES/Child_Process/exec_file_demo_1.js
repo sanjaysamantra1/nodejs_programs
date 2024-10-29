@@ -1,15 +1,16 @@
-const { execFile } = require("child_process");
+const { execFile } = require('child_process');
+const path = require('path');
 
-execFile(__dirname + "/demo.bat", (error, stdout, stderr) => {
-  if (error) {
-    console.error(`error: ${error.message}`);
-    return;
-  }
-
-  if (stderr) {
-    console.error(`stderr: ${stderr}`);
-    return;
-  }
-
-  console.log(`stdout:\n${stdout}`);
+execFile(path.resolve(__dirname, 'demo_1.bat'), { shell: true },(error, stdout, stderr) => {
+    // if command not found
+    if (error) {
+        console.log(error.message);
+        return;
+    }
+    // if error while executing the command
+    if (stderr) {
+        console.log(stderr);
+        return;
+    }
+    console.log(stdout);
 });

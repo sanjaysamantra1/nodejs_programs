@@ -1,9 +1,23 @@
-const cp = require('node:child_process');
-const n = cp.fork(`${__dirname}/sub.js`);
+// parent.js
+const { fork } = require('child_process');
 
-n.on('message', (m) => {
-  console.log('PARENT got message:', m);
+// Fork the child process, loading child.js as the module
+const child = fork(`${__dirname}/fork_child_demo.js`);
+
+// Listen for messages from the child process
+child.on('message', (message) => {
+    console.log('Message from child:', message);
+
+    // Send acknowledgment back to the child
+    child.send({ ack: `Received: ${message.data}` });
 });
 
-// Causes the child to print: CHILD got message: { hello: 'world' }
-n.send({ hello: 'world' });
+// Handle any errors from the child
+child.on('error', (error) => {
+    console.error('Error in child process:', error);
+});
+
+// Close event when child process is closed
+child.on('exit', (code) => {
+    console.log(`Child process exited with code ${code}`);
+});

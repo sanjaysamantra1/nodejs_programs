@@ -985,18 +985,24 @@ Child Processes Module
 	2. execFile() / execFileSync()
 	3. spawn()  /  spawnSync()
 	4. fork()
-exec() : creates a new shell process and executes a command in that shell.
+exec()  
+	creates a new shell process and executes a command in that shell.
          The output of the command can be collected via a callback function passed to exec()
 		ex: exec("dir", (error, stdout, stderr) =>{});
 		error - if command not found
 		stdout - output of the executed command
 		stderr - if error while executing the command
 			
-execFile() : execute a file (bat/sh)
+execFile() 
+	execute a file (bat/sh)
 			 
-spawn(): when the command we want to run can output a large amount of data
+spawn() 
+	when the command we want to run can output a large amount of data
 
-fork() : communication channel is established to the child process when using fork, so we 	can use the send function on the forked process along with the global process object itself to exchange messages between the parent and forked processes.
+fork()  
+-communication channel is established to the child process when using fork, so we 	can use the send function on the forked process along with the global process object itself to exchange messages between the parent and forked processes.
+-ChildProcess will have an additional communication channel built-in that allows messages to be passed back and forth between the parent and child
+ 
  
  
  
@@ -1183,8 +1189,13 @@ app.all()
 
 app.use() vs app.get()
 ======================
--app.use() is generally used for introducing middlewares and can handle all type of HTTP requests.
+-app.use() can handle all type of HTTP requests(GET,POST,PUT,DELETE)
+-app.use() is generally used for introducing middlewares.
+ app.use(express.json()); // express.json() is middleware
 -app.get() is only for handling GET HTTP requests.
+ app.get('/users', (req, res) => { 
+    res.send('all users')
+ })
 
 
 app.use() vs app.all()
@@ -1196,14 +1207,17 @@ app.use( "/book" , middleware);
 // will match /book
 // will match /book/author
 // will match /book/subject
+// won't match /book-123
 
 app.all( "/book" , handler);
 // will match /book
 // won't match /book/author   
-// won't match /book/subject    
+// won't match /book/subject  
+// won't match /book-123  
 
 app.all( "/book/*" , handler);
-// won't match /book        
+// won't match /book   
+// won't match /book-123      
 // will match /book/author
 // will match /book/subject
 
@@ -1249,28 +1263,46 @@ res.sendStatus(500); // equivalent to res.status(500).send('Internal Server Erro
 
 
 
-Express Routers
+Express Routing
 ===============
 -Routing refers to how an application’s endpoints (URIs) respond to client requests.
+-Route paths, in combination with a request method, define the endpoints at which requests can be made.
+-Route paths can be strings, string patterns, or regular expressions
+
+Examples:
+app.get('/ab?cd');   // will match acd and abcd
+app.get('/ab+cd');   // will match abcd, abbcd, abbbcd
+app.get('/ab*cd');   // will match abcd, abxcd, abRANDOMcd, ab123cd
+app.get('/ab(cd)?e'); // will match /abe and /abcde
+app.get(/.*fly$/);  // will match butterfly and dragonfly, but not butterflyman, dragonflyman
+
+
+
+Express PathParam & QueryParam
+==============================
+1. Path-Param
+	ex:- /users/101
+	const userId = req.params.userId;
+	
+Few More Path Params:
+app.get('/products/:productId([0-9])/ratings')
+app.get('/products/:productId([0-9])/ratings/:ratingId')
+
+2. Query-param
+	ex:- /search?searchWord=skybag&filter=something
+	const {searchWord,filter} = req.query;
+
+
 
 express.Router()
 ================
--express.Router() function is used to create a new router object.
--To create a new router object in our program to handle requests.
--Use the express.Router class to create modular, mountable route handlers.
--router.use(timeLog) , adds a middleware for a router object
+-express.Router() creates a new router object that can handle requests in a modular and organized way
 
+Modularity: Group routes based on features or functionality. (users, products,  orders)
+Scalability: Organize routes for large applications and separate them into different modules.
+Middleware Management: Apply middleware to specific routes or groups of routes easily.
+Cleaner Code: By dividing routes into smaller, focused files, our codebase remains clean and readable.
 
-
-Serving static files in Express
-===============================
--To serve static files such as images, CSS files, and JavaScript files, use the express.static() built-in middleware function in Express. 
-express.static(root<directory Name>, [options])
--The root argument specifies the root directory from which to serve static assets.
- app.use(express.static('public'))
--To use multiple static assets directories, call the express.static() middleware function multiple times:
-	app.use(express.static('public'))
-	app.use(express.static('files'))
 	
 	
 
@@ -1280,7 +1312,11 @@ Middlewares
 -Either to retrieve something from request Object or to store something in response object.
 -An example of a simple express js middleware could be to log the current date and time on every URL the user visits on our website.
 
-request => middleware1 => middleware2 => Route => Response
+
+without middleware : 
+	request => Route => Response
+with middleware : 
+	request => middleware1 => middleware2 => Route => Response
 
 https://www.turing.com/kb/building-middleware-for-node-js
 https://expressjs.com/en/guide/using-middleware.html
@@ -1300,6 +1336,7 @@ An Express application can use the following types of middleware:
    const userRouter = express.Router();
    userRouter.use(logger);
 3. Error-handling middleware
+   Note : To manually trigger error handling middleware, you can pass an error object to the next() function
    try{
    }catch(err){
 	 next(err); // transfers error object to error handling middleware
@@ -1339,7 +1376,7 @@ const authenticate = (req, res, next) => {
 
 Error handler
 =============
-let myError = (err, req, res, next) => {
+let myErrorHandler = (err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || 'Something went wrong, Try again!';
  
@@ -1350,8 +1387,21 @@ let myError = (err, req, res, next) => {
     success: false,
   });
 };
+Note : this should be present after all the routes & before app.listen(5000)
 
 
+
+Serving static files in Express
+===============================
+-To serve static files such as images, CSS files, and JavaScript files, use the express.static() built-in middleware function in Express. 
+express.static(root<directory Name>, [options])
+-The root argument specifies the root directory from which to serve static assets.
+ app.use(express.static('public'))
+-To use multiple static assets directories, call the express.static() middleware function multiple times:
+	app.use(express.static('public'))
+	app.use(express.static('files'))
+	
+	
 
 Body-parser
 ===========
@@ -1374,16 +1424,28 @@ Note: ExpressJS provides its inbuilt functions for parsing request body
  
 
 
-Express PathParam & QueryParam
-==============================
-1. Path-Param
-	ex:- /productDetails/101
-	const userId = req.params.userId;
+cookie-parser
+=============
+-To Read cookie information from client.
+-It parses Cookie header and populate req.cookies with an object keyed by cookie names. 
 
-2. Query-param
-	ex:- /search?searchWord=skybag&filter=something
-	const {searchWord,filter} = req.query;
-
+1. How to Read Client cookie data in Server:
+	const cookieParser = require('cookie-parser');
+	app.use(cookieParser());
+	
+	app.get('/getCookie', (req, res,next) => {
+		res.send(req.cookies); // server can read cookie data from request object
+	});
+2. How server can set cookie in client's browser
+   app.get('/setCookie', (req, res,next) => {
+		res.cookie('name','sanjay')
+		res.cookie('add','bangalore')
+    });
+3. How server can delete cookie from client's browser
+   app.get('/setCookie', (req, res,next) => {
+		res.clearCookie('name');
+    });
+	
 
 
 
@@ -1398,16 +1460,42 @@ NodeJs and Typescript
    a. npx tsc  b. node dist/app.js
 
 
+tsconfig.json
+-------------
+{
+  "compilerOptions": {
+    "lib": [
+      "es6"
+    ],
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "sourceMap": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
 
 
-cookie-parser
-=============
--It parses Cookie header and populate req.cookies with an object keyed by cookie names. 
-	var cookieParser = require('cookie-parser');
-	app.use(cookieParser())
 
 
 
+
+Use a Logging Service to track and store errors in production
+==============================================================
+-To improve error management, we can integrate logging services
+-Winston or Morgan can be used for logging error details to external files or monitoring services. 
+-These are helpful for production environments
 
 
 
@@ -1417,9 +1505,12 @@ Morgan
 -Alternatives Packages to morgan are : Winston / Bunyan / Pino
 -It simplifies the process of logging HTTP requests in a Node.js application by automatically generating logs for incoming requests.
 -Morgan provides various logging formats and options, allowing developers to customize the logging output according to their requirements.
--Logging formats : combined / common / short / tiny
-Ex: app.use(morgan('tiny'));
-app.use(morgan(':method :host :status :param[id] :res[content-length] - :response-time ms'));
+-Logging formats : combined / common / short / tiny / dev
+
+Example: 
+	app.use(morgan('tiny'));
+	app.use(morgan('dev'));
+    app.use(morgan(':method :host :status :param[id] :res[content-length] - :response-time ms'));
 
 Custom token with argument:
 morgan.token('param', function(req, res, param) {
@@ -1521,7 +1612,7 @@ Helmet
 -It Helps to secure Node.js application by setting several HTTP headers.
 -automatically adds or removs HTTP headers to comply with web security standards.
 -protect Node.js Express apps from common security threats such as Cross-Site Scripting (XSS) and click-jacking attacks.
--Express applications do not come with security HTTP headers out of the box
+-Express applications do not come with security HTTP headers out of the box.
 -Without Helmet, default headers returned by Express expose sensitive information and make your Node.js app vulnerable to malicious actors
 
 
@@ -1533,10 +1624,10 @@ use an HTTP client such as Postman to inspect the HTTP headers of the response
 without Helmet
 ==============
 -response header should have X-Powered-By header. As with all headers that begin with X-, it is a non-standard header. X-Powered-By indicates the name and version number of the framework or library used by the server to generate the HTTP response.
--we should never give attackers details about your tech stack
+-we should never give attackers details about our tech stack.
+
 https://securityheaders.com/
 
--
 
 
 
@@ -1549,10 +1640,11 @@ Events
 	  emit(eventName, arg1 , arg2)
 -An event can be emitted with zero or more arguments. 
 -We can specify any name for a custom event in the emit() function.
--addListener() can be used to subscribe/listen an event. 
--Event names are camel-cased strings but any valid JavaScript property key can be used. 
--Any values returned by the called listeners are ignored and will be discarded.
--The eventEmitter.on() method is used to register listeners, 
+-use addListener() / on() to subscribe/listen an event. 
+
+-Event names should be camel-cased strings but any valid name should be fine. 
+-Listeners should not return any value , Any values returned by the called listeners are ignored and will be discarded.
+
 -The EventEmitter calls all listeners synchronously in the order in which they were registered.
 -This ensures the proper sequencing of events and helps avoid race conditions and logic errors. 
 When appropriate, listener functions can switch to an asynchronous mode of operation using the setImmediate() or process.nextTick() methods:
@@ -2648,6 +2740,17 @@ Basic Flow
 3. client receives the token and stores it somewhere in the browser (seesion/local storage).
 4. client sends the token in the Authorization header for protected routes.
 5. Server checks the token, gets user information and sends the response to the client.
+
+
+-To begin, the client provides credentials to the authentication component.
+-The access token and refresh token are then issued by the authentication component.
+-After then, the client uses the access token to request resource endpoints for a protected resource.
+-The resource endpoint verifies the access token before delivering a secure resource.
+-Repeat steps 3 and 4 until the access token is no longer valid.
+-When the access token expires, the client requests a new one using the refresh token.
+-A new access token and refresh token are issued by the authentication component.
+-Repeat steps 3 through 7 until the refresh token has expired.
+-When the refresh token expires, the client must re-authenticate with the authentication server, and the flow begins again at step 1.
 
 
 https://www.cloudzilla.ai/dev-education/how-to-build-authentication-api-with-jwt-token-in-nodejs/
