@@ -1674,8 +1674,8 @@ setMaxListeners()		Sets the maximum number of listeners allowed for one event. D
 
 Template Engines for Node.js
 ============================
--Template engine helps  to create an HTML template with minimal code. 
--It can inject data into HTML template at client side and produce the final HTML.
+-A template engine enables us to use static template files in our application. 
+-At runtime, the template engine replaces variables in a template file with actual values, and transforms the template into an HTML file sent to the client.
 -Template engines for Node.js (Jade/pug,Vash,EJS,Handlebars)
 -To render template files, set the following application properties, in app.js
  app.engine('pug', require('pug').__express)

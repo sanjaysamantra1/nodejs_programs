@@ -1,9 +1,23 @@
-const { ApolloServer } = require('apollo-server');
-const schema = require('./graphQLSchema');
+const { ApolloServer } = require("@apollo/server");
+const { startStandaloneServer } = require("@apollo/server/standalone");
+const mongoose = require('mongoose');
 
-const server = new ApolloServer({
-    typeDefs: schema.typeDefs,
-    resolvers: schema.resolvers
-});
+const { typeDefs, resolvers } = require("./product_schema");
 
-server.listen({ port: 5000 }).then(({ url }) => console.log(`Server running at ${url}`));
+async function startServer() {
+    await mongoose.connect('mongodb://127.0.0.1/sept_2024');
+    console.log('Database connection established');
+
+    const server = new ApolloServer({
+        typeDefs,
+        resolvers,
+    });
+    const { url } = await startStandaloneServer(server, {
+        listen: { port: 5000 },
+    });
+    console.log(`🚀  Server ready at: ${url}`);
+}
+startServer();
+
+
+

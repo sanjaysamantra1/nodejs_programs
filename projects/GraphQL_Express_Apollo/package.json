@@ -1,5 +1,5 @@
 {
-  "name": "day_43_april_26",
+  "name": "day_41_nov_12",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,8 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "apollo-server": "^3.13.0",
-    "apollo-server-express": "^3.13.0",
-    "mongoose": "^8.3.2"
+    "@apollo/server": "^4.11.2",
+    "cors": "^2.8.5",
+    "graphql": "^16.9.0",
+    "mongoose": "^8.8.1"
   }
 }
