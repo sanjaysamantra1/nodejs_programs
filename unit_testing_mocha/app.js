@@ -1,26 +1,20 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const employeeRouter = require('./src/routes/employee_routes');
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+import { employeeRouter } from "./src/routes/employee_routes.js";
 
-const app = express();
+export const app = express();
+// middlewares
 app.use(express.json());
 app.use(cors());
 
-
-const url = 'mongodb://localhost:27017/june_2024';
-try {
-    mongoose.connect(url);
-} catch (err) {
-    console.log(err)
+async function connectToDB() {
+    await mongoose.connect('mongodb://127.0.0.1/sept_2024');
+    console.log('Database connection established')
 }
-
 app.use('/employees', employeeRouter)
-
-
-app.listen(4000, () => {
-    console.log('server running at 4000 port');
-})
-
-module.exports = app;
+app.listen(5000, async () => {
+    await connectToDB();
+    console.log('app running at 5000')
+});
 

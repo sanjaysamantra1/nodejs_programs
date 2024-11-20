@@ -1677,6 +1677,8 @@ Template Engines for Node.js
 -A template engine enables us to use static template files in our application. 
 -At runtime, the template engine replaces variables in a template file with actual values, and transforms the template into an HTML file sent to the client.
 -Template engines for Node.js (Jade/pug,Vash,EJS,Handlebars)
+-Express application generator uses 'pug' as the default Template Engine.
+
 -To render template files, set the following application properties, in app.js
  app.engine('pug', require('pug').__express)
  app.set('views', './views')
@@ -1834,7 +1836,7 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
             {eid:2,name:'sameer',sal:6000}])
  db.employees.insertMany([{eid:1,name:'sanjay',sal:5000},
             {eid:2,name:'sameer',sal:6000}] , {ordered:false}); 
-// ordered:false , trying to insert 3 docs, if 2 fails, 1 & 3 should be inserted
+// ordered:false , trying to insert 3 docs, if 2nd fails, 1 & 3 should be inserted
 -To  see data inside collections
  db.employees.find() 
  db.employees.find().pretty()
@@ -1872,10 +1874,14 @@ Projection : which fields to include in the results
  db.employees.updateOne({id: 101},{$set:{eid:1,name:'sanjay',sal:5000}},{ upsert: true });  // Update or Insert
  // Update the document, but if not found insert it
  db.employees.updateOne({eId:'e102'},{$inc:{sal:100}}); // increment
- db.employees.updateOne({eId:'e102'},{$set:{address:{city:'bangalore'}}}); // add a new field
+ 
+ db.users.updateOne({id:3},{$set:{'address.pin':'12345'}}); // adds 'pin' in address, without removing other fields of add 
+ db.employees.updateOne({eId:'e102'},{$set:{address:{city:'bangalore'}}}); 
+ // add a new field 'address' in employee obj, if address is already there that is replaced by new value
  db.employees.updateOne({eId:'e102'},{$set:{address:{}}}); // update address value to {}
  db.employees.updateOne({eId:'e102'},{$unset:{address:''}});  // remove a field
- db.employees.updateOne({eId:'e102'},{joinDate : $currentDate });  // Sets the field value to the current date
+ db.employees.updateOne({eid:101},{$currentDate:{joiningDate:true}}) // Sets the field value to the current date
+ db.employees.updateOne({eid:101},{$currentDate:{joiningDate: { $type: "date" }}}) // Sets the field value to the current date
  db.employees.updateOne({eId:'e102'},{ $rename: { "username": "user_name" } }); // Renaming a Field
  
  
@@ -2031,9 +2037,9 @@ Aggregation Operations
 
 Aggregation Pipelines
 ======================
--An aggregation pipeline consists of one or more stages that process documents:
+-An aggregation pipeline consists of one or more stages that process documents.
 -Each stage performs an operation on the input documents. For example, a stage can filter documents, group documents, and calculate values.
--The documents that are output from a stage are passed to the next stage.
+-The documents that are output from a stage are passed to the next stage as input.
 -An aggregation pipeline can return results for groups of documents. For example, return the total, average, maximum, and minimum values.
 
 -db.collectionName.aggregate(pipeline, options)
@@ -2232,7 +2238,6 @@ Steps to use mongoose
    await employeeModel.find({});
    
 
-
 Note: By Default Validations work for POST calls, to run validations for PUT,PATCh , use the below code
 mongoose.set('runValidators', true); 
 
@@ -2308,7 +2313,7 @@ Assignment
 -Create URL shorten application, with the below 2 APIS 
 API-1
 =====
-POST http://localhost:5000/api/url/shorten 
+POST http://localhost:5000/api/shorten 
 {
     "originalUrl" : "https://www.youtube.com/results?search_query=express+rate+limit"
 }
@@ -2320,6 +2325,7 @@ GET http://localhost:5000/e32nODMkC<CODE>
 
 
 
+
 GraphQL
 =======
 -GraphQL is a query language for APIs.
@@ -2327,7 +2333,9 @@ GraphQL
 -It gives clients the power to ask for exactly what they need and nothing more.
 -Advantages of GraphQL:- declarative, compositional, strongly-typed.
 
-npm install graphql-http graphql ruru --save
+npm install graphql graphql-http ruru --save
+
+
 
 
 
@@ -2346,12 +2354,11 @@ apollographql
 =============
 https://www.apollographql.com/docs
 
-
-npm i cors apollo-server apollo-server-express mongoose
-
-apollo-server is used to create a graphQL server
-apollo-server-express is used to integrate graphQL with express app
-mongoose is MongoDB object modelling tool to interact with MongoDB
+-Apollo Server is an open-source, spec-compliant GraphQL server 
+-Apollo Server is compatible with any GraphQL client, including Apollo Client. 
+-To build a production-ready, self-documenting GraphQL API that can use data from any source.
+	
+npm i express  @apollo/server graphql mongoose
 
 
 
@@ -2362,7 +2369,6 @@ Redis
 =====
 -Redis Stands for 'Remote Dictionary Server'.
 -fast, open source, in-memory, key-value data store.
--used as a database, cache, message broker.
 -Redis speed makes it ideal for caching database queries, complex computations, API calls, and session state.
 -The stream data type enables high-rate data ingestion, messaging, event sourcing, and notifications.
 -Redis Cann't replace DB,it can only (set,get,delete)
@@ -2431,7 +2437,7 @@ https://api.openweathermap.org/data/2.5/weather?q=${city}&mode=json&units=metric
 
 https://api.openweathermap.org/data/2.5/forecast/daily?q=bangalore&mode=json&units=metric&cnt=5&appid=fbf712a5a83d7305c3cda4ca8fe7ef29
 
-https://en.wikipedia.org/w/api.php?action=parse&format=json&section=0&page=india
+https://en.wikipwikipedia.org/w/api.php?action=parse&format=json&section=0&page=india
 
 https://api.github.com/users/google
 
@@ -2476,7 +2482,11 @@ Upload File
 Socket IO / Chat Application
 ============================
 -Socket.IO is a library that enables bidirectional and event-based communication between a client and a server.
--
+
+Socket.IO is composed of two parts:
+-A server that integrates with the Node.JS HTTP Server (the socket.io package)
+-A client library that loads on the browser side (the socket.io-client package)
+
 
 io.on('connection', socket => {
   socket.emit('request', /* … */); // emit an event to the socket
@@ -2488,6 +2498,16 @@ io.on('connection', socket => {
 
 Private Message	
 ===============
+socket.on("private message", ({ content, to }) => {
+  socket.to(to).emit("private message", {
+    content,
+    from: socket.id,
+  });
+});
+
+
+(OR)
+
 1. Create a Room and join
    io.on("connection", (socket) => {
 		socket.join("some room");
@@ -2524,7 +2544,7 @@ ESLint
          'no-multi-spaces': 2
     }
 
-1. npm i eslint -g
+1. npm i eslint 
 2. npm init @eslint/config   
          (OR) 
    npx eslint --init

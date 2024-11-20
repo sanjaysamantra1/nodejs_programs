@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
-let employeeSchema = new mongoose.Schema({
-    eId: { type: Number, required: true },
+const employeeSchema = new mongoose.Schema({
+    eId: { type: String, required: true },
     name: { type: String, required: true },
-    sal: { type: Number, required: true },
-    gender: { type: String, required: true }
-})
-let employeeModel = mongoose.model("employees", employeeSchema);
-module.exports = employeeModel;
+    sal: Number,
+    gender: String
+});
+// Create a Model
+export const EmployeeModel = mongoose.model('employees', employeeSchema);

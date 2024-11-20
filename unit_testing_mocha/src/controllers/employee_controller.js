@@ -1,27 +1,67 @@
-const employeeModel = require('../models/employee_model');
+import { EmployeeModel } from "../models/employee_model.js"
 
-
-exports.getEmployees = async (req, res) => {
+export async function getAllEmployees(req, res) {
     try {
-        const employees = await employeeModel.find({});
+        const employees = await EmployeeModel.find({});
         if (!employees) {
-            return res.status(404).send('employees not found');
+            return res.status(404).send('Employees Not FOund')
         }
-        res.status(200).json(employees);
-    } catch (error) {
-        res.status(500).send('Server error');
-    }
-};
+        return res.status(200).json(employees)
+    } catch (err) {
+        return res.status(500).send('Server error')
 
-exports.getEmployeeById = async (req, res) => {
-    try {
-        const eId = req.params.id;
-        const foundEmployee = await employeeModel.findOne({ eId });
-        if (!foundEmployee) {
-            return res.status(404).send('employee not found');
-        }
-        res.status(200).json(foundEmployee);
-    } catch (error) {
-        res.status(500).send('Server error');
     }
-};
+}
+export async function getEmployeeById(req, res) {
+    try {
+        const empId = req.params.id;
+        const employee = await EmployeeModel.findById(empId);
+        if (!employee) {
+            return res.status(404).send('Employee Not Found')
+        }
+        return res.status(200).json(employee)
+    } catch (err) {
+        return res.status(500).send('Server Error')
+
+    }
+}
+export async function addEmployee(req, res) {
+    const payload = req.body;
+    try {
+        let createResponse = await EmployeeModel.create(payload);
+        if (createResponse) {
+            res.json(createResponse);
+        } else {
+            res.status(404).json({ message: 'Employee Coulnt be added' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+export async function updateEmployee(req,res) {
+    let empId = req.params.id;
+    const payload = req.body;
+    try {
+        const updatedEmployee = await EmployeeModel.findByIdAndUpdate(empId, payload, { new: true });
+        if (updatedEmployee) {
+            res.json(updatedEmployee);
+        } else {
+            res.status(404).json({ message: 'Employee not found' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+export async function deleteEmployee(req, res) {
+    const empId = req.params.id;
+    try {
+        const employee = await EmployeeModel.findByIdAndDelete(empId);
+        if (employee) {
+            res.json({ message: 'Employee deleted' });
+        } else {
+            res.status(404).json({ message: 'Employee not found' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
