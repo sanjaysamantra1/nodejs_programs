@@ -69,6 +69,12 @@ What NodeJs is?
 -ex:video streaming sites, real-time chat application, Game servers and web applications.
 -It's not the best choice for CPU intensive work.(Complex calculations)
 
+javascript Engines:
+	V8  - is developed by Google , Google Chrome.
+	SpiderMonkey - is developed by Mozilla , Firefox.
+	JavaScriptCore  - is Apple's engine for its Safari browser. 
+	Chakra  - is the JavaScript engine of the Internet Explorer browser.
+	
 
 	Browser					 Node.js
 ======================================================
@@ -346,6 +352,9 @@ Minimist
  Note: process module does not need a "require", it's defaultly available.
 
 
+Assignment:
+-Build a calculator using minimist
+node calculator.js --num1 10 --num2 5 --operation add
 
 
 VS Code Extensions
@@ -2541,7 +2550,8 @@ ESLint
 		 'no-var': 2,   // (0 = off, 1 = warn, 2 = error)
 		 'eqeqeq': 2,
 		 'prefer-template': 2,
-         'no-multi-spaces': 2
+         'no-multi-spaces': 2,
+		 'max-params' : ["error", 3]
     }
 
 1. npm i eslint 
@@ -2569,9 +2579,38 @@ Steps:
 2. npm install swagger-ui-express 
 3. add server.js and add Routes code
 4. add the file swagger.json to define the operations.
-   https://github.com/OAI/OpenAPI-Specification/blob/main/examples/v2.0/json/petstore-simple.json
+   http://rackerlabs.github.io/wadl2swagger/openstack/swagger/dbaas.json
 5. add the file swagger.css to define custom css
 6. Node server.js and try 'http://localhost:5000/api-docs/'
+
+
+Sample Swagger.json
+===================
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "User CRUD",
+        "version": "1"
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {}
+}
+
+
+How to Add Custom CSS
+=====================
+var options = {
+  customCssUrl: [
+    '/custom.css',
+    'https://example.com/other-custom.css'
+  ]
+};
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
 
 
 https://stackoverflow.com/questions/45518568/can-i-write-same-path-names-for-different-methods-in-rest-api
@@ -2681,6 +2720,42 @@ spyOn(someObj, 'func').and.returnValue(42);
 spyOn(someObj, 'func').withArgs(2, 3).and.returnValue(5);
 
 
+// app.js 
+const app = {
+  processData: (data) => {
+    console.log('Processing data:', data);
+    return data.length;
+  },
+  fetchData: () => {
+    const data = ['item1', 'item2', 'item3'];
+    return app.processData(data);
+  },
+};
+module.exports = app;
+
+// app.spec.js 
+const app = require('./app');
+describe('fetchData functionality', () => {
+  it('should call processData with the correct data', () => {
+    // Spy on processData,  callThrough() ensures the original implementation still runs
+    spyOn(app, 'processData').and.callThrough();
+
+    // Call fetchData
+    const result = app.fetchData();
+
+    // Assertions
+    expect(app.processData).toHaveBeenCalled(); // Verify processData was called
+    expect(app.processData).toHaveBeenCalledWith(['item1', 'item2', 'item3']); // Verify correct arguments
+    expect(result).toBe(3); // Verify the return value
+  });
+});
+
+
+
+
+
+
+
 
 Unit testing with Mocha & Chai
 ==============================
@@ -2689,7 +2764,8 @@ Unit testing with Mocha & Chai
 
 	
 project level install
-	npm install --save-dev express cors mongoose chai chai-http mocha sinon
+	npm install express cors mongoose
+	npm install --save-dev mocha chai chai-http sinon
 
 	
 Run Testcases
@@ -2956,6 +3032,7 @@ Interview Questions & Answers
 
 
 ---------------------------
+express-rate-limit
 md5 generator
 joi validator
 passportjs npm

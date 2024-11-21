@@ -17,9 +17,6 @@ module.exports.authMiddleware = (req, res, next) => {
         next();
     } catch (error) {
         console.log('no token catch')
-        res.status(401).json({
-            status: 'fail',
-            message: 'Unauthorized!',
-        });
+        res.status(401).json(error);
     }
 };
