@@ -406,7 +406,7 @@ NPM (Node Package Manager)
 -To verify npm version, Run the below command  
  npm --version/-v
  
--initialize a nodejs project
+-initialize an NPM  project
  npm init
  npm init -y (everything default)
 
@@ -464,7 +464,7 @@ npm i --no-optional  --> will prevent optional dependencies from being installed
 
 
 NPM Global vs Local Installation
-=================================
+================================
 -By default, NPM installs any dependency in the local mode. 
 -Local mode refers to the package installation in node_modules directory of our project.
 -Locally installed packages are accessible via require() method. 
@@ -478,7 +478,7 @@ NPM Global vs Local Installation
  
  
 -Globally installed packages/dependencies are stored in system directory. 
--Such dependencies can be used in CLI (Command Line Interface), but cannot be imported using require() in Node application directly. 
+-Such dependencies can be used in CLI (Command Line Interface), they are not meant to be imported using require() in Node application directly. 
  ex:- npm i nodemon -g
       const nodemon = require('nodemon'); //No
 -Few packages that should be globally installed: 
@@ -501,8 +501,21 @@ npm install -g yarn
 yarn --version
 yarn --help
 
-yarn init  (OR) yarn init -y
+yarn init -y
 yarn add minimist
+yarn add mocha --dev
+yarn add minimist@latest
+yarn add minimist@2.3.1
+yarn install 
+yarn install --production
+yarn install --offline
+yarn remove minimist
+yarn upgrade 
+yarn run [script-name]
+yarn outdated
+yarn audit     (runs a security audit)
+
+
 
 
 
@@ -549,20 +562,24 @@ package.json  VS  package-lock.json
  in package.json (^) checks if there is a newer version under 1.x.x if 1.4.1 is installed
  in package-lock.json - there is neither ~ nor ^
 
-
+Ex: bootstrap - 5.1.3
+              major.minor.hotfix
 
 
 NPX
 ===
 NPX : Node Package Executer (used to execute Node.js packages)
--executes Node.js commands without installing them.
+-Run Packages without installing them.
 -When you install NPM version 5.2.0 or higher, get NPX installed
 -we can install npx using the below command
  npm i -g npx
 -npx helps us avoid versioning, dependency issues and installing unnecessary packages that we just want to try out.
--provides a clear and easy way of executing packages, commands, modules and even GitHub gists and repositories.
+-npx helps running utility tools without installation (eslint, mocha)
+ npx eslint .
+ npx mocha
 -ex:npx create-react-app my-sample-react-app
-    npx nodemon file1.js
+    npx nodemon file1.js	
+	npx nodemon file1.js -y
 
 
 
@@ -624,7 +641,7 @@ const __dirname = import.meta.dirname;
 
 Nodejs Global Variables
 =======================
--In Node.js, the global object is global.
+-In Node.js, the 'global' object is global.
 -abc.js
  global.myGlobalVariable = "Hello from global!";
 -xyz.js
@@ -726,7 +743,7 @@ NodeJs Timers
 NodeJs Modules
 ==============
 -A way of encapsulating code in to separate logical units.
--Module:A set of functions you want to include in your application.
+-Module:A set of properties and functions we want to include in our application.
 -In Node.js module system, each file is treated as a separate module.
 -Node.js includes three types of modules:
 	1. Core(Built-in) Modules     	  (os,fs,http,process,path,url)
@@ -2833,28 +2850,36 @@ Basic Flow
 ==========
 1. User logs in.
 2. Server generates a JWT and sends that to user/client.
-3. client receives the token and stores it somewhere in the browser (seesion/local storage).
+3. client receives the token and stores it somewhere in the browser (session/local storage).
 4. client sends the token in the Authorization header for protected routes.
 5. Server checks the token, gets user information and sends the response to the client.
 
 
--To begin, the client provides credentials to the authentication component.
--The access token and refresh token are then issued by the authentication component.
--After then, the client uses the access token to request resource endpoints for a protected resource.
--The resource endpoint verifies the access token before delivering a secure resource.
--Repeat steps 3 and 4 until the access token is no longer valid.
--When the access token expires, the client requests a new one using the refresh token.
--A new access token and refresh token are issued by the authentication component.
--Repeat steps 3 through 7 until the refresh token has expired.
--When the refresh token expires, the client must re-authenticate with the authentication server, and the flow begins again at step 1.
+1.client provides credentials to the authentication Server.
+2.The access token and refresh token are then issued by the authentication Server.
+3.After then, the client uses the access token to request resource endpoints for a protected resource.
+4.The resource endpoint verifies the access token before delivering a secure resource.
+5.Repeat steps 3 and 4 until the access token is no longer valid.
+6.When the access token expires, the client requests a new one using the refresh token.
+7.A new access token and refresh token are issued by the authentication Server.
+8.Repeat steps 3 through 7 until the refresh token has expired.
+9.When the refresh token expires, the client must re-authenticate with the authentication server, and the flow begins again at step 1.
 
-
+https://blog.logicwind.com/jwt-refresh-token-implementation-in-node-js/
 https://www.cloudzilla.ai/dev-education/how-to-build-authentication-api-with-jwt-token-in-nodejs/
 
 
 1. npm init -y
-2. npm install express mongoose cors jsonwebtoken bcryptjs
+2. npm install express cors mongoose jsonwebtoken bcryptjs
 
+
+
+
+PassportJS for Authentication
+=============================
+-Passport is middleware for Node.js to implement authentication and authorization.
+
+npm i express passport passport-local express-session bcryptjs 
 
 
 
