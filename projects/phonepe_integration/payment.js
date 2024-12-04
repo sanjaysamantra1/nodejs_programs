@@ -1,6 +1,5 @@
 const crypto = require('crypto');
 const axios = require('axios');
-require("dotenv").config();
 
 const newPayment = async (req, res) => {
     try {

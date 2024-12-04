@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const shortid = require('shortid');
 
 const app = express();
 app.use(express.json());
@@ -33,7 +32,7 @@ app.post('/api/url/shorten', async (req, res) => {
             return res.json(url);
         } else {
             // Create URL code and short URL
-            const urlCode = shortid.generate();
+            const urlCode = Math.random().toString(36).substring(7);
             const shortUrl = `${baseUrl}/${urlCode}`;
 
             // Create a new URL entry in the database

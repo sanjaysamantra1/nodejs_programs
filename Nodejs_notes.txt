@@ -746,7 +746,7 @@ NodeJs Modules
 -Module:A set of properties and functions we want to include in our application.
 -In Node.js module system, each file is treated as a separate module.
 -Node.js includes three types of modules:
-	1. Core(Built-in) Modules     	  (os,fs,http,process,path,url)
+	1. Core(Built-in) Modules     	  (os,fs,http,path,url,crypto)
 	2. Local(Custom) Modules    	  (created locally in our application)
 	3. Third Party(External) Modules  (can be installed using NPM, and can be used) ex:-minimist,express,mongoose,lodash,moment,chalk,cors,axios
 
@@ -775,6 +775,38 @@ Local(Custom) Modules
 -Node.js will treat the following files as ES modules:
 	a.Files ending in .mjs
 	b.if "type": "module" is set in package.json
+	
+Module Systems
+==============
+1. CommonJS
+   module.exports = {member1,member2};
+   const member1 = require('Library/file name');
+2. ECMASCRIPT
+   export member1;
+   export default member2;
+   import DefaultMember , {Namedmember} from 'file'
+
+
+imports & exports
+=================
+-Default import:
+  import DefaultMember from 'src/my_lib';
+-Named imports:
+  import { name1, name2 } from 'src/my_lib';
+-Combining a default import with named imports
+  import DefaultMember, { name1, name2 } from 'src/my_lib';
+
+
+Named Export vs Default Export
+==============================
+-Only one default export is allowed per file,where as multiple named exports are allowed per file.
+-Named exports are useful to export several values. 
+-A default export can be a function, a class, an object(cann't be variables). 
+ This value is to be considered as the “main” exported value since it will be the simplest to import
+-The name of imported module has to be the same as the name of the exported module for named exports.
+-The naming of import is completely independent in default export and we can use any name we like.
+ex: import MyReact, { MyComponent } from "react";
+           correct    wrong-namedExport
 
 
 
@@ -1143,6 +1175,17 @@ Route-Parameter
 
 
 
+NodeJS Buffers
+==============
+-Buffer represents a fixed-length sequence of bytes.
+-Buffer is a built-in object used to handle binary data directly, without needing to convert it into string or other format.
+-to preocess raw binary data, such as reading data from file handling network communication.
+-Buffers are used with readable & writable streams for efficient data handling, especially for large files.
+-Buffers are essential when dealing with image data. Images are typically handled as binary data while sending over a network.
+
+
+
+
 Node.js Streams
 ===============
 -Streams are objects that let you read data from a source or write data to a destination in continuous fashion.
@@ -1153,9 +1196,9 @@ Node.js Streams
 1.Readable    fs.createReadStream()
 2.writeable   fs.createWriteStream()
 3.Duplex      net.Socket 
-  mix of both the readable and writable streams.
-  both streams are independent of each other.
-4.Transform   
+  A Duplex stream is both readable and writable, meaning it can consume input and produce output at the same time.
+4.Transform
+
 
 Piping the Streams:
 -Piping is a mechanism where we provide the output of one stream as the input to another stream.
@@ -1348,12 +1391,7 @@ https://www.turing.com/kb/building-middleware-for-node-js
 https://expressjs.com/en/guide/using-middleware.html
 https://expressjs.com/en/resources/middleware/body-parser.html
 
-logger middleware
-==================
-const logger = (req, res, next) => {
-  console.log('The time is: '+ Date.now())
-  next();
-}
+
 
 An Express application can use the following types of middleware:
 1. Application-level middleware
@@ -1386,16 +1424,22 @@ Q.How to run a middleware for all the routes for a router object
 Q.How to run a middleware for a particular route
   app.get('/route1', middleware,routeHandler);
   
- 
+
+logger middleware
+==================
+const logger = (req, res, next) => {
+    console.log(`URL:${req.url} , method:${req.method} , Time:${new Date().toLocaleTimeString()}`)
+    next();
+}
  
 authenticate middleware
 =====================
 const authenticate = (req, res, next) => {
     const token = req.headers['authorization'];
-    if (token === 'mysecrettoken') {
-        next(); // User is authenticated, proceed to next middleware or route handler
+    if (!token || token !== 'mysecrettoken') {
+		res.status(401).json({ message: 'Unauthorized' });	
     } else {
-        res.status(401).json({ message: 'Unauthorized' });
+         next(); // User is authenticated, proceed to next middleware or route handler
     }
 };
 
@@ -1454,6 +1498,8 @@ cookie-parser
 =============
 -To Read cookie information from client.
 -It parses Cookie header and populate req.cookies with an object keyed by cookie names. 
+-To Store cookies in client, cookie-parser is not required
+-cookie-parser is required while reading cookie information from browser.
 
 1. How to Read Client cookie data in Server:
 	const cookieParser = require('cookie-parser');
@@ -1479,7 +1525,7 @@ NodeJs and Typescript
 =====================
 1. npm init -y
 2. npm install express typescript ts-node @types/node @types/express
-3. npx tsc --init
+3. npx tsc --init  (OR) tsc --init  (Generates tsconfig.json)
 4. add CRUD code
 5. npx ts-node src/app.ts
 		(OR)
@@ -1518,7 +1564,7 @@ tsconfig.json
 
 
 Use a Logging Service to track and store errors in production
-==============================================================
+=============================================================
 -To improve error management, we can integrate logging services
 -Winston or Morgan can be used for logging error details to external files or monitoring services. 
 -These are helpful for production environments
@@ -1532,26 +1578,38 @@ Morgan
 -It simplifies the process of logging HTTP requests in a Node.js application by automatically generating logs for incoming requests.
 -Morgan provides various logging formats and options, allowing developers to customize the logging output according to their requirements.
 -Logging formats : combined / common / short / tiny / dev
-
-Example: 
-	app.use(morgan('tiny'));
-	app.use(morgan('dev'));
-    app.use(morgan(':method :host :status :param[id] :res[content-length] - :response-time ms'));
-
-Custom token with argument:
-morgan.token('param', function(req, res, param) {
-    return req.params[param];
-});
-
-only log error responses:
-morgan('combined', {
-  skip: function (req, res) { return res.statusCode < 400 }
-})
-
-
 1. npm i morgan
 2. const morgan = require('morgan');
    app.use(morgan('tiny'));
+   app.use(morgan('dev'));
+   app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+
+
+Winston
+=======
+-winston is a logging library with support for multiple transports(console, file, datatbase)
+
+// Configure Winston logger
+const logger = winston.createLogger({
+  level: 'info', // Log level: 'error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.Console(), // Log to the console
+    new winston.transports.File({ filename: 'app.log' }) // Log to a file
+  ]
+});
+
+// Middleware to log each request
+app.use((req, res, next) => {
+  logger.info(`HTTP ${req.method} ${req.url}`);
+  next();
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  logger.error(`Error: ${err.message}`);
+  res.status(500).send('Something went wrong!');
+});
 
 
 
@@ -2845,6 +2903,7 @@ JSON Web Token
 ==============
 -JWT is used for authentication.
 -JSON Web Tokens (JWT) are tokens generated by the server upon user authentication on a web application, and then sent to the client.
+https://documentation.softwareag.com/webmethods/compendiums/v10-5/C_API_Management/index.html#page/api-mgmt-comp/co-jwt_usecase_workflow.html
 
 Basic Flow
 ==========
@@ -2886,6 +2945,18 @@ npm i express passport passport-local express-session bcryptjs
 
 Deploy Nodejs Application
 =========================
+1. Render
+2. Netlify
+3. Heroku
+4. AWS
+
+Render :
+1. Register in Render and login
+   https://dashboard.render.com/register
+2. new ---> web service
+3. Connect to github Repo and Deploy 
+4. a live url should be generated after successful deployment 
+
 https://www.freecodecamp.org/news/how-to-deploy-nodejs-application-with-render/
 https://devcenter.heroku.com/articles/deploying-nodejs
 
@@ -3017,9 +3088,21 @@ https://crontab.guru/every-year
 PhonePe Integration
 ====================
 https://developer.phonepe.com/v1/docs/api-integration/
+https://developer.phonepe.com/v2/docs/technical-flow-diagram/
 
 1. npm init -y
-2. npm i express axios cors 
+2. npm i express cors axios 
+
+
+
+Step 1. Initiating Payment request
+Step 2. Redirecting user to PhonePe Standard Checkout page
+Step 3. Redirecting user to Merchant web page
+Step 4. Status verification post redirection to merchant website
+Step 5. Handling Payment Success, Pending and Failure
+Step 6. Refund
+
+
 
 
 
