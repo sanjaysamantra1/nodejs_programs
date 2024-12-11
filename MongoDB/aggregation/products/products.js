@@ -28,6 +28,13 @@ db.products.insertMany([
         rating: [5, 4, 5, 4, 3]
     },
     {
+        name: "Jeans pant",
+        category: "Clothing",
+        price: 200,
+        quantity: 50,
+        rating: [5, 4, 5, 4, 3]
+    },
+    {
         name: "Running Shoes",
         category: "Footwear",
         price: 80,
