@@ -1,39 +1,30 @@
-var express = require("express")
-var { createHandler } = require("graphql-http/lib/use/express")
-var { buildSchema } = require("graphql")
-var { ruruHTML } = require("ruru/server")
+const express = require('express');
+const { GraphQLSchema, GraphQLObjectType, GraphQLString } = require('graphql');
+const { createHandler } = require('graphql-http/lib/use/express');
+const { ruruHTML } = require('ruru/server');
+const app = express();
 
-// Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`)
+// create a graphql schema
+const schema = new GraphQLSchema({
+    query: new GraphQLObjectType({
+        name: 'Query',
+        fields: {
+            hello: {
+                type: GraphQLString,
+                resolve: () => 'Hello World !!',
+            },
+        },
+    }),
+});
 
-// The root provides a resolver function for each API endpoint
-var root = {
-    hello: () => {
-        return "Hello world!"
-    },
-}
+/* call createHandler(Schema) */
+app.all('/graphql', createHandler({ schema }));
 
-var app = express()
-
-// Create and use the GraphQL handler.
-app.all(
-    "/graphql",
-    createHandler({
-        schema: schema,
-        rootValue: root,
-    })
-)
-
-// Serve the GraphiQL IDE.
-app.get("/", (_req, res) => {
-    res.type("html")
-    res.end(ruruHTML({ endpoint: "/graphql" }))
+// serve RURU ui
+app.get('/', (req, res) => {
+    res.end(ruruHTML({ endPoint: '/graphql' }))
 })
 
-// Start the server at port
-app.listen(4000)
-console.log("Running a GraphQL API server at http://localhost:4000/graphql")
+app.listen(5000, () => {
+    console.log(`Server Running at 5000 port`)
+})

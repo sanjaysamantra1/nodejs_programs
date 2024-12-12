@@ -1587,7 +1587,7 @@ Morgan
 
 Winston
 =======
--winston is a logging library with support for multiple transports(console, file, datatbase)
+-winston is a logging library with support for multiple transports(console, file)
 
 // Configure Winston logger
 const logger = winston.createLogger({
@@ -1619,8 +1619,9 @@ Express generator
 =================
 1. npm install -g express-generator
 2. express project1 (--view=jade  default)
-   express --view=ejs project1
-   express project2 --no-view
+   express --view=pug project1
+   express --view=ejs project2
+   express project3 --no-view
 3. once the project is created, run the below commands to start the app
 	cd project1
 	npm install
@@ -1694,7 +1695,7 @@ CURL
 Helmet
 ======
 -It Helps to secure Node.js application by setting several HTTP headers.
--automatically adds or removs HTTP headers to comply with web security standards.
+-automatically adds or removes HTTP headers to comply with web security standards.
 -protect Node.js Express apps from common security threats such as Cross-Site Scripting (XSS) and click-jacking attacks.
 -Express applications do not come with security HTTP headers out of the box.
 -Without Helmet, default headers returned by Express expose sensitive information and make your Node.js app vulnerable to malicious actors
@@ -1924,7 +1925,6 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
 -To  see data inside collections
  db.employees.find() 
  db.employees.find().pretty()
- db.employees.find({},{eid:1,sal:1}) // projection
  db.employees.find( {sal: 6000} )
  db.employees.findOne({sal: 6000})
  db.employees.find( {name:'abc',sal: 6000} )
@@ -1942,6 +1942,7 @@ Projection : which fields to include in the results
 
  db.employees.find( {} , {sal:0} ) // all columns except sal
  db.employees.find( {} , {sal:1,name:1} ) // name,sal column in result
+ db.employees.find({},{eid:1,sal:1}) // projection
  
 
  db.employees.find().sort({sal:1})   //asc
@@ -2230,10 +2231,13 @@ MongoDB Atlas
  Fill in the registration form with your information and click Sign up
  
 -Create a cluster and deploy an M0(Free) cluster
+
+-Create a database user & password for your cluster
+ Security --> Database Access --> Add New User --> Authentication Method --> password
  
- 
--Add your connection IP address to your IP access list
--Create a database user for your cluster
+-Add your IP address to your IP access list
+ Security --> Network Access --> IP Access List -->  Add IP Address
+
 -Connect to your cluster
 -Add your own data / Load Sample Data
 
@@ -2243,7 +2247,7 @@ https://www.freecodecamp.org/news/get-started-with-mongodb-atlas/
 
 mongodb+srv://sanjaysamantra:<password>@cluster0.geshq.mongodb.net/?retryWrites=true&w=majority
 mongodb+srv://sanjaysamantra1:berhampur@cluster0.ga81v5y.mongodb.net/
-mongodb+srv://sanjaysamantra1:berhampur@cluster0.ga81v5y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+mongodb+srv://sanjaysamantra1:berhampur@cluster0.ga81v5y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
 
 
@@ -2363,6 +2367,15 @@ const userSchema = new mongoose.Schema({
   }
 });
 
+
+// Mr. Miss middleware
+employeeSchema.pre('save', async function (next) {
+    const user = this;
+    user.name = user.gender ==='male' ? `Mr. ${user.name}` : `Miss. ${user.name}`;
+    next();
+});
+
+
 // Middleware to hash the password before saving it to the database
 userSchema.pre('save', async function (next) {
   const user = this;
@@ -2415,13 +2428,14 @@ GraphQL
 -GraphQL is a query language for APIs.
 -GraphQL provides a complete and understandable description of the data in API.
 -It gives clients the power to ask for exactly what they need and nothing more.
--Advantages of GraphQL:- declarative, compositional, strongly-typed.
+-it provides two important capabilities : building a type schema and serving queries against that type schema.
 
-npm install graphql graphql-http ruru --save
-
-
-
-
+Advantages of GraphQL
+---------------------
+Efficient data retrieval : allows clients to specify exactly what data they need, reduces the amount of data transferred 
+Flexible query structure : Clients can control the structure and content of the data they receive
+Batch processing : allows clients to consolidate multiple queries into a single request,reduce latency and minimize the number of network requests
+Defines a data shape : server returns the response in a simple, secure, and predictable shape
 
 		REST          		 GraphQL
 =========================================
@@ -2430,6 +2444,29 @@ npm install graphql graphql-http ruru --save
 3. Over-fetching 		    3. No over-fetching , under-fetching
 4. fileuploading-Yes	    4. File-uploading - No
 5. Simple, Resource driven  5. Micro Services   
+
+
+
+Graphql and graphql-http
+-------------------------
+1. create a project 
+   npm init -y
+2. install required packages
+   npm install graphql graphql-http ruru
+3. Create a GraphQL schema
+   const schema = new GraphQLSchema({
+    query: new GraphQLObjectType({
+        name: 'Query',
+        fields: {
+            hello: {
+                type: GraphQLString,
+                resolve: () => 'Hello World !!',
+            },
+        },
+    }),
+ });
+4. Define a route and call createHandler(Schema)
+  app.all('/graphql', createHandler({ schema }));
 
 
 
