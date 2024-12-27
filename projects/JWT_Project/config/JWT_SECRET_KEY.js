@@ -1,2 +1,2 @@
-exports.JWT_SECRET_TOKEN = 'abcd'
-exports.JWT_SECRET_TOKEN_REFRESH = 'abcdef'
+exports.ACCESS_TOKEN_SECRET = 'abcd'
+exports.REFRESH_TOKEN_SECRET = 'abcdef'

@@ -2468,18 +2468,24 @@ Graphql and graphql-http
 4. Define a route and call createHandler(Schema)
   app.all('/graphql', createHandler({ schema }));
 
+5. serve RURU UI
+   app.get('/', (req, res) => {
+     res.end(ruruHTML({ endPoint: '/graphql' }))
+   })
+
 
 
 
 apollographql
 =============
 https://www.apollographql.com/docs
+https://www.apollographql.com/docs/apollo-server
 
 -Apollo Server is an open-source, spec-compliant GraphQL server 
 -Apollo Server is compatible with any GraphQL client, including Apollo Client. 
 -To build a production-ready, self-documenting GraphQL API that can use data from any source.
 	
-npm i express  @apollo/server graphql mongoose
+npm i express cors @apollo/server graphql mongoose
 
 
 
@@ -2503,33 +2509,36 @@ How To Install Redis
    C:\Program Files\Redis 
 4. check redis version (in command prompt)
    redis-server -v
-5. open command prompt & run the below command
-   redis-cli (redis cli should open 127.0.0.1:6379 )
+5. open command prompt & run the below command. (redis cli should open at 127.0.0.1:6379 )
+   redis-cli 
    
 
 
 Commands
 ========
--To check the existing Data
+Note : commands are not case sensitive (set/SET), Keys are case sensitive (get name)
+
+-To check the existing keys/data
  KEYS *
--Set Data (Syntax: set key value expiryTime in seconds)
+-Set Data (Syntax: set key value expiryTime_in_seconds)
  SET name sanjay
  SET add bangalore ex 2000 
  SETEX age 3600 45
--Get Data (get keyName)
+-Get Data From Redis
+ GET <keyName>
  GET name 
  get add
  get Add  (nil) (Keys are case sensitive)
--Delete Data (del keyName)
- del name
--Delete all 
- FLUSHALL
 -Check if a key exists (1-Yes,0-No)
  EXISTS keyName
 -Rename key
  RENAME name fName
 -Check Data type of the value
  TYPE keyName
+-Delete Data (del keyName)
+ del name
+-Delete all 
+ FLUSHALL
 -INFO (to check redis server details)
 
 
@@ -2562,7 +2571,7 @@ https://en.wikipwikipedia.org/w/api.php?action=parse&format=json&section=0&page=
 
 https://api.github.com/users/google
 
-https://dummyjson.com/docs/products
+https://dummyjson.com/products
 
 
 
@@ -2574,7 +2583,7 @@ Nodemailer
 ==========
 -Nodemailer is a module for Node.js to send emails.
 
-
+https://nodemailer.com/about/
 https://nodemailer.com/usage/using-gmail/
 
 Google App password
@@ -2605,16 +2614,23 @@ Socket IO / Chat Application
 -Socket.IO is a library that enables bidirectional and event-based communication between a client and a server.
 
 Socket.IO is composed of two parts:
--A server that integrates with the Node.JS HTTP Server (the socket.io package)
--A client library that loads on the browser side (the socket.io-client package)
+-A server that integrates with the Node.JS HTTP Server (socket.io package)
+-A client library that loads on the browser side (socket.io-client package)
 
 
+Express & socket.io
+===================
+const app = require('express')();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 io.on('connection', socket => {
   socket.emit('request', /* … */); // emit an event to the socket
   socket.on('reply', () => { /* … */ }); // listen to the event
   socket.broadcast.emit(); //emit an event to all connected sockets, except the sender
   io.emit('broadcast', /* … */); // emit an event to all connected sockets  
 });
+server.listen(3000);
+
 
 
 Private Message	
@@ -2672,6 +2688,7 @@ ESLint
    npx eslint --init
 3. eslint .   		(linting will be running for a folder)
    eslint abc.js    (linting will be running for a file-abc.js)
+   eslint abc.js --fix   (fixes the problems)
 
 
 
@@ -2689,7 +2706,7 @@ Swagger
 Steps:
 1. npm init -y
 2. npm install swagger-ui-express 
-3. add server.js and add Routes code
+3. add server.js & add Routes code
 4. add the file swagger.json to define the operations.
    http://rackerlabs.github.io/wadl2swagger/openstack/swagger/dbaas.json
 5. add the file swagger.css to define custom css
@@ -2710,19 +2727,30 @@ Sample Swagger.json
     "produces": [
         "application/json"
     ],
-    "paths": {}
+    "paths": {
+		"/users" : {
+			"get" : {},
+			"post" : {}
+		},
+		"/users/{id}" : {
+			"get" : {},
+			"patch" : {},
+			"delete" : {}
+		}
+	},
+	"definitions": {}
 }
 
 
 How to Add Custom CSS
 =====================
-var options = {
-  customCssUrl: [
-    '/custom.css',
-    'https://example.com/other-custom.css'
-  ]
-};
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+Styles.css:
+	.swagger-ui .topbar{
+		background-color: blueviolet;
+	}
+	
+const customCss = fs.readFileSync('./styles.css')
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument,{customCss}));
 
 
 https://stackoverflow.com/questions/45518568/can-i-write-same-path-names-for-different-methods-in-rest-api
@@ -2796,19 +2824,30 @@ fit() - focused it()
 xit() - disabled it()
 
 
+
+
+Spy & Stub
+==========
+Spy: Used to track calls to a function without altering its actual behavior.
+Stub: Used to replace the function's implementation to control its behavior during testing.
+
+
 Stub
 ====
--stub: A stub is a function/object that replaces the actual behavior of a module with a fixed response.
-ex: if you’re testing a function that writes a value to the database, you should write a stub that avoids the db interaction but returns a successful result.
--we have to set the expectations beforehand to make sure that everything we wanted would be executed.
+-stub is a function/object that replaces the actual behavior of a unit with a fixed response.
+-stub avoids calling the real implementation by overriding the original function with our custom implementation.
+-Allows to control the function behavior entirely.
+	Replaces the original function with:
+		A return value.
+		A fake implementation.
+-ex: if we are testing a function that writes a value to the database, we should write a stub that avoids the db interaction but returns a successful result.
 
-function saveUser(usrData, dbConn) {  
-  let q = createQueryFromUser(usrData)
-  let result = dbConn.query(q)
+function saveUser(userData, userModel) { 
+  let result = userModel.create(userData)
   return result;
 }
 
-makeStub(dbConn, 'query', () => {
+makeStub(userModel, 'create', () => {
   return true;
 })
 
@@ -2816,17 +2855,16 @@ it("should return TRUE when the query succeeds", () => {
   let result = saveUser({
     name: "Fernando",
     password: "1234"
-  }, dbConn)
+  }, userModel)
   result.should.be.true
 })
 
 
 Spy
 ===
--spies are stubs that gather execution information, so they can tell you, in the end, what got called, when and with which parameters.
--Spies and stubs are two types of test doubles, which are objects or functions that mimic the behavior or state of the real objects/function. 
--A spy is a function that records how it was called, such as the arguments, the return value, and the context. 
--A stub is a function that replaces the real one and returns a predefined value or performs a predefined action. 
+-A spy is a tool used to observe and monitor the behavior of an existing function. 
+-It allows to track if a function is called, how many times it’s called, with what arguments, and other behaviors. 
+-it does not modify the original function unless explicitly configured to do so.
 
 spyOn(someObj, 'func').and.returnValue(42);
 spyOn(someObj, 'func').withArgs(2, 3).and.returnValue(5);

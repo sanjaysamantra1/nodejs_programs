@@ -1,22 +1,21 @@
-const jsonwebtoken = require('jsonwebtoken');
-const { JWT_KEY } = require('../config/JWT_SECRET_KEY');
+const jwt = require('jsonwebtoken');
+const { ACCESS_TOKEN_SECRET } = require('../config/JWT_SECRET_KEY');
 
-module.exports.authMiddleware = (req, res, next) => {
+const authMiddleware = (req, res, next) => {
     let token = req.headers['my-token'];
+    console.log(token)
     if (!token) {
-        console.log('no token')
         res.status(401).json({
             status: 'fail',
-            message: 'Unauthorized!',
+            message: 'Unauthorized!, No Token Provided',
         });
     }
     try {
-        console.log(token);
-        let user = jsonwebtoken.verify(token, JWT_KEY);
+        let user = jwt.verify(token, ACCESS_TOKEN_SECRET);
         req.user = user;
         next();
     } catch (error) {
-        console.log('no token catch')
         res.status(401).json(error);
     }
 };
+module.exports = { authMiddleware };

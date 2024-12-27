@@ -1,7 +1,4 @@
-const { JWT_KEY } = require('../config/JWT_SECRET_KEY');
 const employeeModel = require('../model/employee_model');
-const jsonwebtoken = require('jsonwebtoken');
-
 
 exports.getEmployees = async (req, res) => {
     try {
@@ -11,7 +8,7 @@ exports.getEmployees = async (req, res) => {
         }
         res.status(200).json(employees);
     } catch (error) {
-        res.status(400).send({ auth: false, token: "Invalid Token Provided" });
+        res.status(500).send('Server error');
     }
 };
 
