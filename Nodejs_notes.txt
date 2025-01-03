@@ -3040,9 +3040,21 @@ https://devcenter.heroku.com/articles/deploying-nodejs
 
 Profiling Node.js Applications
 ==============================
+-Profiling a Node.js application helps to understand its performance characteristics, identify bottlenecks, and improve its efficiency.
+-For local profiling, use built-in --inspect and --prof flags.
+-For production environments, consider using tools like Clinic.js, PM2 to identify performance bottlenecks.
+-For monitoring production apps, use logging and metrics tools like  Grafana, or Winston for real-time insights.
+
+Run Node with profiling enabled:
+	node --inspect --prof app.js
+analyze using the log using node --prof-process
+	node --prof-process isolate-0xnnnnnnnnnn-v8.log
+PM2:
+-PM2 is a process manager for Node.js applications, but it also includes profiling features. PM2 provides monitoring for performance metrics such as CPU, memory usage, and the number of requests per second.
+    npm install -g pm2
+    pm2 start index.js --name myapp
+
 https://nodejs.org/en/learn/getting-started/profiling
-
-
 
 
 
