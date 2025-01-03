@@ -30,6 +30,7 @@ Node.js Syllabus
 -Mongoose,graphQL
 -Template Engines (Jade/Pug, vash, EJS, handlebars)
 -Redis (Caching)
+-Socket.io
 -ESLint 
 -Swagger  (API Documentation)
 -Unit testing (Mocha, Jasmine)

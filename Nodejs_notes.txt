@@ -2829,7 +2829,9 @@ xit() - disabled it()
 Spy & Stub
 ==========
 Spy: Used to track calls to a function without altering its actual behavior.
+	 spyOn(obj, 'greet'); // spy
 Stub: Used to replace the function's implementation to control its behavior during testing.
+     spyOn(obj, 'greet').and.returnValue("Stubbed greeting!"); // stub
 
 
 Stub
@@ -2985,7 +2987,7 @@ Basic Flow
 1. User logs in.
 2. Server generates a JWT and sends that to user/client.
 3. client receives the token and stores it somewhere in the browser (session/local storage).
-4. client sends the token in the Authorization header for protected routes.
+4. client sends the token in the Authorization header for protected pages/routes/data.
 5. Server checks the token, gets user information and sends the response to the client.
 
 
@@ -3166,7 +3168,7 @@ https://developer.phonepe.com/v1/docs/api-integration/
 https://developer.phonepe.com/v2/docs/technical-flow-diagram/
 
 1. npm init -y
-2. npm i express cors axios 
+2. npm i express cors axios crypto
 
 
 
