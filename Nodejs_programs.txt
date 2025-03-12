@@ -8,6 +8,21 @@ Program-1: Addition using Command line argument
    node addition_demo.js 10 20
 
 
+Program-2: collect key=value arg using minimist
+===============================================
+1. create a project 
+   npm init -y
+2. install minimist in our project
+   npm install minimist
+3. Add the below code in minimist_demo_1.js file
+    const minimist = require('minimist');
+	const argArr = process.argv.slice(2);
+	const argObj = minimist(argArr);
+	console.log(argObj.name , argObj.add)
+4. Run the file 
+   node minimist_demo_1.js --name=sanjay --add=bangalore
+   
+
 Program-2: Arithmetic Example using Command line argument
 =========================================================
 const arg = process.argv.slice(2);
@@ -407,3 +422,9 @@ Swagger
 4. add the file swagger.json to define the operations.
 5. add the file swagger.css to define custom css
 6. Node server.js and try 'http://localhost:5000/api-docs/'
+
+
+Phonepe Payment Gateway
+=======================
+1. npm init -y
+2. npm i express cors axios crypto

@@ -733,7 +733,7 @@ Event Loop
 3. idle, prepare: Used internally by Node.js and is not directly used by user applications
 4. poll: Retrieves new I/O events(File reading,Http) and executes their callbacks
 5. check: Executes setImmediate() callbacks
-6. close callbacks: Executes close event callbacks like socket.on('close')
+6. close callbacks: Executes close event callbacks like socket.on('close',()=>{})
 
 
 NodeJs Timers
@@ -929,7 +929,7 @@ Node.js URL Module
 -Parse an address with the url.parse() method, and it will return a URL object with each part of the address as properties.
 ex:-
 const url = require('url');
-let urlStr = 'http://localhost:8080/default.htm?year=2023&month=february';
+let urlStr = 'http://localhost:8080/default.htm?year=2025&month=february';
 let urlObj = url.parse(urlStr, true);
 console.log(urlObj)
 
@@ -998,7 +998,7 @@ querystring.stringify(obj[, sep][, eq][, options]) object to string.
 -For instance, the character "@" is encoded as "%40", and the character "#" is encoded as "%23".
 
 let str = 'https://example.com/path/to/page?name=sanjay_samantra&color=dark blue';
-let queryStr = url.parse(str).query; // 
+let queryStr = url.parse(str).query; 
 
 
 
@@ -1084,13 +1084,13 @@ fork()
  
 HTTP Module
 ===========
--The HTTP module can create an HTTP server.
--Receives the request from client & gives a response back to the client.
+-HTTP module can create an HTTP server.
+-Receives the request from client & returns response back to the client.
 
 
 -headers, URL, method and body data can be collected from request objects.
 -Make routing decisions based on URL and/or other data in request objects.
--Send headers, HTTP status codes and body data via response objects.
+-Send headers, HTTP status codes and response data via response objects.
 
 createServer()   		Returns a new instance of Server.
 listen(PORT,CallBack)   Binds the server to listen on a specific port
@@ -1230,10 +1230,19 @@ Express.JS
 -Express.js is a web application framework for building RESTful APIs with Node.js.
 -a framework is a set of helper functions,tools and rules that help us to build our application.
 -It provides various features that make web application development fast and easy which otherwise takes more time using only Node.js.
--Alternatives to Express.js are 'NestJS' , 'Vanilla Node.js','koa','sails.js'
+-Alternatives to Express.js are 'NestJS' , 'LoopBack','koa','sails.js'
 -NestJS : A progressive Node.js framework for building efficient, reliable and scalable server-side applications.
 
 https://expressjs.com/en/starter/examples.html
+
+
+	Use Case			  Best Choice
+======================================
+Small, flexible apps		Express.js
+Scalable enterprise apps	NestJS
+Auto-generated APIs			LoopBack
+Microservices				NestJS or Express
+CRUD-heavy APIs				LoopBack
 
 
 Advantages of Express.js
@@ -1343,7 +1352,8 @@ res.sendStatus()	Set the response status code and send its string representation
 
 Status() vs sendStatus()
 ========================
-res.sendStatus(200); // equivalent to res.status(200).send('OK') 
+res.sendStatus(200); // equivalent to res.status(200).send('OK')
+res.sendStatus(201); // equivalent to res.status(201).send('CReated')
 res.sendStatus(403); // equivalent to res.status(403).send('Forbidden')
 res.sendStatus(404); // equivalent to res.status(404).send('Not Found') 
 res.sendStatus(500); // equivalent to res.status(500).send('Internal Server Error')
@@ -1362,6 +1372,10 @@ app.get('/ab+cd');   // will match abcd, abbcd, abbbcd
 app.get('/ab*cd');   // will match abcd, abxcd, abRANDOMcd, ab123cd
 app.get('/ab(cd)?e'); // will match /abe and /abcde
 app.get(/.*fly$/);  // will match butterfly and dragonfly, but not butterflyman, dragonflyman
+
+app.all('*',(req,res)=>{
+    res.status(404).send('No such page found')
+});
 
 
 
@@ -1390,14 +1404,22 @@ Scalability: Organize routes for large applications and separate them into diffe
 Middleware Management: Apply middleware to specific routes or groups of routes easily.
 Cleaner Code: By dividing routes into smaller, focused files, our codebase remains clean and readable.
 
-	
+1. Define the handler function
+   app.use('/users',userRouter);
+2. user_routes.js
+   let userRouter = express.Router();
+   userRouter.get('/', getAllUsers);
+3. user_controller.js
+   const getAllUsers = (req, res) => {
+    res.status(200).json(users)
+   }
 	
 
 Middlewares
 ===========
 -Middlewares in ExpressJS are functions that can modify Request and Response objects.
--Either to retrieve something from request Object or to store something in response object.
--An example of a simple express js middleware could be to log the current date and time on every URL the user visits on our website.
+-Middleware functions can handle logging, authentication, and input validation before passing control to the next handler.
+-
 
 
 without middleware : 
@@ -1418,7 +1440,7 @@ An Express application can use the following types of middleware:
    const userRouter = express.Router();
    userRouter.use(logger);
 3. Error-handling middleware
-   Note : To manually trigger error handling middleware, you can pass an error object to the next() function
+   Note : To manually trigger error handling middleware, we can pass an error object to the next() function
    try{
    }catch(err){
 	 next(err); // transfers error object to error handling middleware
@@ -1643,7 +1665,7 @@ Express generator
 3. once the project is created, run the below commands to start the app
 	cd project1
 	npm install
-	SET DEBUG=project1:* & npm start
+	npm start
 
 
 Folder Structure for NodeJS & ExpressJS project
@@ -1654,8 +1676,13 @@ https://dev.to/mr_ali3n/folder-structure-for-nodejs-expressjs-project-435l
 
 CORS(Cross-Origin-Resource-Sharing)
 ====
--Manages how our server will respond to requests from different origins.
--Controls which domains can access our API or web application by setting Access-Control-Allow-Origin and other headers.
+-CORS (Cross-Origin Resource Sharing) is a security feature implemented by web browsers to prevent potentially harmful cross-origin requests. 
+-CORS allows servers to specify which domains can access their resources/API.
+
+A cross-origin request happens when:
+The protocol (HTTP/HTTPS), domain (example.com), or port (8080) differs from the origin where the browser is loading the page from.
+For example, if a webpage at http://localhost:3000 tries to make an API request to http://api.example.com, this is considered a cross-origin request.
+
 
 Key Features:
 -Prevents unauthorized cross-origin requests: 
@@ -1665,20 +1692,35 @@ Key Features:
 
 
 -CORS is a npm package.
--How to Install
- npm install cors
+fetch('http://localhost:5000/employees').then(res=>res.json().then(data=>console.log(data)));
  
- 
-How to use cors
-===============
+
+
+How Does CORS Work
+------------------
+-When a browser detects a cross-origin request, it sends an HTTP OPTIONS request (Preflight request) before making the actual request. 
+-The server must respond with appropriate CORS headers to indicate whether the request is allowed.
+	Access-Control-Allow-Origin: https://example.com
+	Access-Control-Allow-Methods: GET, POST, PUT, DELETE
+	Access-Control-Allow-Headers: Content-Type, Authorization
+These headers tell the browser which domains, methods, and headers are permitted.
+
+
+
+
+
+Enabling CORS:
+--------------
 const cors = require('cors');
 const app = express();
-app.use(cors());
+app.use(cors()); // Enable CORS for all origins ,  By default, cors() allows all origins (Access-Control-Allow-Origin: *)
 
 const corsOptions = {
-  origin: 'http://example.com'
+    origin: 'https://example.com', // Allow only this domain
+    methods: ['GET', 'POST'], // Allow specific HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
 }
-app.use(cors(corsOptions));
+app.use(cors(corsOptions)); // allow only certain origins, methods & headers
 
 
 Default Configuration 
@@ -1706,15 +1748,37 @@ https://www.npmjs.com/package/cors
 
 CURL
 ====
--Client URL Request Library
--curl -help
+-Client URL 
+-A command-line tool used for making HTTP requests & testing network connections.
+-Most systems come with cURL pre-installed
+
+curl [options] [URL]
+curl -help
+GET Request: 
+	curl http://localhost:5000/ 
+	curl -X GET https://api.example.com/data
+POST Request:
+	curl -X POST https://api.example.com/data -d "name=John&age=30"
+	curl -X POST https://api.example.com/data -H "Content-Type: application/json" -d '{"name": "John", "age": 30}'
+PUT Request:
+	curl -X PUT https://api.example.com/data/123 -H "Content-Type: application/json" -d '{"name": "John Updated"}'
+DELETE Request:
+	curl -X DELETE https://api.example.com/data/123
+Handling Headers:
+	curl -H "Authorization: Bearer OUR_TOKEN" https://api.example.com/protected
+	curl -H "Content-Type: application/json" -H "Accept: application/json" https://api.example.com
+View Response Headers:
+	curl -I http://localhost:5000/ 
+	curl --include http://localhost:5000/ 
+	curl -v(verbose) https://api.example.com
+
 
 
 Helmet
 ======
 -It Helps to secure Node.js application by setting several HTTP headers.
 -automatically adds or removes HTTP headers to comply with web security standards.
--protect Node.js Express apps from common security threats such as Cross-Site Scripting (XSS) and click-jacking attacks.
+-It protects against XSS, clickjacking, MIME sniffing, and other vulnerabilities.
 -Express applications do not come with security HTTP headers out of the box.
 -Without Helmet, default headers returned by Express expose sensitive information and make your Node.js app vulnerable to malicious actors
 
@@ -1781,6 +1845,9 @@ Template Engines for Node.js
 -At runtime, the template engine replaces variables in a template file with actual values, and transforms the template into an HTML file sent to the client.
 -Template engines for Node.js (Jade/pug,Vash,EJS,Handlebars)
 -Express application generator uses 'pug' as the default Template Engine.
+   express --view=pug project1
+   express --view=ejs project2
+   express project3 --no-view
 
 -To render template files, set the following application properties, in app.js
  app.engine('pug', require('pug').__express)
@@ -1810,7 +1877,7 @@ MongoDB
 -It does not have tables, rows, and columns as other SQL (RDBMS) databases.
 -RDBMS  (Database,Table,Row,Column)
  MongoDB(Database,Collection,Document,Field)
--indexing , shemaless , Replication, Scalability, Performance, High Availability.
+-indexing , schemaless , Replication, Scalability, Performance, High Availability.
 -No SQL databases - MongoDB, cassandra, Amazon Dynamo DB, couchbase, redis.
  Relational databases - MySql , Oracle , PostgreSQL
  
@@ -1847,6 +1914,11 @@ Update      Update
 Delete      Remove
 
 
+Vertical Scaling : Increasing the processing power and capacity of a single database
+    (8gb CPU + 32 GB RAM + 128 GB Disk)  -------->  (16gb CPU + 64 GB RAM + 256 GB Disk)
+Horizontal Scaling : adding more database servers to distribute workload
+    (8gb CPU + 32 GB RAM + 128 GB Disk)  -------->  (16gb CPU + 64 GB RAM + 256 GB Disk)
+
 
 db.employees.insertMany([{id:1,name:'sanjay},{id:2,name:'deepak',sal:5000}])
 db.employees.insertMany([{id:1,name:'sanjay},{prodid:111,name:'prod1',price:5000}])
@@ -1874,29 +1946,6 @@ The Below Points are optional if we want to access our database in MongoDB Compa
 
 https://treehouse.github.io/installation-guides/mac/mongo-mac.html
 https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/
-
-
-
-MongoDB Shell (CLI for mongoDB)
-=============
--download mongoDB shell 
- https://www.mongodb.com/try/download/shell
--extract and run mongosh.exe
--set path for mongo-shell
-	 C:\mongo-shell\bin	    
--verify the path setup is done correctly by running below 2 commands
- mongod --version
- mongosh --version 
--Run the below command to Start Mongo Shell 
- start mongosh.exe 
--Enter mongoDB Connection String 
- mongodb://localhost:27017
- 
- 
-Note: If mongoDB and mongoShell are installed & path is set
--open 2 command prompts
--run 'mongod' in 1st cmd
--run 'mongosh' in 2nd cmd
  
  
 MongoDB Compass
@@ -1913,9 +1962,6 @@ MongoDB Compass
    mongodb://0.0.0.0:27017
 
  
-
- 
-
  
 MongoDB Queries/Commands
 ========================
@@ -1957,7 +2003,8 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
  
 Projection : which fields to include in the results
              use 1 to include a field and 0 to exclude a field.
-
+ //db.employees.find( filter , projection )
+ 
  db.employees.find( {} , {sal:0} ) // all columns except sal
  db.employees.find( {} , {sal:1,name:1} ) // name,sal column in result
  db.employees.find({},{eid:1,sal:1}) // projection
@@ -1971,14 +2018,17 @@ Projection : which fields to include in the results
  db.employees.find().sort({sal:-1}).skip(2).limit(1)
  db.employees.distinct('eid');  // ['e101','e102']
  
+ 
 -To Update the existing Data
  db.employees.updateOne( { id: 101 }, { $set: { sal: 2000 } } ) 
  db.employees.updatemany( { sal:6000 }, { $set: { sal: 6500 } } )
  db.employees.updateOne({id: 101},{$set:{eid:1,name:'sanjay',sal:5000}},{ upsert: true });  // Update or Insert
- // Update the document, but if not found insert it
- db.employees.updateOne({eId:'e102'},{$inc:{sal:100}}); // increment
+ // Update the document if it exists, or insert a new document if no match is found
  
- db.users.updateOne({id:3},{$set:{'address.pin':'12345'}}); // adds 'pin' in address, without removing other fields of add 
+ db.employees.updateOne({eId:'e102'},{$inc:{sal:100}}); // increment
+ db.employees.updateOne({eId:'e102'},{$inc:{sal:100},$set:{age:35}}); // increment sal + update age
+ 
+ db.users.updateOne({id:3},{$set:{'address.pin':'12345'}}); // adds 'pin' in address, without removing other fields of address
  db.employees.updateOne({eId:'e102'},{$set:{address:{city:'bangalore'}}}); 
  // add a new field 'address' in employee obj, if address is already there that is replaced by new value
  db.employees.updateOne({eId:'e102'},{$set:{address:{}}}); // update address value to {}
@@ -1988,8 +2038,7 @@ Projection : which fields to include in the results
  db.employees.updateOne({eId:'e102'},{ $rename: { "username": "user_name" } }); // Renaming a Field
  
  
- 
- 
+  
 -To Delete 
  db.employees.deleteOne({ sal:6000 });      
  db.employees.deleteMany({ gender:"male" })
@@ -2159,7 +2208,7 @@ Assignment
 3. Find the employees whose DOB is today's date.
 4. increase the salary of every employee by 500.
 5. change the 'gender' of every employee (male-->female,female-->male)
-5. add 'mr.' before the names of all male employees
+6. add 'mr.' before the names of all male employees
 
 
 Assignment Solutions
@@ -3188,8 +3237,9 @@ cron.schedule('* * * * *', () => {
 https://crontab.guru/every-year
      
 
-
-
+bull - https://www.npmjs.com/package/bull
+The fastest, most reliable, Redis-based queue for Node.
+Carefully written for rock solid stability and atomicity
 
 
 PhonePe Integration
@@ -3291,3 +3341,8 @@ Interview Questions
 https://medium.com/@ben.dev.io/node-js-for-real-time-communication-cf71f985f983
 
 https://chatgpt.com/c/66dbe630-a978-800e-8a4b-1a3944ddbfc4
+
+
+node --prof-process isolate-*.log
+
+clinic

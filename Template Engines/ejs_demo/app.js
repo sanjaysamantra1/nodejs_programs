@@ -1,30 +1,24 @@
-const products = require("./data/products.json");
-
-const express = require("express");
+const express = require('express');
 const app = express();
+const products = require('./data/products.json')
 
-// set the view engine to ejs
-app.set("view engine", "ejs");
+// set view & view-engine
+app.set('views', './views')
+app.set('view engine', 'ejs')
 
-// use res.render to load up an ejs view file
-
-// index page
-app.get("/", function (req, res) {
-  res.render("pages/home");
+app.get('/', (req, res) => {
+    res.render('pages/home.ejs');
+});
+app.get('/about', (req, res) => {
+    res.render('pages/about.ejs');
+});
+app.get('/careers', (req, res) => {
+    res.render('pages/careers.ejs');
+});
+app.get('/products', (req, res) => {
+    res.render('pages/products.ejs', { products });
 });
 
-// about page
-app.get("/about", function (req, res) {
-  res.render("pages/about");
+app.listen(5000, () => {
+    console.log(`app Running at 5000 port`)
 });
-
-app.get("/careers", function (req, res) {
-  res.render("pages/careers");
-});
-
-app.get("/products", function (req, res) {
-  res.render("pages/products", { products });
-});
-
-app.listen(5000);
-console.log("Server is listening on port 5000");

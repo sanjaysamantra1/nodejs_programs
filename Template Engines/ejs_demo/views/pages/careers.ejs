@@ -2,30 +2,31 @@
 <html lang="en">
 
 <head>
-    <%- include('../partials/head'); %>
+    <%- include('../partials/head.ejs') %>
 </head>
 
-<body class="container-fluid">
+<body>
+    <div class="container-fluid w-100">
 
-    <nav>
-        <%- include('../partials/navbar'); %>
-    </nav>
 
-    <main>
-        <div class="row">
-            <div class="col">
-                <div class="jumbotron">
-                    <h1>This is Careers Page</h1>
-                    <p>Welcome to templating using EJS</p>
-                </div>
-            </div>
+        <nav>
+            <%- include('../partials/navbar.ejs') %>
+        </nav>
+
+        <div class="carousel-container">
+            <%- include('../partials/carousel.ejs') %>
         </div>
-    </main>
 
-    <footer>
-        <%- include('../partials/footer'); %>
-    </footer>
+        <main style="min-height: 200px;">
+            <div class="jumbotron">
+                <h1>This is Careers Page</h1>
+            </div>
+        </main>
 
+        <footer>
+            <%- include('../partials/footer.ejs') %>
+        </footer>
+    </div>
 </body>
 
 </html>
