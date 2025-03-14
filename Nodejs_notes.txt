@@ -2147,23 +2147,34 @@ Managing Indexes
 ================
 -Without indexes, MongoDB must scan every document of a collection to select those documents that match the query statement. 
 -This scan is highly inefficient and require MongoDB to process a large volume of data.
--Indexes support efficient execution of queries in MongoDB
--Indexes are special data structures, that store a small portion of the data set in an easy-to-traverse form. 
--If an appropriate index exists for a query, MongoDB uses the index to limit the number of documents it must scan
+
+-Indexing is a powerful feature that improves the performance of the queries by reducing the amount of data
+the database has to scan to fulfill the request.
+-indexes are essential for optimizing read operations, especially in large datasets.
+
 
 db.employees.find({sal:5000}).explain('executionStats'); // nReturned, totalDocsExamined
 
 
+Basic Index:
+db.users.find({_id:1});
+-by default MongoDB creates an index on _id field for every collection.
+
 Single Field Indexes:
--store information from a single field in a collection
- ex:db.students.createIndex( { gpa: 1 } )
+-index created on a single field. if we frequently query by 'email' , '1' signifies an ascending index
+db.users.createIndex({email:1})
+
 
 Index on an Embedded Field:
-db.students.createIndex( { "location.state": 1 } )
+db.users.createIndex( { "address.city": 1 } )
 
 Compound Indexes:
 -Compound indexes collect and sort data from two or more fields
- ex:db.students.createIndex( {name:1,gpa:-1})
+ ex:db.users.createIndex({age:1,status:1})
+ 
+MultiKey Index:
+-when one of the indexed fields is an array. MongoDB automaticaaly creates a multikey index if we index a field that contains an array
+db.users.createIndex({tags:1})
    
 
 -Create an index (db.COLLECTION_NAME.createIndex({KEY:1}))
@@ -2172,9 +2183,13 @@ Compound Indexes:
  //at most one record in the collection with a given value for that field
 -See indexes on a collection
  db.user.getIndexes()
+ db.employees.getIndexKeys()
 -Drop an index
  db.user.dropIndex("email")
  db.user.dropIndexes()
+ 
+ 
+ 
  
 
 Aggregation Operations
@@ -2196,8 +2211,12 @@ Aggregation Pipelines
 
 -db.collectionName.aggregate(pipeline, options)
  input --> $match  --> $group --> $sort --> output
+ 
+ex: db.cities.aggregate([
+	{$match:{"continent":"Africa"}}
+])
 
-$match, $group, $limit, $project, $sort, $addFields, $count, $lookup, $out , $unwind
+$match, $group, $limit, $project, $sort, $addFields, $count, $lookup, $out , $unwind, 
 
 
 
@@ -2287,6 +2306,28 @@ Use a View to Join Two Collections
 ] )
 
 
+
+
+Join In MongoDB 
+===============
+-use $lookup stage in the aggregation pipeline to perform joins between collections
+{
+  "$lookup": {
+    "from": "foreign_collection",
+    "localField": "field_in_current_collection",
+    "foreignField": "field_in_foreign_collection",
+    "as": "result"
+  }
+}
+from → The name of the collection we want to join.
+localField → The field in the current collection.
+foreignField → The field in the foreign collection that matches localField.
+as → The output field where the joined data will be stored as an array.
+
+
+$unwind → Flattens arrays from $lookup.
+$lookup + $expr → Allows advanced joins with custom conditions.
+
 	
 
 MongoDB Atlas
@@ -2341,13 +2382,16 @@ https://mongoosejs.com/docs/validation.html#built-in-validators
 
 Mongoose Terminologies
 ======================
-Schema:
--Each schema maps to a MongoDB collection and defines the shape of the documents within that collection
- new mongoose.Schema({eId: { type: Number,required:true,min:18,default:20 }});
+Schema:Mongoose schemas define the structure of the documents in a collection.
+-Each schema maps to a MongoDB collection and defines the shape/structure of the documents within that collection
+ new mongoose.Schema({eId: { type: Number,required:true,min:100,default:20 }});
  
-Model:
+ Schema Types: String, Number, Boolean, Date, Array, ObjectId
+ Validation & Defaults: required: true , unique:true , default: Date.now
+ 
+Model: A model is a wrapper around the schema and represents a collection in MongoDB
 -To use schema definition, we need to convert a Schema into a Model. 
- mongoose.model(modelName, schema):
+ mongoose.model(modelName, schema)
  
 Constructing Documents:
 -An instance of a model is called a document.
@@ -2358,17 +2402,71 @@ Constructing Documents:
  
 Querying: 
 -Finding documents is easy with Mongoose.
--Documents can be retrieved using a model's find, findById, findOne, or where static functions.
- await UserModel.find({ add.city:'bangalore }).where('sa').gt(5000).exec();
- 
+-Query Methods:
+ .find() → Retrieves all documents.
+ .findOne({ email: "john@example.com" }) → Retrieves a single document.
+ .findById(id) → Retrieves by ID
+Ex: await UserModel.find({ add.city:'bangalore }).where('sa').gt(5000).exec();
+
+Update a Document:
+const updatedUser = await User.findByIdAndUpdate(id, { age: 35 }, { new: true });
+{ new: true } ensures the function returns the updated document.
+
+
 Validating:
 -Documents are casted and validated before they are saved. Mongoose first casts values to the specified type and then validates them. 
 -Internally, Mongoose calls the document's validate() method before saving.
  Built-in Validators : type, required, min, max, enum 
 
+
 Custom Error Messages :
 -Array syntax: min: [6, 'Must be at least 6, got {VALUE}']
 -Object syntax: enum: { values: ['Coffee', 'Tea'], message: '{VALUE} is not supported' }
+
+Mongoose Middleware (Hooks):
+-Mongoose provides pre- and post-hooks that run before or after certain actions.
+ pre('save') → Runs before saving a document.
+ userSchema.pre('save', function(next) {
+  console.log("Before saving:", this);
+  next();
+});
+
+
+Mongoose Virtuals:
+-Virtuals allow  to create computed fields without storing them in the database.
+	userSchema.virtual('fullName').get(function() {
+	  return this.name + " (age: " + this.age + ")";
+	});
+
+Populate (Relationships Between Collections):
+-Use populate() to retrieve referenced documents.
+ 
+ const postSchema = new mongoose.Schema({
+  title: String,
+  content: String,
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+ });
+const Post = mongoose.model('Post', postSchema);
+const getPosts = async () => {
+  const posts = await Post.find().populate('author');
+  console.log(posts);
+};
+
+Transactions (Atomic Operations):
+-For atomic operations, use Mongoose transactions.
+const session = await mongoose.startSession();
+session.startTransaction();
+try {
+  const user = new User({ name: "Alice", age: 28, email: "alice@example.com" });
+  await user.save({ session });
+
+  await session.commitTransaction();
+  session.endSession();
+} catch (error) {
+  await session.abortTransaction();
+  session.endSession();
+}
+
 
 
 
@@ -2392,9 +2490,18 @@ Steps to use mongoose
 4. using model try to perform DB operations
    await employeeModel.find({});
    
-
+   
+How to Enable Validation for PUT / PATCH Requests:
+==================================================
 Note: By Default Validations work for POST calls, to run validations for PUT,PATCh , use the below code
-mongoose.set('runValidators', true); 
+
+Solution-1:	mongoose.set('runValidators', true); 
+
+Solution-2: Set Validation for Each Query
+const updatedUser = await User.findByIdAndUpdate(id, updateData, { 
+    new: true, 
+    runValidators: true // Ensure validation runs
+});	
 
 
 Mongoose Middleware
@@ -2409,6 +2516,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Username is required'],
     unique: true,
     trim: true,
+	lowercase: true,  // Automatically converts input to lowercase
     minlength: [3, 'Username must be at least 3 characters long'],
   },
   email: {
@@ -2469,6 +2577,15 @@ const User = mongoose.model('User', userSchema);
 
 module.exports = User;
 
+
+
+Q. Why Does Mongoose Use _id: ObjectId by Default?
+-ObjectIds are automatically generated by MongoDB.
+-ObjectId is a 12-byte unique identifier that prevents ID collisions.
+-The first 4 bytes of an ObjectId store a timestamp, making it easier to sort by creation time.
+-ObjectId is optimized for indexing, ensuring fast lookups.
+-If we use a Number, we have to manually ensure it's unique. duplicate _id values can occur.
+-For incremental IDs, use an auto-increment sequence system like: MongoDB Counters Collection , UUIDs
 
 
 
