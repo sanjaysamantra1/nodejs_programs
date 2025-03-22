@@ -59,16 +59,17 @@ switch (op) {
 
 Program-3: URL Module
 =====================
-var url = require('url');
-var adr = 'http://localhost:8080/default.htm?year=2017&month=february';
-var q = url.parse(adr, true);
+const url = require('url');
 
-console.log(q.host); //returns 'localhost:8080'
-console.log(q.pathname); //returns '/default.htm'
-console.log(q.search); //returns '?year=2017&month=february'
+const urlStr = 'http://localhost:8080/default.htm?year=2025&month=february';
+const urlObj = url.parse(urlStr, true);
 
-var qdata = q.query; //returns an object: { year: 2017, month: 'february' }
-console.log(qdata.month); //returns 'february'
+console.log(urlObj); 
+console.log(urlObj.host);      // localhost:8080
+console.log(urlObj.pathname);  // default.htm
+console.log(urlObj.search);    // ?year=2025&month=february
+const queryParams = urlObj.query;   // { year: 2025, month: 'february' }
+console.log(queryParams.year, queryParams.month); // 2025 february
 
 
 
@@ -316,43 +317,90 @@ Apollo Server & GraphQL
 
 
 
+NodeMailer
+==========
+const nodemailer = require("nodemailer");
+const express = require('express');
+const app = express();
+
+async function sendMyMail() {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: "sanjaysamantra2@gmail.com",
+            pass: "oiug hmtp wwiw csbq", // google app password
+        }
+    });
+    await transporter.sendMail({
+        from: '"Sanjay Samantra 👻" sanjaysamantra2@gmail.com', // sender address
+        to: "teja.madu@gmail.com,gveerendray1803@gmail.com", // list of receivers
+        subject: "Hello ✔", // Subject line
+        html: `
+            <h1>This is a Test Email</h1>
+            <h3 style="color:red;text-align:center">Congratulations!!</h3>
+            <p>Please follow the instructions to claim your amoubt</p>
+            <pre>
+                Helloooooooo
+                Hiiiiiiiiiiiii
+                Good Morning
+            </pre>
+        `,
+        attachments:[
+            {
+                filename: 'profile.png',
+                path: './profile.png'
+            }
+        ]
+    });
+    console.log("Message Sent Successfully!!!");
+}
+app.get('/sendMail', async (req, res) => {
+    try {
+        await sendMyMail();
+        res.send("Message Sent Successfully!!!");
+    } catch (err) {
+        res.send(err)
+    }
+});
+app.listen(5000, () => {
+    console.log(`app Running at 5000 port`)
+});
+
+
+
+
 Express File Upload
 ====================
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const app = express();
-app.use(fileUpload());
+app.use(fileUpload()); //fileUpload middleware
 app.get('/', (req, res) => {
     res.send(`
-        <form method='post' action='http://localhost:5000/upload' encType='multipart/form-data'>
+        <form id='uploadForm' method='post' action='http://localhost:5000/upload' 
+            encType="multipart/form-data">
             <input type='file' name='myFiles' multiple />
-            <input type='submit' value='Upload!' />
+            <input type='submit' value='upload' />
         </form>
-        `)
+    `)
 })
-app.post('/upload', async (req, res) => {
-    let sampleFile;
-    let uploadPath;
-
+app.post('/upload', (req, res) => {
     if (!req.files || Object.keys(req.files).length === 0) {
-        res.status(400).send('No Files were uploaded');
-    } else {
-        myFiles = req.files.myFiles;
-        console.log(myFiles)
-        uploadPath = `${__dirname}/assets/${myFiles.name}`;
-
-        myFiles.mv(uploadPath, (err) => {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.send(`${myFiles.name} Uploaded Succesfully!!`)
-            }
-        })
+        return res.status(400).send('No Files Uploaded!!');
     }
+    // myFiles is the name of inputfield in the form
+    let myFiles = req.files.myFiles;
+    let uploadPath = `${__dirname}/assets/${myFiles.name}`;
+    myFiles.mv(uploadPath, function (err) {
+        if (err)
+            return res.status(500).send(err);
+        res.status(200).send(`${myFiles.name} uploaded successfully!!!`);
+    })
 });
 app.listen(5000, () => {
-    console.log(`Server Running at 5000 port`)
+    console.log(`app Running at 5000 port`)
 });
+
    
 
 Formidable File Upload
@@ -400,17 +448,92 @@ app.listen(5000, () => {
 }); 
    
 
+Socket.io
+==========
+const path = require('path');
+const express = require('express');
+const { createServer } = require('http');
+const { Server } = require('socket.io');
+let app = express();
+app.use(express.static(path.join(__dirname, "public")));
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, {}); // io - socket.io server
+
+io.on("connection", (socket) => {
+    console.log('A new client Joined');
+    socket.on('setName', (name) => {
+        socket.userName = name;
+    })
+    socket.on('chat', (data) => {
+        let userName = socket.userName;
+        let currentTime = new Date().toLocaleTimeString();
+        let msgObj = { message: data.message, userName, time: currentTime };
+        io.emit('chat', msgObj);
+    })
+});
+httpServer.listen(5000, () => console.log('server running at 5000 port'));
+
+---------------------X-------------------------
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Simple Chat Application</h1>
+    <p>
+        <input id="userName" placeholder="Enter Your Name..." />
+        <button id="setNameBtn">Set Name</button>
+        <span id="userNameSpan"></span>
+    </p>
+    <textarea name="" id="myTextarea" style="width:500px;height:300px;"></textarea>
+    <p>
+        <input id="chatText" placeholder="Enter Your Message..." />
+        <button id="sendMsg">Send</button>
+    </p>
+
+    <script>
+        const socketClient = io();
+
+        let userNameInputBox = document.getElementById('userName');
+        let setNameBtn = document.getElementById('setNameBtn');
+        let userNameSpan = document.getElementById('userNameSpan');
+        let myTextarea = document.getElementById('myTextarea');
+        let chatTextInputBox = document.getElementById('chatText');
+        let sendMsg = document.getElementById('sendMsg');
+
+        let oldChats = [
+            { message: 'Helloooo', userName: 'Adarsh', time: '07:56:00AM' },
+            { message: 'Hiiiii', userName: 'Teju', time: '07:57:00AM' }
+        ]
+        for (chat of oldChats) {
+            let { userName, message, time } = chat;
+            let msg = `${userName} : ${message} (${time})`;
+            myTextarea.value = myTextarea.value + msg + '\n'
+        }
+        setNameBtn.addEventListener('click', () => {
+            const userName = userNameInputBox.value;
+            socketClient.emit('setName', userName);
+            userNameInputBox.value = '';
+            userNameSpan.innerHTML = `Hello <b>${userName}</b>`;
+        });
+        sendMsg.addEventListener('click', () => {
+            socketClient.emit('chat', { message: chatTextInputBox.value });
+            chatTextInputBox.value = '';
+        });
+
+        socketClient.on('chat', (msgData) => {
+            let { userName, message, time } = msgData;
+            let msg = `${userName} : ${message} (${time})`;
+            myTextarea.value = myTextarea.value + msg + '\n'
+        })
+    </script>
+</body>
+</html>
 
 
-express validator
-=================
-npm init -y
-npm install express ejs body-parser express-validator
-
-
-Redis
-=====
-npm i express axios redis@3.1.2
 
 
 

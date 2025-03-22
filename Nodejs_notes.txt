@@ -2345,6 +2345,7 @@ MongoDB Atlas
  
 -Add your IP address to your IP access list
  Security --> Network Access --> IP Access List -->  Add IP Address
+ 0.0.0.0/0
 
 -Connect to your cluster
 -Add your own data / Load Sample Data
@@ -2591,18 +2592,20 @@ Q. Why Does Mongoose Use _id: ObjectId by Default?
 
 Assignment
 ==========
--Create URL shorten application, with the below 2 APIS 
+-Using mongoose Create URL shorten application, with the below 2 APIS. 
+
 API-1
 =====
-POST http://localhost:5000/api/shorten 
+http://localhost:5000/api/shorten  (POST)
 {
     "originalUrl" : "https://www.youtube.com/results?search_query=express+rate+limit"
 }
+returns a <code> as response
 
 
 API-2
 =====
-GET http://localhost:5000/e32nODMkC<CODE>
+GET : http://localhost:5000/e32nODMkC<CODE from API-1>
 
 
 
@@ -2610,24 +2613,27 @@ GET http://localhost:5000/e32nODMkC<CODE>
 GraphQL
 =======
 -GraphQL is a query language for APIs.
--GraphQL provides a complete and understandable description of the data in API.
--It gives clients the power to ask for exactly what they need and nothing more.
--it provides two important capabilities : building a type schema and serving queries against that type schema.
+-Alternative to REST, providing more flexibility by allowing clients to request only the data they need.
+-Uses a single endpoint for all requests.
+
 
 Advantages of GraphQL
 ---------------------
-Efficient data retrieval : allows clients to specify exactly what data they need, reduces the amount of data transferred 
-Flexible query structure : Clients can control the structure and content of the data they receive
-Batch processing : allows clients to consolidate multiple queries into a single request,reduce latency and minimize the number of network requests
-Defines a data shape : server returns the response in a simple, secure, and predictable shape
+Single Endpoint: Uses a single /graphql endpoint for all requests.
+Flexible Queries: Clients can specify exactly what data they want.
+Strongly Typed Schema: APIs are defined using a schema with types.
+Real-time Updates: Supports subscriptions for real-time data updates.
+Efficient Data Fetching: Reduces over-fetching and under-fetching of data.
 
-		REST          		 GraphQL
-=========================================
-1. Server Driven            1. Client Driven
-2. Slower                   2. faster
-3. Over-fetching 		    3. No over-fetching , under-fetching
-4. fileuploading-Yes	    4. File-uploading - No
-5. Simple, Resource driven  5. Micro Services   
+
+		REST          		 	GraphQL
+============================================
+1. Server Driven            	1. Client Driven
+2. Multiple endpoints			2. Single endpoint for all requests
+3. Over-fetching data			3. Client requests exactly what is needed
+4. No strict schema				4. Strongly typed schema
+5. Requires WebSockets 			5. Built-in subscriptions for real-time updates
+   or polling separately
 
 
 
@@ -2668,9 +2674,10 @@ https://www.apollographql.com/docs/apollo-server
 -Apollo Server is an open-source, spec-compliant GraphQL server 
 -Apollo Server is compatible with any GraphQL client, including Apollo Client. 
 -To build a production-ready, self-documenting GraphQL API that can use data from any source.
-	
-npm i express cors @apollo/server graphql mongoose
+-It has its own UI (doesn't use RURU)
 
+
+npm i express cors @apollo/server graphql mongoose
 
 
 
@@ -3244,6 +3251,17 @@ https://nodejs.org/en/learn/getting-started/profiling
 
 
 
+Cinic.js
+========
+-help to diagnose performance issues, memory leaks, and event loop delays in nodejs applications.
+-provides automated analysis and recommendations for optimizing Node.js applications
+
+-Clinic.js consists of three main tools:
+1. clinic doctor :		Provides an overall diagnosis of the application performance.
+2. clinic bubbleprof :	Helps visualize async operations and identify bottlenecks.
+3. clinic flame : 		Generates a flame graph to profile CPU usage and identify slow functions.
+
+
 
 How to improve Node.js performance
 ==============================================
@@ -3421,6 +3439,7 @@ passportjs npm
 rxjs
 node profiler : https://nodejs.org/en/learn/getting-started/profiling
 Monitoring Node.js applications with tools like PM2
+clinic
 
 
 
@@ -3462,4 +3481,3 @@ https://chatgpt.com/c/66dbe630-a978-800e-8a4b-1a3944ddbfc4
 
 node --prof-process isolate-*.log
 
-clinic
