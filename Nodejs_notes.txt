@@ -1560,6 +1560,22 @@ cookie-parser
 	
 
 
+Express Validators (https://express-validator.github.io/docs/guides/getting-started)
+==================
+-An express.js middleware for validator.
+-can validate and sanitize express requests.
+-Validation chains are created by functions such as body(), param(), query(), and so on.
+-Validators determine if the value of a request field is valid.
+-Sanitizers transform the field value.
+-Modifiers define how validation chains behave when they are run. This might include adding conditions on when they should run
+
+ex:
+const createEmailChain = () => body('email').isEmail();
+app.post('/login', createEmailChain(), handleLoginRoute);
+app.post('/signup', createEmailChain().custom(checkEmailNotInUse), handleSignupRoute);
+
+
+
 
 NodeJs and Typescript
 =====================
@@ -2750,6 +2766,10 @@ DELETE:
 	2. Delete the data in Redis
 
 
+async function connectToRedis() {
+    await createClient({url:'127.0.0.1:6379'})
+    console.log('Redis is connected')
+}
 
 
 Fake APIs to fetch data
@@ -2758,7 +2778,7 @@ https://api.openweathermap.org/data/2.5/weather?q=${city}&mode=json&units=metric
 
 https://api.openweathermap.org/data/2.5/forecast/daily?q=bangalore&mode=json&units=metric&cnt=5&appid=fbf712a5a83d7305c3cda4ca8fe7ef29
 
-https://en.wikipwikipedia.org/w/api.php?action=parse&format=json&section=0&page=india
+https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=India
 
 https://api.github.com/users/google
 
