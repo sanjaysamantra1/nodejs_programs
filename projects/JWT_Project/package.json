@@ -1,5 +1,5 @@
 {
-  "name": "day_44_dec_27",
+  "name": "day_53_march_29",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.2"
+    "mongoose": "^8.13.1"
   }
 }

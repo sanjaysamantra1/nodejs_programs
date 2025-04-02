@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 
 exports.connectToDB = function () {
-    const url = 'mongodb://localhost:27017/oct_2024';
+    const url = 'mongodb://127.0.0.1/march_2025';
     try {
         mongoose.connect(url);
-        console.log('data base connected successfully')
     } catch (err) {
-        console.log(err)
+        console.log(err);
     }
 }

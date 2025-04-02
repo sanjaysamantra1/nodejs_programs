@@ -1,14 +1,17 @@
 {
+  "name": "day_51_march_27",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "test": "jasmine",
-    "testWithCoverage": "istanbul cover --include-all-sources spec/tests/demo1.spec.js && istanbul check-coverage"
+    "testwithcoverage": "nyc npm run test"
   },
-  "devDependencies": {
-    "istanbul": "^0.4.5",
-    "jasmine": "^5.1.0",
-    "jasmine-console-reporter": "^3.1.0",
-    "jasmine-node": "^3.0.0",
-    "jasmine-supertest": "^1.0.0",
-    "supertest": "^6.3.3"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jasmine": "^5.6.0",
+    "nyc": "^17.1.0"
   }
 }

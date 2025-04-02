@@ -1073,10 +1073,14 @@ execFile()
 	execute a file (bat/sh)
 			 
 spawn() 
+	launch a new process and interact with that process
 	when the command we want to run can output a large amount of data
 
 fork()  
--communication channel is established to the child process when using fork, so we 	can use the send function on the forked process along with the global process object itself to exchange messages between the parent and forked processes.
+-Utilizes multi-core CPUs efficiently.
+-Isolates processes, preventing one failure from affecting others.
+-Handles high traffic loads better than a single-threaded approach.
+-communication channel is established to the child process when using fork, so we 	can use the send() function on the forked process along with the global process object itself to exchange messages between the parent and forked processes.
 -ChildProcess will have an additional communication channel built-in that allows messages to be passed back and forth between the parent and child
  
  
@@ -1692,7 +1696,8 @@ https://dev.to/mr_ali3n/folder-structure-for-nodejs-expressjs-project-435l
 
 CORS(Cross-Origin-Resource-Sharing)
 ====
--CORS (Cross-Origin Resource Sharing) is a security feature implemented by web browsers to prevent potentially harmful cross-origin requests. 
+-CORS (Cross-Origin Resource Sharing) is a security feature implemented by web browsers to prevent harmful cross-origin requests. 
+-It blocks requests made from one origin(domain/protocol,port) to another origin unless explicitly allowed by the server.
 -CORS allows servers to specify which domains can access their resources/API.
 
 A cross-origin request happens when:
@@ -2861,11 +2866,27 @@ socket.on("private message", ({ content, to }) => {
 		socket.join("some room");
    });
 2. Emit the message only to a room
-  socket.to('sanjaypraveenroom').emit("chat message", data);
-  
+	  
   io.to("some room").emit("some event");
   io.except("some room").emit("some event");
   io.to("room1").to("room2").to("room3").emit("some event");
+  
+  
+  
+   socket.on("private message", (data) => {
+        io.to("adarsh_ajay_room").emit("private message", data);   // server Code
+   });
+   
+   socket.on("private message", function (data) {
+	addNewMessage({ user: data.nick, message: data.message });   // client code
+  });
+	private_msg_button.addEventListener('click', () => {
+	  socket.emit("private message", {
+		message: inputField.value,
+		nick: userName,
+	  });
+   })
+
 
 https://socket.io/docs/v4/tutorial/introduction
 
@@ -2892,6 +2913,9 @@ ESLint
          'no-multi-spaces': 2,
 		 'max-params' : ["error", 3]
     }
+-To ignore files 
+ "ignorePatterns": ["public/**/*.js",".eslintrc.js"]
+
 
 1. npm i eslint 
 2. npm init @eslint/config   
@@ -2993,8 +3017,8 @@ Unit Testing with Jasmine
  
 Coverage Report
 ===============
-1. npm i istanbul
-2. istanbul cover --include-all-sources spec/tests/index.spec.js && istanbul check-coverage
+1. npm i nyc
+2. nyc npm run test
 
  
 Jasmine Terminologies
@@ -3043,6 +3067,7 @@ Spy: Used to track calls to a function without altering its actual behavior.
 	 spyOn(obj, 'greet'); // spy
 Stub: Used to replace the function's implementation to control its behavior during testing.
      spyOn(obj, 'greet').and.returnValue("Stubbed greeting!"); // stub
+	 spyOn(calculator, 'add').and.returnValue(30); // stub
 
 
 Stub
@@ -3124,6 +3149,8 @@ Unit testing with Mocha & Chai
 ==============================
 -Mocha is a testing framework for NodeJS.
 -Chai is an assertion library
+-chai-http is used for HTTP integration testing
+-sinon is used for spies, stubs and mocks 
 
 	
 project level install
@@ -3134,6 +3161,7 @@ project level install
 Run Testcases
 =============
 mocha
+mocha test/**/*.js
 
 
 Code Coverage
@@ -3203,14 +3231,15 @@ Basic Flow
 
 
 1.client provides credentials to the authentication Server.
-2.The access token and refresh token are then issued by the authentication Server.
-3.After then, the client uses the access token to request resource endpoints for a protected resource.
+2.AccessToken and RefreshToken are then issued by the authentication Server.
+3.After that, client uses the access token to request resource endpoints for a protected resource.
 4.The resource endpoint verifies the access token before delivering a secure resource.
 5.Repeat steps 3 and 4 until the access token is no longer valid.
-6.When the access token expires, the client requests a new one using the refresh token.
+6.When the access token expires,client requests a new AccesToken using RefreshToken.
 7.A new access token and refresh token are issued by the authentication Server.
 8.Repeat steps 3 through 7 until the refresh token has expired.
-9.When the refresh token expires, the client must re-authenticate with the authentication server, and the flow begins again at step 1.
+9.When the refresh token expires,client must re-authenticate with the authentication server,flow begins from step-1
+
 
 https://blog.logicwind.com/jwt-refresh-token-implementation-in-node-js/
 https://www.cloudzilla.ai/dev-education/how-to-build-authentication-api-with-jwt-token-in-nodejs/
@@ -3357,7 +3386,7 @@ https://www.npmjs.com/package/node-cron
 1. npm i node-cron
 2.Add the below code
 var cron = require('node-cron');
-cron.schedule('* * * * *', () => {
+cron.schedule('* * * * *', () => {  // * Every
   console.log('running a task every minute');
 });
 
@@ -3389,7 +3418,7 @@ cron.schedule('* * * * *', () => {
 0 0 1 * *        Every Month
 0 0 1 1 *        Every Year jan 1st
 
-https://crontab.guru/every-year
+https://crontab.guru/examples.html
      
 
 bull - https://www.npmjs.com/package/bull
