@@ -3395,7 +3395,7 @@ cron.schedule('* * * * *', () => {  // * Every
 1. second (optional)
 2. minute
 3. hour
-4. day of month
+4. day of month(date)
 5. month
 6. day of week
 
