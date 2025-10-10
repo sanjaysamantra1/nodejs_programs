@@ -1,13 +1,14 @@
 Recommended to learn before Node.js
 ===================================
 Variables
-Scopes
 Functions
 Arrow Function
-this operator
-Loops
+this keyword
+closure
+call, apply, bind
 String
 Array
+Event Loop & Call Stack
 fetch()
 ES-6 and beyond 
 (class,module,rest,spread,promise,async await)
@@ -21,40 +22,27 @@ Node.js Syllabus
 -Local Environment SetUp
 -Node.js Console - REPL
 -NPM , NPX , NVM
--Modules: Core, Local , 3rd party
 -Global Objects
--File System
 -Debugging Node JS Application
--Buffer & Streams
+-Modules: Core, Local , 3rd party
+-Core Modules : ( OS , FS , URL , HTTP)
 -Events (Event Loop,Event Emitter)
+-Buffer & Streams
 -Creating web server & Handling http requests (HTTP)
--Express Framework-routes
--NodeJS & MongoDB Connection
--Mongoose,graphQL
+-Express Framework  (routing , middleware)
+-Request validation (joi,express-validator)
 -Template Engines (Jade/Pug, vash, EJS, handlebars)
+-NodeJS & MongoDB Connection
+-Mongoose : ODM for MongoDB
 -Redis (Caching)
 -Swagger  (API Documentation)
 -Unit testing (Mocha, Jasmine)
--JWT
-
-
-
-Projects
-========
--CRUD HTTP Module
--CRUD ExpressJS
--GraphQL
--Template Engine
--Server Side Validation
--Image Upload (express-file-uploader)
--Image Upload (Formidable) 
--NodeEmailer (Send Email)
--Chat Application (Socket.io)
--JWT Token
--Swagger
--Unit testing
-
-
+-graphQL : Query Language for APIs
+-WebSockets / Socket.IO ( chat, notifications)
+-Authentication/Authorization : JWT
+-Environment Variables & Config Management (dotenv, config)
+-Security : Helmet, CORS, Rate Limiting
+-Deployment : Render
 
 
 
@@ -67,7 +55,7 @@ What NodeJs is?
 -Single threaded, non-blocking, and event-driven execution model.
 -It is used to develop I/O intensive web applications. 
 -ex:video streaming sites, real-time chat application, Game servers and web applications.
--It's not the best choice for CPU intensive work.(Complex calculations)
+-NodeJS is not the best choice for CPU intensive work.(Complex calculations)
 
 javascript Engines:
 	V8  - is developed by Google , Google Chrome.
@@ -107,12 +95,12 @@ Single Threaded but Highly Scalable:
 Node js library uses JavaScript:
 	The majority of developers are already well-versed in JavaScript. 
 	Hence, development in Node.js becomes easier for a developer who knows JavaScript.
-Community –
+Community:
 	There is an Active and vibrant community for the Node Js framework - The active community always keeps the framework updated with the latest trends in the web development.
-No Buffering –
+No Buffering:
 	Node js applications never buffer any data. 
 	They simply output the data in chunks.
-NPM (Node Package Manager)–
+NPM (Node Package Manager)
 	it comes with node js & allows us to install various Packages for Node js Application. (lodash,cors,axios,express)
 
 
@@ -207,6 +195,9 @@ Blocking vs Non-Blocking I/O
 -let's consider a case where each request to a web server takes 50ms to complete and 45ms of that 50ms is database I/O that can be done asynchronously. Choosing non-blocking asynchronous operations frees up that 45ms per request to handle other requests. This is a significant difference in capacity just by choosing to use non-blocking methods instead of blocking methods.
 
 
+
+
+
 Q. What is Reactor Pattern in Node.js?
 -Assigning a callback function to each I/O operation is called the Reactor Pattern.
 -It’s the responsibilty of the system to run the handler function once the data from the event is available.
@@ -246,7 +237,7 @@ NVM useful commands
 -To install latest node version
  nvm install node
 -To install a particular version of node
- nvm install 16.0.0
+ nvm install 24.9.0
 -To uninstall a particular version of node
  nvm uninstall 16.0.0
 -To switch node version
@@ -360,13 +351,14 @@ Assignment:
 node calculator.js --num1 10 --num2 5 --operation add
 
 
-VS Code Extensions
+VSCode Extensions
 ==================
 vscode-icons
 prettier
 tab nine
 thunderclient
 ESLint
+cline
 
 
 
@@ -438,6 +430,13 @@ NPM (Node Package Manager)
  
 -Uninstalling Packages/Modules via NPM
  npm uninstall <package_name>
+
+-check outdated packages
+  npm outdated
+
+-Audit for security issues
+ npm audit
+ npm audit fix
  
 -Update Packages/Modules via NPM
  npm update <package_name>
@@ -513,8 +512,9 @@ yarn install
 yarn install --production
 yarn install --offline ( trigger an error if any required dependencies are not available in local cache)
 yarn remove minimist
-yarn upgrade 
+yarn upgrade <package>
 yarn run [script-name]
+yarn list
 yarn outdated
 yarn audit     (runs a security audit)
 
@@ -524,22 +524,21 @@ yarn audit     (runs a security audit)
 
 
  
-Package.json
+package.json
 ============
--Contains the metadata of the project.
+-Contains Project Metadata(name, version, author, description, scripts, main , dependencies)
 -Helps NPM to understand how the project should be handled along with its dependencies.
--package.json files contain the below information.
-	  project name,
-	  version,
-	  homepage,
-	  description,
-	  author,
-	  keywords 
-	  scripts 
-	  dependencies 
-	  devdependencies
-	  optionaldependencies etc.
--package.json file is normally located at the root directory of a Node.js project.
+-maintains version range (^ , ~)
+-Nested Dependencies : No
+-It's Created(tools) & maintained by Developers
+
+package-lock.json
+=================
+-Automatically generated by npm when we install dependencies.
+-Exact version of dependency
+-Nested Dependencies : Yes
+-The resolved URLs (npm registry or elsewhere)
+-Ensures reproducible builds (everyone gets the same dependency versions)
 
 
 package.json  VS  package-lock.json
@@ -586,6 +585,7 @@ NPX : Node Package Executer (used to execute Node.js packages)
 
 
 
+
 Nodemon
 =======
 -Nodemon is a utility that will monitor for any changes in your source and automatically restart your server.
@@ -616,7 +616,7 @@ Node.js Global Objects
 	__filename
 	console - log(),error(),warn(),time(),timeEnd(),trace(),dir(),assert(),table()
 	process - exit(),beforeExit(), uncaughtException()
-	buffer
+	Buffer
 	setImmediate(callback[, arg][, ...])
 	setInterval(callback, delay[, arg][, ...])
 	setTimeout(callback, delay[, arg][, ...])
@@ -646,12 +646,14 @@ Nodejs Global Variables
 =======================
 -In Node.js, the 'global' object is global.
 -abc.js
- global.myGlobalVariable = "Hello from global!";
+	 global.myName = "Sanjay Kumar";
+	 globalThis.myAge = 40;
+	 myAddress = 'Bangalore'; // not recommended (only works in normal mode, not in strict mode)
 -xyz.js
-require('./abc');
-console.log(myGlobalVariable);
-console.log(global.myGlobalVariable);
-console.log(globalThis.myGlobalVariable);
+	require('./abc');
+	console.log(myName);
+	console.log(global.myAge);
+	console.log(globalThis.myAddress);
 
 
  
@@ -698,12 +700,17 @@ This
   ex: console.log(this, this === module.exports); //true
 	module.exports.name = "sanjay";
 	console.log(this); // { name:sanjay }
+	console.log(globalThis); // globalThis = global
+	
+	Note: In ES modules, this at the top level is undefined, not global or module.exports.
 	
 2. Inside Functions 
   -in Normal Mode:
 	a. this value inside a regular/normal function is 'global Object'.
 	b. this value inside an arrow function is {} (module.exports)
-  -in strictmode, this value inside a function is undefined.
+  -in strictmode:
+     a. this value inside a regular/normal function is undefined.
+	 b. this value inside an arrow function is {} (module.exports)
 
 3. Inside Object Methods 
   -When this is used in an object method, it refers to the object itself (i.e., the object that owns the method).
@@ -714,7 +721,8 @@ This
   -In classes, this refers to the instance of the class.
   
 5. in Event Listeners and Callbacks
-  -If it's a regular function, this often refers to the global object, but arrow functions will capture the lexical this from the surrounding code
+  -Regular function : global
+  -Arrow Function :  lexical this {}
 
 
 
@@ -724,7 +732,7 @@ Event Loop
 -handles asynchronous operations by executing callbacks in a non-blocking manner.
 -It executes Synchronous code first,then processes asynchronous operations.
 -Delegates heavy tasks like I/O operations, timers, and network requests to the libuv library.
--
+
 
 
 -Event loop's order of operations:
