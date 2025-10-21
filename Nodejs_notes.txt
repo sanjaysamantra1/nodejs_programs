@@ -1592,6 +1592,18 @@ app.post('/signup', createEmailChain().custom(checkEmailNotInUse), handleSignupR
 
 
 
+joi Validator
+=============
+-Joi is a schema description and data validation library for JavaScript/TypeScript.
+-define schemas for our input and validate incoming data against them.
+-schemas can be reused across routes.
+-Helps ensure API requests are valid before processing.
+-Use abortEarly: false to show all errors at once.
+  const { error } = schema.validate(req.body, { abortEarly: false });
+-Support custom validators
+
+
+
 
 NodeJs and Typescript
 =====================
@@ -1639,9 +1651,40 @@ Morgan
 -Logging formats : combined / common / short / tiny / dev
 1. npm i morgan
 2. const morgan = require('morgan');
-   app.use(morgan('tiny'));
+   app.use(morgan('tiny')); // tiny / dev / short / combined
    app.use(morgan('dev'));
    app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+   
+write logs to a file:
+---------------------
+var logStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+app.use(morgan('combined', { stream: logStream }));
+
+
+Options Object Properties:
+let options = {
+    stream: logStream,
+    skip: (req, res) => {
+        return req.method === 'DELETE'; // DELETE requests will not be logged
+    }
+}
+app.use(morgan('combined', options));
+
+
+Custom Tokens
+-------------
+morgan.token('tokenName',(req,res)=>);
+app.use(morgan(':tokenName :method :url :status :res[content-length] - :response-time ms'));
+
+ex: 
+morgan.token('type', (req, res)=>req.headers['content-type']);
+morgan.token('body', (req, res)=>JSON.stringify(req.body));
+app.use(morgan(':method :status :url :type :body'));
+
+
+
+
+
 
 
 Winston
@@ -1678,13 +1721,15 @@ Express generator
 =================
 1. npm install -g express-generator
 2. express project1 (--view=jade  default)
-   express --view=pug project1
-   express --view=ejs project2
+   express --view=pug/ejs project1
    express project3 --no-view
+   npx express-generator project2
 3. once the project is created, run the below commands to start the app
 	cd project1
 	npm install
 	npm start
+Note: To run the project in watch mode, change package.json (start: node --watch ./bin/www)
+
 
 
 Folder Structure for NodeJS & ExpressJS project
