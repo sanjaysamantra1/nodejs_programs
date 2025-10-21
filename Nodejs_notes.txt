@@ -734,7 +734,6 @@ Event Loop
 -Delegates heavy tasks like I/O operations, timers, and network requests to the libuv library.
 
 
-
 -Event loop's order of operations:
 1. timers: Executes setTimeout() and setInterval() callbacks whose delay has expired
 2. I/O Pending CallBacks:  executes I/O-related callbacks that were deferred from the previous loop cycle.
@@ -1093,6 +1092,41 @@ fork()
  
  
  
+
+
+
+NodeJS Buffers
+==============
+-Buffer represents a fixed-length sequence of bytes.
+-Buffer is a built-in object used to handle binary data directly, without needing to convert it into string or other format.
+-to preocess raw binary data, such as reading data from file handling network communication.
+-Buffers are used with readable & writable streams for efficient data handling, especially for large files.
+-Buffers are essential when dealing with image data. Images are typically handled as binary data while sending over a network.
+
+
+
+
+Node.js Streams
+===============
+-Streams are objects that let you read data from a source or write data to a destination in continuous fashion.
+-When we try to read a file, the contents of the file is read and all the content gets saved in memory
+-Streams read chunks of data piece by piece, processing its content without keeping it all in memory.
+
+-4 types of streams in Node.js:
+1.Readable    fs.createReadStream()
+2.writeable   fs.createWriteStream()
+3.Duplex      net.Socket 
+  A Duplex stream is both readable and writable, meaning it can consume input and produce output at the same time.
+4.Transform
+
+
+Piping the Streams:
+-Piping is a mechanism where we provide the output of one stream as the input to another stream.
+
+
+
+
+ 
  
 HTTP Module
 ===========
@@ -1201,37 +1235,6 @@ Route-Parameter
   ex: app.get('users')
 -not complusory to pass
 -used to pass multiple values.
-
-
-
-
-NodeJS Buffers
-==============
--Buffer represents a fixed-length sequence of bytes.
--Buffer is a built-in object used to handle binary data directly, without needing to convert it into string or other format.
--to preocess raw binary data, such as reading data from file handling network communication.
--Buffers are used with readable & writable streams for efficient data handling, especially for large files.
--Buffers are essential when dealing with image data. Images are typically handled as binary data while sending over a network.
-
-
-
-
-Node.js Streams
-===============
--Streams are objects that let you read data from a source or write data to a destination in continuous fashion.
--When we try to read a file, the contents of the file is read and all the content gets saved in memory
--Streams read chunks of data piece by piece, processing its content without keeping it all in memory.
-
--4 types of streams in Node.js:
-1.Readable    fs.createReadStream()
-2.writeable   fs.createWriteStream()
-3.Duplex      net.Socket 
-  A Duplex stream is both readable and writable, meaning it can consume input and produce output at the same time.
-4.Transform
-
-
-Piping the Streams:
--Piping is a mechanism where we provide the output of one stream as the input to another stream.
 
 
 
@@ -1354,7 +1357,7 @@ Method	Description
 res.send()	Send a response of various types. (Buffer / JSON / HTML / String)
 res.end()	End the response process.
 res.json()	Send a JSON response.
-res.jsonp()	Send a JSON response with JSONP support.
+res.jsonp()	Sends JSON wrapped inside a callback function (for cross-domain requests).
 res.redirect()	Redirect a request.
 res.render()	Render a view template.
 res.sendFile()	Send a file as an octet stream.
@@ -1369,7 +1372,8 @@ res.sendStatus(201); // equivalent to res.status(201).send('CReated')
 res.sendStatus(403); // equivalent to res.status(403).send('Forbidden')
 res.sendStatus(404); // equivalent to res.status(404).send('Not Found') 
 res.sendStatus(500); // equivalent to res.status(500).send('Internal Server Error')
-
+Note : status 204 doesn't support Custom body, body is ignored
+       res.status(204).send('{ message: "Employee not found" }');
 
 
 Express Routing
@@ -1431,7 +1435,7 @@ Middlewares
 ===========
 -Middlewares in ExpressJS are functions that can modify Request and Response objects.
 -Middleware functions can handle logging, authentication, and input validation before passing control to the next handler.
--
+
 
 
 without middleware : 
@@ -1593,38 +1597,25 @@ NodeJs and Typescript
 =====================
 1. npm init -y
 2. npm install express typescript ts-node @types/node @types/express
-3. npx tsc --init  (OR) tsc --init  (Generates tsconfig.json)
+3. npx tsc --init (generates tsconfig.json)
+   paste the below content in tsconfig.json
+   {"compilerOptions":{"outDir":"dist","esModuleInterop":true}}
 4. add CRUD code
 5. npx ts-node src/app.ts
 		(OR)
-   a. npx tsc  b. node dist/app.js
+   npx tsc 
+   node dist/app.js
 
 
 tsconfig.json
 -------------
 {
   "compilerOptions": {
-    "lib": [
-      "es6"
-    ],
-    "target": "es6",
-    "module": "commonjs",
-    "moduleResolution": "node",
     "outDir": "dist",
-    "resolveJsonModule": true,
-    "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "sourceMap": true
-  },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
-  ]
+    "esModuleInterop": true
+  }
 }
+
 
 
 

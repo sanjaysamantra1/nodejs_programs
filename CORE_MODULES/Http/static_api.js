@@ -1,5 +1,5 @@
 const fs = require("fs");
-const http = require("http");
+const http = require("http"); // Frequently updated data files
 
 const server = http.createServer(function (req, res) {
   // read file with fs

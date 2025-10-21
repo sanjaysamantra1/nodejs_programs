@@ -1,5 +1,5 @@
 const http = require("http");
-const users = require("./users.json");
+const users = require("./users.json"); // Static config, constants, mock data
 
 const server = http.createServer((req, res) => {
   res.write(JSON.stringify(users));
