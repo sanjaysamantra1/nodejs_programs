@@ -7,11 +7,20 @@ exports.getAllUsers = (req, res) => {
   res.json(users);
 };
 
-exports.getUserById = (req, res) => {
-  const user = users.find(u => u.id === parseInt(req.params.id));
-  if (!user) return res.status(404).json({ error: 'User not found' });
-  res.json(user);
+exports.getUserById = (req, res, next) => {
+  try {
+    const user = users.find(u => u.id === parseInt(req.params.id));
+    if (!user) {
+      const error = new Error('User not found');
+      error.statusCode = 404;
+      throw error;
+    }
+    res.json(user);
+  } catch (err) {
+    next(err); // send error to global handler
+  }
 };
+
 
 exports.createUser = (req, res) => {
   const { name, email } = req.body;

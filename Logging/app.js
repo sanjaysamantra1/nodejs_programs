@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const logger = require('./middlewares/logger');
+const errorHandler = require('./middlewares/errorHandler');
 
 const usersRouter = require('./routes/users');
 const productsRouter = require('./routes/products');
@@ -24,16 +25,14 @@ app.use('/api/users', usersRouter);
 app.use('/api/products', productsRouter);
 
 // 404 handler
-app.use((req, res) => {
-  logger.warn(`404 - Not Found: ${req.originalUrl}`);
-  res.status(404).json({ error: 'Route not found' });
+app.use((req, res, next) => {
+  const error = new Error(`Route not found - ${req.originalUrl}`);
+  error.statusCode = 404;
+  next(error);
 });
 
-// Error handler
-app.use((err, req, res, next) => {
-  logger.error(err.message, { stack: err.stack });
-  res.status(500).json({ error: 'Internal Server Error' });
-});
+// Global Error Handler — always last
+app.use(errorHandler);
 
 
 const PORT = 3000;
