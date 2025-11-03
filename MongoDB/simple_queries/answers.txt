@@ -1,0 +1,127 @@
+// 1. Insert a new student
+db.students.insertOne({ name: "Neha", age: 19, gender: "F", course: "Computer Science", marks: 95, city: "Delhi" })
+
+// 2. Students from Delhi
+db.students.find({ city: "Delhi" })
+
+// 3. Students with marks > 80
+db.students.find({ marks: { $gt: 80 } })
+
+// 4. Update Arun’s marks
+db.students.updateOne({ name: "Arun" }, { $set: { marks: 70 } })
+
+// 5. Delete Suresh
+db.students.deleteOne({ name: "Suresh" })
+
+// 6. Average marks by course
+db.students.aggregate([{ $group: { _id: "$course", avgMarks: { $avg: "$marks" } } }])
+
+// 7. Students per city
+db.students.aggregate([{ $group: { _id: "$city", total: { $sum: 1 } } }])
+
+// 8. Sort by marks descending
+db.students.find().sort({ marks: -1 })
+
+// 9. Display only name & marks
+db.students.find({}, { name: 1, marks: 1, _id: 0 })
+
+// 10. Join with courses to show fee per student
+db.students.aggregate([
+  { $lookup: {
+      from: "courses",
+      localField: "course",
+      foreignField: "course",
+      as: "courseDetails"
+    }
+  },
+  { $unwind: "$courseDetails" },
+  { $project: { name: 1, course: 1, fee: "$courseDetails.fee" } }
+])
+
+// 11. Total students per course
+db.students.aggregate([{ $group: { _id: "$course", count: { $sum: 1 } } }])
+
+// 12. Course with maximum average marks
+db.students.aggregate([
+  { $group: { _id: "$course", avgMarks: { $avg: "$marks" } } },
+  { $sort: { avgMarks: -1 } },
+  { $limit: 1 }
+])
+
+
+
+// 1. Insert new product
+db.products.insertOne({ name: "Tablet", category: "Electronics", price: 18000, stock: 30, brand: "Lenovo" })
+
+// 2. All Electronics products
+db.products.find({ category: "Electronics" })
+
+// 3. Products between 3000–50000
+db.products.find({ price: { $gte: 3000, $lte: 50000 } })
+
+// 4. Reduce Laptop stock by 1
+db.products.updateOne({ name: "Laptop" }, { $inc: { stock: -1 } })
+
+// 5. Delete Fossil brand
+db.products.deleteOne({ brand: "Fossil" })
+
+// 6. Total stock by category
+db.products.aggregate([{ $group: { _id: "$category", totalStock: { $sum: "$stock" } } }])
+
+// 7. Most expensive product per category
+db.products.aggregate([
+  { $sort: { price: -1 } },
+  { $group: { _id: "$category", topProduct: { $first: "$name" }, price: { $first: "$price" } } }
+])
+
+// 8. Sort by price descending
+db.products.find().sort({ price: -1 })
+
+// 9. Show only name & price
+db.products.find({}, { name: 1, price: 1, _id: 0 })
+
+// 10. Products per brand
+db.products.aggregate([{ $group: { _id: "$brand", total: { $sum: 1 } } }])
+
+// 11. Join orders with product details
+db.orders.aggregate([
+  { $unwind: "$items" },
+  { $lookup: {
+      from: "products",
+      localField: "items.productId",
+      foreignField: "_id",
+      as: "productDetails"
+    }
+  },
+  { $unwind: "$productDetails" },
+  { $project: {
+      customer: 1,
+      "productDetails.name": 1,
+      "productDetails.price": 1,
+      qty: "$items.qty",
+      total: 1
+  }}
+])
+
+// 12. Total sales by city
+db.orders.aggregate([{ $group: { _id: "$city", totalSales: { $sum: "$total" } } }])
+
+// 13. Sales and orders per status
+db.orders.aggregate([{ $group: { _id: "$status", totalOrders: { $sum: 1 }, totalSales: { $sum: "$total" } } }])
+
+// 14. Top-selling product by quantity
+db.orders.aggregate([
+  { $unwind: "$items" },
+  { $group: { _id: "$items.productId", totalQty: { $sum: "$items.qty" } } },
+  { $sort: { totalQty: -1 } },
+  { $limit: 1 },
+  { $lookup: {
+      from: "products",
+      localField: "_id",
+      foreignField: "_id",
+      as: "productInfo"
+    }
+  },
+  { $unwind: "$productInfo" },
+  { $project: { product: "$productInfo.name", totalQty: 1 } }
+])

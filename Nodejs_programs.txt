@@ -266,6 +266,38 @@ MongoDB + NodeJs
 
 
 
+mongoose + stored functions
+===========================
+const mongoose = require('mongoose');
+
+async function main() {
+  await mongoose.connect('mongodb://localhost:27017/mydb');
+  console.log('✅ Connected to MongoDB');
+
+  const db = mongoose.connection.db;
+
+  // Fetch the stored JS function from system.js
+  const funcDoc = await db.collection('system.js').findOne({ _id: 'getEmployeesByDept' });
+  if (!funcDoc) {
+    console.error('❌ Stored function not found');
+    return;
+  }
+
+  // Convert the stored string into a callable JS function
+  const storedFunction = new Function('db', 'deptName', `return (${funcDoc.value.toString()})(deptName);`);
+
+  // Call the stored function
+  const result = await storedFunction(db, 'Sales');
+
+  console.log('Employees from Sales:', result);
+
+  await mongoose.disconnect();
+}
+
+main().catch(console.error);
+
+
+
 GraphQL
 ========
 1. npm init -y

@@ -1,0 +1,62 @@
+[
+  {
+    "_id": 101,
+    "customer": "Ravi",
+    "items": [
+      {
+        "productId": 1,
+        "qty": 1
+      },
+      {
+        "productId": 5,
+        "qty": 2
+      }
+    ],
+    "total": 66000,
+    "city": "Delhi",
+    "status": "Delivered"
+  },
+  {
+    "_id": 102,
+    "customer": "Anita",
+    "items": [
+      {
+        "productId": 2,
+        "qty": 1
+      }
+    ],
+    "total": 25000,
+    "city": "Mumbai",
+    "status": "Pending"
+  },
+  {
+    "_id": 103,
+    "customer": "Suresh",
+    "items": [
+      {
+        "productId": 3,
+        "qty": 2
+      },
+      {
+        "productId": 4,
+        "qty": 1
+      }
+    ],
+    "total": 15000,
+    "city": "Chennai",
+    "status": "Delivered"
+  },
+  {
+    "_id": 104,
+    "customer": "Priya",
+    "items": [
+      {
+        "productId": 5,
+        "qty": 3
+      }
+    ],
+    "total": 9000,
+    "city": "Delhi",
+    "status": "Cancelled"
+  }
+]

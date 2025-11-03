@@ -1,0 +1,20 @@
+[
+  {
+    "_id": 101,
+    "course": "Computer Science",
+    "duration": "4 years",
+    "fee": 120000
+  },
+  {
+    "_id": 102,
+    "course": "Electronics",
+    "duration": "4 years",
+    "fee": 110000
+  },
+  {
+    "_id": 103,
+    "course": "Mechanical",
+    "duration": "4 years",
+    "fee": 115000
+  }
+]

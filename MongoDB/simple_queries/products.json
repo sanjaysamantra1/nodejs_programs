@@ -1,0 +1,42 @@
+[
+  {
+    "_id": 1,
+    "name": "Laptop",
+    "category": "Electronics",
+    "price": 60000,
+    "stock": 20,
+    "brand": "HP"
+  },
+  {
+    "_id": 2,
+    "name": "Mobile",
+    "category": "Electronics",
+    "price": 25000,
+    "stock": 50,
+    "brand": "Samsung"
+  },
+  {
+    "_id": 3,
+    "name": "Shoes",
+    "category": "Fashion",
+    "price": 4000,
+    "stock": 80,
+    "brand": "Nike"
+  },
+  {
+    "_id": 4,
+    "name": "Watch",
+    "category": "Fashion",
+    "price": 7000,
+    "stock": 35,
+    "brand": "Fossil"
+  },
+  {
+    "_id": 5,
+    "name": "Headphones",
+    "category": "Electronics",
+    "price": 3000,
+    "stock": 100,
+    "brand": "Sony"
+  }
+]

@@ -1,0 +1,32 @@
+
+### MongoDB Practical Questions
+
+#### Students & Courses
+1. Insert a new student named Neha (course Computer Science, marks 95, city Delhi).
+2. Find all students from Delhi.
+3. Find students with marks greater than 80.
+4. Update Arun’s marks to 70.
+5. Delete student Suresh.
+6. Show average marks by course.
+7. Count number of students per city.
+8. Sort students by marks descending.
+9. Display only name and marks fields.
+10. Join students with courses and show fee per student.
+11. Find total students per course.
+12. Find course with maximum average marks.
+
+#### Products & Orders
+1. Insert a new product named Tablet (price 18000, stock 30, brand Lenovo).
+2. Find all Electronics products.
+3. Find products priced between 3000 and 50000.
+4. Update Laptop stock to reduce by 1.
+5. Delete a product with brand Fossil.
+6. Find total stock by category.
+7. Find the most expensive product in each category.
+8. Sort products by price descending.
+9. Show only name and price fields.
+10. Count total number of products per brand.
+11. Join orders with products to show product details.
+12. Show total sales by city.
+13. Find total sales and number of orders per status.
+14. Find top-selling product by quantity.

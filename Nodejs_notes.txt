@@ -1576,6 +1576,49 @@ cookie-parser
 	
 
 
+
+
+Express generator
+=================
+1. npm install -g express-generator
+2. express project1 (--view=jade  default)
+   express --view=pug/ejs project1
+   express project3 --no-view
+   npx express-generator project2
+3. once the project is created, run the below commands to start the app
+	cd project1
+	npm install
+	npm start
+Note: To run the project in watch mode, change package.json (start: node --watch ./bin/www)
+
+
+
+Folder Structure for NodeJS & ExpressJS project
+================================================
+https://dev.to/mr_ali3n/folder-structure-for-nodejs-expressjs-project-435l
+
+
+
+
+Template Engines for Node.js
+============================
+-A template engine enables us to use static template files in our application. 
+-At runtime, the template engine replaces variables in a template file with actual values, and transforms the template into an HTML file sent to the client.
+-Template engines for Node.js (Jade/pug,Vash,EJS,Handlebars)
+-Express application generator uses 'pug' as the default Template Engine.
+   express --view=pug project1
+   express --view=ejs project2
+   express project3 --no-view
+
+-To render template files, set the following application properties, in app.js
+ app.engine('pug', require('pug').__express)
+ app.set('views', './views')
+ app.set('view engine', 'pug')
+ 
+https://expressjs.com/en/guide/using-template-engines.html
+
+
+
 Express Validators (https://express-validator.github.io/docs/guides/getting-started)
 ==================
 -An express.js middleware for validator.
@@ -1685,8 +1728,6 @@ app.use(morgan(':method :status :url :type :body'));
 
 
 
-
-
 Winston
 =======
 -winston is a logging library with support for multiple transports(console, file)
@@ -1717,32 +1758,17 @@ app.use((err, req, res, next) => {
 
 
 
-Express generator
-=================
-1. npm install -g express-generator
-2. express project1 (--view=jade  default)
-   express --view=pug/ejs project1
-   express project3 --no-view
-   npx express-generator project2
-3. once the project is created, run the below commands to start the app
-	cd project1
-	npm install
-	npm start
-Note: To run the project in watch mode, change package.json (start: node --watch ./bin/www)
 
 
-
-Folder Structure for NodeJS & ExpressJS project
-================================================
-https://dev.to/mr_ali3n/folder-structure-for-nodejs-expressjs-project-435l
 
 
 
 CORS(Cross-Origin-Resource-Sharing)
 ====
 -CORS (Cross-Origin Resource Sharing) is a security feature implemented by web browsers to prevent harmful cross-origin requests. 
--It blocks requests made from one origin(domain/protocol,port) to another origin unless explicitly allowed by the server.
+-It blocks requests made from one origin(protocol / domain / port) to another origin unless explicitly allowed by the server.
 -CORS allows servers to specify which domains can access their resources/API.
+-Its a server mechanism, tells It’s okay for this origin to request data from me.
 
 A cross-origin request happens when:
 The protocol (HTTP/HTTPS), domain (example.com), or port (8080) differs from the origin where the browser is loading the page from.
@@ -1763,12 +1789,15 @@ fetch('http://localhost:5000/employees').then(res=>res.json().then(data=>console
 
 How Does CORS Work
 ------------------
--When a browser detects a cross-origin request, it sends an HTTP OPTIONS request (Preflight request) before making the actual request. 
+-When a browser detects a cross-origin request, it sends an HTTP OPTIONS request (Preflight request) before making the actual request
+ for cross-origin requests ((PUT/PATCH/DELETE))
 -The server must respond with appropriate CORS headers to indicate whether the request is allowed.
+-Server responds with the correct CORS headers so the browser, app.options('*', cors()); 
 	Access-Control-Allow-Origin: https://example.com
 	Access-Control-Allow-Methods: GET, POST, PUT, DELETE
 	Access-Control-Allow-Headers: Content-Type, Authorization
 These headers tell the browser which domains, methods, and headers are permitted.
+-Tools like Postman,Will not trigger preflight — they ignore CORS
 
 
 
@@ -1818,7 +1847,9 @@ CURL
 -Most systems come with cURL pre-installed
 
 curl [options] [URL]
-curl -help
+curl --help
+-X : Request
+
 GET Request: 
 	curl http://localhost:5000/ 
 	curl -X GET https://api.example.com/data
@@ -1841,6 +1872,7 @@ View Response Headers:
 
 Helmet
 ======
+-By default,Express doesn’t set Security Headers — leaving apps open to attacks: XSS, Clickjacking, 
 -It Helps to secure Node.js application by setting several HTTP headers.
 -automatically adds or removes HTTP headers to comply with web security standards.
 -It protects against XSS, clickjacking, MIME sniffing, and other vulnerabilities.
@@ -1904,23 +1936,6 @@ setMaxListeners()		Sets the maximum number of listeners allowed for one event. D
 
 
 
-Template Engines for Node.js
-============================
--A template engine enables us to use static template files in our application. 
--At runtime, the template engine replaces variables in a template file with actual values, and transforms the template into an HTML file sent to the client.
--Template engines for Node.js (Jade/pug,Vash,EJS,Handlebars)
--Express application generator uses 'pug' as the default Template Engine.
-   express --view=pug project1
-   express --view=ejs project2
-   express project3 --no-view
-
--To render template files, set the following application properties, in app.js
- app.engine('pug', require('pug').__express)
- app.set('views', './views')
- app.set('view engine', 'pug')
- 
-
-https://expressjs.com/en/guide/using-template-engines.html
 
 
 
@@ -1995,7 +2010,7 @@ MongoDB Local
 1. download and install (MongoDB Community Server)
    https://www.mongodb.com/try/download/community 
 					(OR)
-   https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-6.0.5-signed.msi
+   https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-8.2.1-signed.msi
    
    
 The Below Points are optional if we want to access our database in MongoDB Compass
@@ -2038,7 +2053,7 @@ https://www.geeksforgeeks.org/mongodb-tutorial/
 -To Use one database
  use sanjaydb1  (creates a new database if it doesn’t exist)
 -To see the Current Database
- db 
+ db 	
 -To see all the collections under a database
  show collections
 -To Create a Collection/Table
@@ -2186,10 +2201,14 @@ db.table3.find( { $where: function() { return (this.english == this.science) }})
 
 Array
 $addToSet: Adds distinct elements to an array
+ db.employees.updateOne({ empId: 101 },{ $addToSet: { skills: "Docker" } });
 $pop: Removes the first or last element of an array
 $pull: Removes all elements from an array that match the query
 $push: Adds an element to an array
+$each: To iterate Each element
+ db.employees.updateOne({eId:101},{$addToSet:{"skills":{$each:['HTML,'CSS']}}})
 
+ 
  
 implicit and vs explicit $and
 ==============================
@@ -2327,6 +2346,7 @@ Assignment Solutions
    ]
 );
 	
+
 
 
 Views
@@ -2499,24 +2519,44 @@ Mongoose Middleware (Hooks):
 
 
 Mongoose Virtuals:
+------------------
 -Virtuals allow  to create computed fields without storing them in the database.
+1. create a virtual
 	userSchema.virtual('fullName').get(function() {
-	  return this.name + " (age: " + this.age + ")";
+	  return this.firstName + this.lastName;
 	});
+2. add the virtual to response object
+   let employeeSchema = new mongoose.Schema({employeeSchema},{toObject: { getters: true },toJSON: { getters: true }})
+   
+   
+   
 
 Populate (Relationships Between Collections):
--Use populate() to retrieve referenced documents.
- 
- const postSchema = new mongoose.Schema({
+---------------------------------------------
+-populate() automatically replaces referenced ObjectIds in documents with the actual documents they refer to.
+-Example:If a Post has a userId that refers to a User, populate() can fetch that user’s full record  automatically.
+
+const postSchema = new mongoose.Schema({
   title: String,
   content: String,
-  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
- });
-const Post = mongoose.model('Post', postSchema);
-const getPosts = async () => {
-  const posts = await Post.find().populate('author');
-  console.log(posts);
-};
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"  // references the User model
+  }
+});
+const Post = mongoose.model("Post", postSchema);
+
+ 
+Basic Populate : 
+	posts = await postModel.find().populate('author');
+Select 1 Fields : 
+	posts = await postModel.find().populate('author','firstName'); 
+Select multiple Fields	
+	posts = await postModel.find().populate('author','name address'); 
+Multiple Populate:
+	posts = await postModel.find().populate('1stcollection').populate('2ndcollection');
+
+
 
 Transactions (Atomic Operations):
 -For atomic operations, use Mongoose transactions.
@@ -2534,8 +2574,10 @@ try {
 }
 
 
-
-
+mongoose vs joi
+===============
+Mongoose : Database Layer, enforces schema types, required fields, unique etc
+joi/express-validator : API/Request Layer (Before saving/processing), payload validation : email is valid format, password length
 
 
 
@@ -2568,6 +2610,16 @@ const updatedUser = await User.findByIdAndUpdate(id, updateData, {
     new: true, 
     runValidators: true // Ensure validation runs
 });	
+
+
+
+What is __v in Mongoose?
+=========================
+-version key(__v), is a property automatically added to documents in MongoDB when they are created or updated through Mongoose
+-It is used for internal versioning — mainly to handle concurrent updates
+-When a new document is created, Mongoose initializes the __v field to 0
+-When a document is updated using methods like save(), Mongoose automatically increments the __v field
+
 
 
 Mongoose Middleware
@@ -2671,6 +2723,7 @@ returns a <code> as response
 API-2
 =====
 GET : http://localhost:5000/e32nODMkC<CODE from API-1>
+returns originalURL
 
 
 

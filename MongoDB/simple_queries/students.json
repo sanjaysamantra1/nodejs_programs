@@ -1,0 +1,47 @@
+[
+  {
+    "_id": 1,
+    "name": "Ravi",
+    "age": 20,
+    "gender": "M",
+    "course": "Computer Science",
+    "marks": 85,
+    "city": "Delhi"
+  },
+  {
+    "_id": 2,
+    "name": "Anita",
+    "age": 22,
+    "gender": "F",
+    "course": "Electronics",
+    "marks": 92,
+    "city": "Mumbai"
+  },
+  {
+    "_id": 3,
+    "name": "Suresh",
+    "age": 21,
+    "gender": "M",
+    "course": "Mechanical",
+    "marks": 75,
+    "city": "Chennai"
+  },
+  {
+    "_id": 4,
+    "name": "Priya",
+    "age": 23,
+    "gender": "F",
+    "course": "Computer Science",
+    "marks": 88,
+    "city": "Delhi"
+  },
+  {
+    "_id": 5,
+    "name": "Arun",
+    "age": 20,
+    "gender": "M",
+    "course": "Electronics",
+    "marks": 60,
+    "city": "Pune"
+  }
+]
