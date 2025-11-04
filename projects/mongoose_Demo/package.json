@@ -1,11 +1,10 @@
 {
-  "name": "day_33_oct_28",
+  "name": "day_36_oct_31",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start" : "node --watch index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start":"node --watch index.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +12,6 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "mongodb": "^6.20.0"
+    "mongoose": "^8.19.2"
   }
 }
