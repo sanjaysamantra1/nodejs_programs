@@ -20,7 +20,7 @@ app.get('/fetchData', async (req, res) => {
         res.send({ source: 'REDIS', output });
     } else {
         console.log('Data not found in Redis');
-        let response = await axios.get(url);
+        let response = await axios.get(url, {headers: {"User-Agent": "MyApp/1.0"}});
         let output = response.data;
 
         // Store data in REDIS

@@ -2754,13 +2754,21 @@ Efficient Data Fetching: Reduces over-fetching and under-fetching of data.
    or polling separately
 
 
+Concept			Description
+===============================
+Query			Fetch data (read-only)
+Mutation		Modify data
+Schema			Defines data types & relationships
+Resolver		Function that resolves a query or mutation
+
+
 
 Graphql and graphql-http
 -------------------------
 1. create a project 
    npm init -y
 2. install required packages
-   npm install graphql graphql-http ruru
+   npm install express graphql graphql-http ruru
 3. Create a GraphQL schema
    const schema = new GraphQLSchema({
     query: new GraphQLObjectType({
@@ -2795,7 +2803,19 @@ https://www.apollographql.com/docs/apollo-server
 -It has its own UI (doesn't use RURU)
 
 
-npm i express cors @apollo/server graphql mongoose
+
+
+1. Create a project and set type="module"
+   npm init --yes && npm pkg set type="module"
+   
+2. Install Dependencies
+   npm i @apollo/server graphql mongoose
+   
+3. Define Schema/typeDefs
+
+4. Define a resolver   
+
+5. Create an instance of ApolloServer
 
 
 
@@ -2812,13 +2832,15 @@ Redis
 
 How To Install Redis
 ====================
-1. https://github.com/microsoftarchive/redis/releases
-2. download Redis-x64-3.0.504.msi  and install
-3. add redis as path variable (Environment Variable)
+1. Download and install Redis Open Source
+   https://redis.io/downloads/ 
+   https://github.com/microsoftarchive/redis/releases (Redis-x64-3.0.504.msi)
+
+2. add redis as path variable (Environment Variable)
    C:\Program Files\Redis 
-4. check redis version (in command prompt)
+3. check redis version (in command prompt)
    redis-server -v
-5. open command prompt & run the below command. (redis cli should open at 127.0.0.1:6379 )
+4. open command prompt & run the below command. (redis cli should open at 127.0.0.1:6379 )
    redis-cli 
    
 
