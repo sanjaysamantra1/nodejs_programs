@@ -34,4 +34,4 @@ app.get('/fetchData', async (req, res) => {
     }
 })
 
-app.listen(5000)
+app.listen(3000,()=>console.log('express server started...'))
