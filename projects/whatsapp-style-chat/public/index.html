@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat • WhatsApp Style (Pure JS)</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div id="app">
+    <div class="auth" id="auth">
+      <div class="card">
+        <h2>Welcome</h2>
+        <p class="muted">Create an account or login</p>
+        <div class="tabs">
+          <button id="tabLogin" class="active">Login</button>
+          <button id="tabRegister">Register</button>
+        </div>
+        <form id="loginForm" class="form">
+          <input id="loginEmail" placeholder="Email" type="email" required />
+          <input id="loginPassword" placeholder="Password" type="password" required />
+          <button type="submit">Login</button>
+        </form>
+        <form id="registerForm" class="form hidden">
+          <input id="regName" placeholder="Name" required />
+          <input id="regEmail" placeholder="Email" type="email" required />
+          <input id="regPassword" placeholder="Password" type="password" required />
+          <button type="submit">Create account</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="chat hidden" id="chat">
+      <aside class="sidebar">
+        <div class="me">
+          <div class="me-name" id="meName"></div>
+          <button id="logoutBtn" title="Logout">⎋</button>
+        </div>
+        <div class="search">
+          <input id="searchUser" placeholder="Search users" />
+        </div>
+        <div class="online-label">Online</div>
+        <ul id="userList" class="user-list"></ul>
+      </aside>
+      <main class="thread">
+        <header class="thread-header">
+          <div class="peer-avatar" id="peerAvatar">👤</div>
+          <div class="peer-meta">
+            <div id="peerName" class="peer-name">Select a user</div>
+            <div id="peerStatus" class="peer-status muted">—</div>
+          </div>
+        </header>
+        <input id="searchMessages" class="search-messages" placeholder="Search messages" />
+        <section id="messages" class="messages"></section>
+        <footer class="composer">
+          <input id="messageInput" placeholder="Type a message" />
+          <button id="sendBtn">➤</button>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="/client.js"></script>
+</body>
+</html>

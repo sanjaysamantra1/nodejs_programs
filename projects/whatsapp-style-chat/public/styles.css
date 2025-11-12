@@ -1,0 +1,57 @@
+* { box-sizing: border-box; }
+:root {
+  --bg: #0b141a;
+  --layer: #111b21;
+  --layer-2: #202c33;
+  --accent: #00a884;
+  --text: #e9edef;
+  --muted: #8696a0;
+  --me: #005c4b;
+  --them: #1f2c34;
+}
+html, body, #app { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+.hidden { display: none; }
+.muted { color: var(--muted); }
+
+.auth { display: grid; place-items: center; height: 100%; }
+.card { background: var(--layer); padding: 24px; width: 360px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.3); }
+.card h2 { margin: 0 0 4px 0; }
+.tabs { display: flex; gap: 8px; margin: 16px 0; }
+.tabs button { flex: 1; padding: 10px; background: var(--layer-2); color: var(--text); border: 0; border-radius: 10px; cursor: pointer; }
+.tabs button.active { background: var(--accent); color: #01221b; font-weight: 700; }
+.form { display: grid; gap: 10px; }
+.form input { padding: 10px 12px; background: var(--layer-2); color: var(--text); border: 1px solid #24323a; border-radius: 10px; }
+.form button { padding: 10px 12px; background: var(--accent); border: 0; border-radius: 10px; color: #01221b; font-weight: 700; cursor: pointer; }
+
+.chat { display: grid; grid-template-columns: 320px 1fr; height: 100vh; }
+.sidebar { background: var(--layer); border-right: 1px solid #223038; display: grid; grid-template-rows: auto auto auto 1fr; }
+.me { display: flex; align-items: center; justify-content: space-between; padding: 12px; border-bottom: 1px solid #223038; }
+.me-name { font-weight: 700; }
+#logoutBtn { background: transparent; color: var(--muted); border: 1px solid #2b3c46; border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+.search { padding: 8px 12px; }
+.search input { width: 100%; padding: 8px 10px; background: var(--layer-2); color: var(--text); border: 1px solid #24323a; border-radius: 8px; }
+.online-label { padding: 8px 12px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.user-list { list-style: none; margin: 0; padding: 0; overflow: auto; }
+.user-list li { padding: 10px 12px; border-bottom: 1px solid #223038; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.user-list li.active { background: #0e1a20; }
+.user-list .avatar { width: 32px; height: 32px; border-radius: 50%; background: #2a3942; display: grid; place-items: center; }
+.user-list .name { font-weight: 600; }
+
+.thread { display: grid; grid-template-rows: auto auto 1fr auto; height: 100vh; background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" opacity=\"0.05\" width=\"200\" height=\"200\"><text x=\"50\" y=\"100\" font-size=\"40\">💬</text></svg>') repeat; }
+.thread-header { background: var(--layer); border-bottom: 1px solid #223038; display: flex; align-items: center; gap: 12px; padding: 10px 14px; }
+.peer-avatar { width: 36px; height: 36px; border-radius: 50%; background: #2a3942; display: grid; place-items: center; }
+.peer-name { font-weight: 700; }
+.peer-status { font-size: 12px; }
+
+.search-messages { padding:6px 10px; margin:4px 12px; width:calc(100% - 24px); background: var(--layer-2); border:1px solid #24323a; border-radius:8px; color:var(--text); }
+
+.messages { padding: 16px; overflow: auto; display: flex; flex-direction: column; gap: 6px; }
+.bubble { max-width: 70%; padding: 8px 12px; border-radius: 12px; line-height: 1.35; box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+.bubble.me { align-self: flex-end; background: var(--me); }
+.bubble.them { align-self: flex-start; background: var(--them); }
+.bubble .meta { margin-top: 4px; font-size: 11px; color: var(--muted); text-align: right; }
+
+.composer { display: flex; gap: 8px; padding: 10px; background: var(--layer); border-top: 1px solid #223038; }
+.composer input { flex: 1; padding: 10px 12px; background: var(--layer-2); color: var(--text); border: 1px solid #24323a; border-radius: 10px; }
+.composer button { padding: 10px 14px; background: var(--accent); border: 0; color: #01221b; border-radius: 10px; font-weight: 700; cursor: pointer; }

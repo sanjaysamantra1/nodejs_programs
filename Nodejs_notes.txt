@@ -1894,6 +1894,19 @@ https://securityheaders.com/
 
 
 
+express-rate-limit
+==================
+-rate-limiting middleware for Express.
+-Use to limit repeated requests to public APIs and/or endpoints such as password reset.
+
+import { rateLimit } from 'express-rate-limit'
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+})
+app.use(limiter)
+
+
 
 Events
 ======
@@ -3036,11 +3049,13 @@ ESLint
  "ignorePatterns": ["public/**/*.js",".eslintrc.js"]
 
 
-1. npm i eslint 
-2. npm init @eslint/config   
+
+1. npm i eslint -g
+2. npm init @eslint/config@latest   
          (OR) 
    npx eslint --init
-3. eslint .   		(linting will be running for a folder)
+3. eslint . --config eslint.config.mjs
+   eslint .   		(linting will be running for a folder)
    eslint abc.js    (linting will be running for a file-abc.js)
    eslint abc.js --fix   (fixes the problems)
 
