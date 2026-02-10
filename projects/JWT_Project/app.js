@@ -1,22 +1,20 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const { connectToDB } = require('./config/db.config');
-const employeeRouter = require('./routes/employee_routes');
-const authRouter = require('./routes/auth_routes');
-
+const express = require('express')
+const cors = require('cors')
+const employeeRouter = require('./routes/employee_route.js');
+const authRouter = require('./routes/auth_route');
+const {connectDB} = require('./config/db.config');
 const app = express();
-app.use(express.json());
-app.use(cookieParser());
-app.use(cors());
 
+// middlewares
+app.use(express.json())
+app.use(cors())
 
-app.use('/employees', employeeRouter)
-app.use('/auth', authRouter)
+// use the routers
+app.use('/employees', employeeRouter);
+app.use('/auth', authRouter);
 
-
-
-app.listen(5000, () => {
-    connectToDB()
-    console.log(`app Running at 5000 port`)
+app.listen(3000, async() => {
+    await connectDB()
+    console.log("app started on port 3000");
 });
+

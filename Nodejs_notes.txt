@@ -29,8 +29,9 @@ Node.js Syllabus
 -Events (Event Loop,Event Emitter)
 -Buffer & Streams
 -Creating web server & Handling http requests (HTTP)
--Express Framework  (routing , middleware)
+-Express Framework  (routing , middleware, Pagination, Sorting, Filtering, Versioning APIs)
 -Request validation (joi,express-validator)
+-Logging & Error Handling 
 -Template Engines (Jade/Pug, vash, EJS, handlebars)
 -NodeJS & MongoDB Connection
 -Mongoose : ODM for MongoDB
@@ -41,7 +42,7 @@ Node.js Syllabus
 -WebSockets / Socket.IO ( chat, notifications)
 -Authentication/Authorization : JWT
 -Environment Variables & Config Management (dotenv, config)
--Security : Helmet, CORS, Rate Limiting
+-Security : Helmet, CORS, Rate Limiting, Input Sanitization, Environment Variable Protection
 -Deployment : Render
 
 
@@ -208,6 +209,7 @@ Q. What is Reactor Pattern in Node.js?
 How to install Node.js
 ======================
 -Official packages for all the major platforms are available in the below URL
+-Production applications should only use Active LTS or Maintenance LTS releases
  https://nodejs.org/en/download/prebuilt-installer
  https://nodejs.org/en/about/previous-releases
  
@@ -732,7 +734,7 @@ Event Loop
 -handles asynchronous operations by executing callbacks in a non-blocking manner.
 -It executes Synchronous code first,then processes asynchronous operations.
 -Delegates heavy tasks like I/O operations, timers, and network requests to the libuv library.
-
+https://developer.ibm.com/tutorials/learn-nodejs-the-event-loop/
 
 -Event loop's order of operations:
 1. timers: Executes setTimeout() and setInterval() callbacks whose delay has expired
@@ -1098,6 +1100,7 @@ fork()
 NodeJS Buffers
 ==============
 -Buffer represents a fixed-length sequence of bytes.
+-Buffer = Temporary Memory used to handle Binary Data( files, images, videos etc )
 -Buffer is a built-in object used to handle binary data directly, without needing to convert it into string or other format.
 -to preocess raw binary data, such as reading data from file handling network communication.
 -Buffers are used with readable & writable streams for efficient data handling, especially for large files.
@@ -3138,10 +3141,10 @@ Unit Testing with Jasmine
 
 1. Create a npm project
    npm init -y
-2.install jasmine 
-   npm i jasmine
+2. install jasmine 
+   npm i jasmine 
 3.Initialize the Jasmine Environment
-  jasmine init
+  npx jasmine init
 4.verify your configuration file. (spec/support/jasmine.json)
   jasmine.json
 5.run the below command to run tests
@@ -3152,7 +3155,8 @@ Unit Testing with Jasmine
 Coverage Report
 ===============
 1. npm i nyc
-2. nyc npm run test
+2. Add below script in package.json
+  "test": "nyc --exclude 'spec/**/*.js' jasmine"
 
  
 Jasmine Terminologies
@@ -3307,8 +3311,8 @@ Code Coverage
 
 3. Add Below code in package.json
    "scripts": {
-    "test": "mocha 'specs/**/*.js'",
-    "test-report": "nyc mocha 'specs/**/*.js'",
+    "test": "mocha test/**/*.js",
+    "test-report": "nyc mocha test/**/*.js",
     "coverage": "nyc report --reporter=html && npm run test"
   }
 	
@@ -3380,7 +3384,7 @@ https://www.cloudzilla.ai/dev-education/how-to-build-authentication-api-with-jwt
 
 
 1. npm init -y
-2. npm install express cors mongoose jsonwebtoken bcryptjs
+2. npm install express cors mongoose jsonwebtoken bcrypt
 
 
 
@@ -3566,7 +3570,7 @@ https://developer.phonepe.com/v1/docs/api-integration/
 https://developer.phonepe.com/v2/docs/technical-flow-diagram/
 
 1. npm init -y
-2. npm i express cors axios crypto
+2. npm i dotenv express cors axios crypto
 
 
 

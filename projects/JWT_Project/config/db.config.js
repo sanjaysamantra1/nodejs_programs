@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 
-exports.connectToDB = function () {
-    const url = 'mongodb://127.0.0.1/march_2025';
-    try {
-        mongoose.connect(url);
-    } catch (err) {
-        console.log(err);
-    }
+function connectDB(dbName = 'nareshit_sept_2025') {
+    mongoose.connect(`mongodb://127.0.0.1:27017/${dbName}`)
+        .then(() => console.log('Connected To Database!'))
+        .catch(err=>{console.log('Error connecting DB')})
 }
+
+module.exports = { connectDB };

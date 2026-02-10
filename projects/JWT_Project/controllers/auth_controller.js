@@ -5,6 +5,7 @@ const { REFRESH_TOKEN_SECRET } = require('../config/jwt.config');
 
 exports.register = async (req, res) => {
     let { name, email, password, phone, role } = req.body;
+    console.log('auth controller')
     try {
         const existingUser = await userModel.findOne({ email });
         if (existingUser) return res.status(400).json({ message: 'User already exists' });
@@ -31,7 +32,7 @@ exports.login = async (req, res) => {
             } else { // both email and password are correct
                 const accessToken = generateAccessToken(user._id, user.name);
                 const refreshToken = generateRefreshToken(user._id, user.name);
-                console.log(accessToken, refreshToken)
+                // console.log(accessToken, refreshToken)
 
                 await userModel.updateOne({ email: req.body.email }, { $set: { refreshToken } });
 

@@ -1,0 +1,38 @@
+| Session | Topics                       | Sub-Topics                                        | Lab Assignment             | What can be done after this topic |
+| ------- | ---------------------------- | ------------------------------------------------- | -------------------------- | --------------------------------- |
+| 1       | Software Setup, Web Intro    | Browser, VS Code, Node, NPM, Client-Server        | Install Node & VS Code     | Understand how web works          |
+| 2       | JavaScript Basics, Variables | Datatypes, typeof, var/let/const, scope           | Refactor code to modern JS | Write clean JS                    |
+| 3       | Functions                    | Normal, Arrow, Parameters, Higher Order Functions | Calculator + callbacks     | Reusable & functional JS          |
+| 4       | Arrays                       | map, filter, reduce                               | Process JSON array         | Handle real data                  |
+| 5       | Objects & OOP                | Objects, shallow vs deep copy, class, extends     | Class hierarchy            | OOP in JavaScript                 |
+| 6       | ES-6 Features                | Destructuring, Rest, Spread                       | Refactor code using ES6    | Write modern JS syntax            |
+| 7       | Async JavaScript             | Promise, async/await, try-catch                   | Fetch API call             | Handle async code properly        |
+| 8       | Node.js Basics               | What is Node, V8, event loop                      | Run first Node script      | Understand Node runtime           |
+| 9       | Node Modules                 | CommonJS, ES Modules, require vs import           | Create custom module       | Modular Node apps                 |
+| 10      | File System (fs)             | readFile, writeFile, streams                      | Read/write file app        | Work with files                   |
+| 11      | NPM & Packages               | package.json, dependencies                        | Install libraries          | Manage packages                   |
+| 12      | Node Events                  | EventEmitter                                      | Create custom events       | Build event-driven apps           |
+| 13      | HTTP Module                  | createServer, req, res                            | Build basic server         | Understand HTTP in Node           |
+| 14      | Express Basics               | express(), routes                                 | Create Express app         | Build REST server                 |
+| 15      | Routing in Express           | GET, POST, PUT, DELETE                            | CRUD routes                | Build APIs                        |
+| 16      | Middleware                   | app.use, custom middleware                        | Logging middleware         | Control request flow              |
+| 17      | Body Parsing                 | express.json(), urlencoded                        | Read request body          | Handle form/JSON data             |
+| 18      | Error Handling               | try-catch, error middleware                       | Global error handler       | Robust APIs                       |
+| 19      | REST API Design              | Status codes, REST principles                     | Build clean API            | Professional API design           |
+| 20      | Environment Variables        | dotenv, config                                    | Secure secrets             | Manage env safely                 |
+| 21      | MongoDB Basics               | Collections, Documents                            | Install MongoDB            | Understand NoSQL                  |
+| 22      | MongoDB CRUD                 | insertOne, find, update, delete                   | CRUD in Mongo shell        | Work with data                    |
+| 23      | Mongoose Setup               | mongoose.connect                                  | Connect Node to Mongo      | Database integration              |
+| 24      | Mongoose Schema              | Schema, Model, Validation                         | Create User model          | Structured data                   |
+| 25      | Mongoose CRUD                | save, find, update, delete                        | CRUD via Mongoose          | Full DB operations                |
+| 26      | Relationships                | One-to-many, refs, populate                       | Users & Posts              | Model relations                   |
+| 27      | Authentication Basics        | Hashing, bcrypt                                   | Hash passwords             | Secure storage                    |
+| 28      | JWT Auth                     | jsonwebtoken, token                               | Login API                  | Secure authentication             |
+| 29      | Auth Middleware              | Verify token                                      | Protected routes           | Secure endpoints                  |
+| 30      | Role-Based Access            | Admin/User roles                                  | Role check middleware      | Authorization logic               |
+| 31      | File Upload                  | multer                                            | Upload images              | Handle files                      |
+| 32      | API Pagination               | limit, skip                                       | Paginated results          | Scalable APIs                     |
+| 33      | API Filtering & Sorting      | query params                                      | Search API                 | Advanced queries                  |
+| 34      | Testing APIs                 | Postman/Thunder Client                            | Test endpoints             | Validate APIs                     |
+| 35      | Deployment                   | Render/Vercel/Heroku                              | Deploy backend             | Live server                       |
+| 36      | Mini Project                 | Auth + CRUD + Mongo + JWT                         | Full REST app              | Production-ready backend          |

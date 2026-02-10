@@ -17,6 +17,7 @@ exports.getEmployeeById = async(req, res)=> {
     try {
         const empId = req.params.id;
         const employee = await EmployeeModel.findById(empId);
+        console.log(empId,employee)
         if (!employee) {
             return res.status(404).send('Employee Not Found')
         }
