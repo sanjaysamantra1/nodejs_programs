@@ -224,6 +224,7 @@ How to Maintain multiple NodeJS versions
 -It allows to easily switch the Node.js version.
   NVM for Mac - https://tecadmin.net/install-nvm-macos-with-homebrew/
   NVM for windows - https://github.com/coreybutler/nvm-windows
+  https://github.com/coreybutler/nvm-windows/releases
 
 
 NVM useful commands
@@ -1050,6 +1051,8 @@ Node.js, the difference between development and production
  node --env-file=.prod.env app.js
  
 Note: if the same variable is defined in the environment and in the file, the value from the environment takes precedence.
+After node 20+ --env-file=.env can be directly used without dotenv package
+ 
  
 if (process.env.NODE_ENV === 'development') {
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
@@ -1603,24 +1606,6 @@ https://dev.to/mr_ali3n/folder-structure-for-nodejs-expressjs-project-435l
 
 
 
-Template Engines for Node.js
-============================
--A template engine enables us to use static template files in our application. 
--At runtime, the template engine replaces variables in a template file with actual values, and transforms the template into an HTML file sent to the client.
--Template engines for Node.js (Jade/pug,Vash,EJS,Handlebars)
--Express application generator uses 'pug' as the default Template Engine.
-   express --view=pug project1
-   express --view=ejs project2
-   express project3 --no-view
-
--To render template files, set the following application properties, in app.js
- app.engine('pug', require('pug').__express)
- app.set('views', './views')
- app.set('view engine', 'pug')
- 
-https://expressjs.com/en/guide/using-template-engines.html
-
-
 
 Express Validators (https://express-validator.github.io/docs/guides/getting-started)
 ==================
@@ -1647,6 +1632,29 @@ joi Validator
 -Use abortEarly: false to show all errors at once.
   const { error } = schema.validate(req.body, { abortEarly: false });
 -Support custom validators
+
+
+
+Template Engines for Node.js
+============================
+-A template engine enables us to use static template files in our application. 
+-At runtime, the template engine replaces variables in a template file with actual values, and transforms the template into an HTML file sent to the client.
+-Template engines for Node.js (Jade/pug,Vash,EJS,Handlebars)
+-Express application generator uses 'pug' as the default Template Engine.
+   npx express-generator --view=pug project1
+   npx express-generator --view=ejs project2
+   npx express-generator project3 --no-view
+
+-To render template files, set the following application properties, in app.js
+ app.engine('pug', require('pug').__express)
+ app.set('views', './views')
+ app.set('view engine', 'pug')
+ 
+https://expressjs.com/en/guide/using-template-engines.html
+
+
+
+
 
 
 
@@ -1880,7 +1888,8 @@ Helmet
 -automatically adds or removes HTTP headers to comply with web security standards.
 -It protects against XSS, clickjacking, MIME sniffing, and other vulnerabilities.
 -Express applications do not come with security HTTP headers out of the box.
--Without Helmet, default headers returned by Express expose sensitive information and make your Node.js app vulnerable to malicious actors
+-Without Helmet, default headers returned by Express expose sensitive information and make your Node.js app 
+	vulnerable to malicious actors
 
 
 curl http://localhost:3000/
@@ -2028,31 +2037,14 @@ MongoDB Local
 					(OR)
    https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-8.2.1-signed.msi
    
-   
-The Below Points are optional if we want to access our database in MongoDB Compass
-2. Go to the path where MongoDB is installed,and run 'mongod.exe'  
-   By default it is "C:\Program Files\MongoDB\Server\6.0\bin"
-4. Expect Error as the data directory is not set
-   "{"error":"NonExistentPath: Data directory C:\\data\\db\\ not found"
-5. create folder 'c:\data\db'
-6. run 'mongod.exe'
-7. set path for mongo-server(To start mongodb from any path)
-	C:\Program Files\MongoDB\Server\6.0\bin
 
-
-https://treehouse.github.io/installation-guides/mac/mongo-mac.html
-https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/
  
  
 MongoDB Compass
 ===============
 -MongoDB Compass is a graphical interface to interact with the MongoDB 
 -Manage MongoDB data without writing complex shell commands
- 
-1. Download and install MongoDB Compass (It comes along with mongoDB)
-   https://www.mongodb.com/try/download/compass
-2. open mongoDB Compass GUI
-3. Enter mongoDB Connection String 
+-Enter mongoDB Connection String 
    mongodb://localhost:27017  (OR) 
    mongodb://127.0.0.1:27017   
    mongodb://0.0.0.0:27017
@@ -2109,7 +2101,7 @@ Projection : which fields to include in the results
  db.employees.find().sort({sal:1})   //asc
  db.employees.find().sort({sal:-1}) //desc
  db.employees.find().count()
- db.employees.countDocuments({salary:13001});
+ db.employees.countDocuments({salary:5000});
  db.employees.find().limit(2)
  db.employees.find().sort({sal:-1}).skip(2).limit(1)
  db.employees.distinct('eid');  // ['e101','e102']
@@ -2118,7 +2110,7 @@ Projection : which fields to include in the results
 -To Update the existing Data
  db.employees.updateOne( { id: 101 }, { $set: { sal: 2000 } } ) 
  db.employees.updatemany( { sal:6000 }, { $set: { sal: 6500 } } )
- db.employees.updateOne({id: 101},{$set:{eid:1,name:'sanjay',sal:5000}},{ upsert: true });  // Update or Insert
+ db.employees.updateOne({eid: 101},{$set:{eid:101,name:'sanjay',sal:5000}},{ upsert: true });  // Update or Insert
  // Update the document if it exists, or insert a new document if no match is found
  
  db.employees.updateOne({eId:'e102'},{$inc:{sal:100}}); // increment
@@ -2742,6 +2734,13 @@ GET : http://localhost:5000/e32nODMkC<CODE from API-1>
 returns originalURL
 
 
+my_urls
+========
+id:101
+shortURl : ABCD
+longURL : longURL
+
+
 
 
 GraphQL
@@ -2784,7 +2783,7 @@ Graphql and graphql-http
 1. create a project 
    npm init -y
 2. install required packages
-   npm install express graphql graphql-http ruru
+   npm install express cors graphql graphql-http ruru
 3. Create a GraphQL schema
    const schema = new GraphQLSchema({
     query: new GraphQLObjectType({
@@ -2919,6 +2918,7 @@ https://api.openweathermap.org/data/2.5/weather?q=${city}&mode=json&units=metric
 https://api.openweathermap.org/data/2.5/forecast/daily?q=bangalore&mode=json&units=metric&cnt=5&appid=fbf712a5a83d7305c3cda4ca8fe7ef29
 
 https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=India
+await axios.get(url,{headers:{'User-Agent':''}});
 
 https://api.github.com/users/google
 
@@ -2986,6 +2986,8 @@ server.listen(3000);
 
 Private Message	
 ===============
+'sanjay' => '_5DAIqIeF4jRYsmyAAAB'          // sanjay-userId    _5DAIqIeF4jRYsmyAAAB-socketId
+
 socket.on("private message", ({ content, to }) => {
   socket.to(to).emit("private message", {
     content,
@@ -3038,7 +3040,7 @@ ESLint
  no-debugger , no-unused-vars , no-dupe-keys , no-dupe-else-if , no-duplicate-case, no-duplicate-imports
  https://eslint.org/docs/latest/rules/
  
--To add custom rules, change eslintrc.js file as given below 
+-To add custom rules, change eslintrc.js/eslint.config.js file as given below 
  "rules": {
          'semi': ['error', 'always'],
          'quotes': ['error', 'single'],
@@ -3518,6 +3520,14 @@ Web-Hooks
 
 CRON
 =====
+-Cron is a time based job scheduler to run scripts or command automatically at scheduled times.
+-Used for:
+	-Running Daily Backups
+	-Clearing Logs
+	-Sending Report
+	-Scheduled API calls
+
+
 https://www.npmjs.com/package/node-cron
 
 
@@ -3530,12 +3540,12 @@ cron.schedule('* * * * *', () => {  // * Every
 
 
 
-1. second (optional)
-2. minute
-3. hour
-4. day of month(date)
-5. month
-6. day of week
+1. second (0-59)(optional)
+2. minute (0-59)
+3. hour    (0-23)
+4. day of month(1-31)(date)
+5. month   (1-12)
+6. day of week (0-7) 
 
 
 * * * * * *        Every Second
@@ -3562,6 +3572,8 @@ https://crontab.guru/examples.html
 bull - https://www.npmjs.com/package/bull
 The fastest, most reliable, Redis-based queue for Node.
 Carefully written for rock solid stability and atomicity
+
+
 
 
 PhonePe Integration

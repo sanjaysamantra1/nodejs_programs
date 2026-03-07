@@ -399,7 +399,7 @@ async function sendMyMail() {
         html: `
             <h1>This is a Test Email</h1>
             <h3 style="color:red;text-align:center">Congratulations!!</h3>
-            <p>Please follow the instructions to claim your amoubt</p>
+            <p>Please follow the instructions to claim your amount</p>
             <pre>
                 Helloooooooo
                 Hiiiiiiiiiiiii
